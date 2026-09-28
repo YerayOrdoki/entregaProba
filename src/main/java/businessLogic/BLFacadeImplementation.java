@@ -108,9 +108,8 @@ public class BLFacadeImplementation  implements BLFacade {
         try {
             return ImageIO.read(image);
         } catch (IOException e) {
-            e.printStackTrace();
+        	throw new RuntimeException("Errorea gertatu da", e);
         }
-        return null;
     }
 
     @WebMethod public Emaitza isLogged(String log, String pass) {

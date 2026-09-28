@@ -42,7 +42,7 @@ public class DataAccess  {
 
 	private static final String basePath="src/main/resources/images/";
 
-
+	private static final String DEFAULT_PASSWORD = "aurrera";
 
 	ConfigXML c=ConfigXML.getInstance();
 
@@ -85,9 +85,9 @@ public class DataAccess  {
 		try { 
 	       
 		    //Create sellers 
-			Seller seller1=new Seller("seller1@gmail.com","Aitor Fernandez", "aurrera");
-			Seller seller2=new Seller("seller22@gmail.com","Ane Gaztañaga", "aurrera");
-			Seller seller3=new Seller("seller3@gmail.com","Test Seller", "aurrera");
+			Seller seller1 = new Seller("seller1@gmail.com", "Aitor Fernandez", DEFAULT_PASSWORD);
+			Seller seller2 = new Seller("seller22@gmail.com", "Ane Gaztañaga", DEFAULT_PASSWORD);
+			Seller seller3 = new Seller("seller3@gmail.com", "Test Seller", DEFAULT_PASSWORD);
 
 			
 			//Create products
