@@ -157,7 +157,7 @@ public class DataAccess  {
 			Sale sale = seller.addSale(title, description, status, price, pubDate, file);
 			
 			db.persist(sale);
-			db.merge(seller); 
+			seller=db.merge(seller); 
 			db.getTransaction().commit();
 			 System.out.println("sale stored "+sale+ " "+seller);
 
