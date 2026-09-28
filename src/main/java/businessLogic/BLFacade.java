@@ -25,6 +25,7 @@ import domain.Seller;
 import gui.*;
 /**
  * Interface that specifies the business logic.
+ * aksdjhfhasdlfalñsjdf
  */
 @WebService
 public interface BLFacade  {
