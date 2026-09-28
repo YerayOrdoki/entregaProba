@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ProfileGUI.java</span></div><h1>ProfileGUI.java</h1><pre class="source lang-java linenums">package gui;
+import gui.*;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
+import javax.swing.JFrame;
+
+import domain.*;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import businessLogic.BLFacade;
+
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
+import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
+
+public class ProfileGUI extends JFrame {
+	private Seller s;
+	private JTextField textuser;
+	private JTextField textemail;
+	private JPasswordField textpass;
+	private JPasswordField textrepeatpass;
+	private JFrame thisFrame;
+	
+<span class="nc" id="L31">	public ProfileGUI(Seller s) {</span>
+<span class="nc" id="L32">		this.s = s;</span>
+<span class="nc" id="L33">		thisFrame=this;</span>
+<span class="nc" id="L34">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L35">		this.setSize(new Dimension(604, 370));</span>
+		
+		
+<span class="nc" id="L38">		JLabel lbluser = new JLabel(&quot;New label&quot;);</span>
+<span class="nc" id="L39">		lbluser.setBounds(38, 49, 146, 28);</span>
+<span class="nc" id="L40">		lbluser.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.User&quot;));</span>
+<span class="nc" id="L41">		getContentPane().add(lbluser);</span>
+		
+<span class="nc" id="L43">		JLabel lblemail = new JLabel(&quot;New label&quot;);</span>
+<span class="nc" id="L44">		lblemail.setBounds(38, 103, 158, 19);</span>
+<span class="nc" id="L45">		lblemail.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.Email&quot;));</span>
+<span class="nc" id="L46">		getContentPane().add(lblemail);</span>
+		
+		
+<span class="nc" id="L49">		JLabel lblpass = new JLabel(&quot;New label&quot;);</span>
+<span class="nc" id="L50">		lblpass.setBounds(38, 141, 158, 28);</span>
+<span class="nc" id="L51">		lblpass.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.Password&quot;));</span>
+<span class="nc" id="L52">		getContentPane().add(lblpass);</span>
+		
+<span class="nc" id="L54">		textuser = new JTextField();</span>
+<span class="nc" id="L55">		textuser.setBounds(232, 54, 173, 18);</span>
+<span class="nc" id="L56">		textuser.setText(s.getName());</span>
+<span class="nc" id="L57">		getContentPane().add(textuser);</span>
+<span class="nc" id="L58">		textuser.setColumns(10);</span>
+		
+<span class="nc" id="L60">		textemail = new JTextField();</span>
+<span class="nc" id="L61">		textemail.setEditable(false);</span>
+<span class="nc" id="L62">		textemail.setBounds(232, 103, 173, 18);</span>
+<span class="nc" id="L63">		textemail.setText(s.getEmail());</span>
+<span class="nc" id="L64">		getContentPane().add(textemail);</span>
+<span class="nc" id="L65">		textemail.setColumns(10);</span>
+		
+<span class="nc" id="L67">		textpass = new JPasswordField();</span>
+<span class="nc" id="L68">		textpass.setBounds(232, 146, 173, 18);</span>
+<span class="nc" id="L69">		textpass.setText(s.getPass());</span>
+<span class="nc" id="L70">		getContentPane().add(textpass);</span>
+<span class="nc" id="L71">		textpass.setColumns(10);</span>
+		
+<span class="nc" id="L73">		JLabel lblrepeatpass = new JLabel(&quot;New label&quot;);</span>
+<span class="nc" id="L74">		lblrepeatpass.setBounds(38, 199, 158, 28);</span>
+<span class="nc" id="L75">		lblrepeatpass.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.ConfirmPassword&quot;));</span>
+<span class="nc" id="L76">		getContentPane().add(lblrepeatpass);</span>
+		
+<span class="nc" id="L78">		textrepeatpass = new JPasswordField();</span>
+<span class="nc" id="L79">		textrepeatpass.setBounds(232, 204, 173, 18);</span>
+<span class="nc" id="L80">		getContentPane().add(textrepeatpass);</span>
+<span class="nc" id="L81">		textrepeatpass.setText(s.getPass());</span>
+<span class="nc" id="L82">		textrepeatpass.setColumns(10);</span>
+		
+		
+<span class="nc" id="L85">		JLabel jLabelMsg = new JLabel();</span>
+<span class="nc" id="L86">		jLabelMsg.setBounds(new Rectangle(38, 238, 481, 29));</span>
+<span class="nc" id="L87">		jLabelMsg.setForeground(Color.red);</span>
+<span class="nc" id="L88">		this.getContentPane().add(jLabelMsg, null);</span>
+		
+		
+<span class="nc" id="L91">		JButton btnupdate = new JButton(&quot;New button&quot;);</span>
+<span class="nc" id="L92">		btnupdate.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Accept&quot;));</span>
+<span class="nc" id="L93">		btnupdate.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L95">				String email = textemail.getText().trim();</span>
+<span class="nc" id="L96">		        String user = textuser.getText().trim();</span>
+<span class="nc" id="L97">		        char[] pass =  textpass.getPassword();</span>
+<span class="nc" id="L98">		        char[] repeatPass = textrepeatpass.getPassword();</span>
+<span class="nc" id="L99">		        String password = new String(pass);</span>
+<span class="nc" id="L100">		        String rpassword = new String(repeatPass);</span>
+		        
+		       
+<span class="nc bnc" id="L103" title="All 8 branches missed.">		        if (email.isEmpty() || user.isEmpty() || password.isEmpty() || rpassword.isEmpty()) {</span>
+<span class="nc" id="L104">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.EmptyError&quot;));</span>
+<span class="nc" id="L105">		            return;</span>
+		        }
+		        
+		        
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		        if (!email.endsWith(&quot;@gmail.com&quot;)) {</span>
+<span class="nc" id="L110">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.MailError&quot;));</span>
+<span class="nc" id="L111">		        	return;</span>
+		        }
+		        
+		        
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		        if (!password.equals(rpassword)) {</span>
+<span class="nc" id="L116">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.PasswordError&quot;));</span>
+<span class="nc" id="L117">		        	return;</span>
+		        }
+		        
+<span class="nc" id="L120">		        BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		        if(facade==null) {</span>
+<span class="nc" id="L122">		        	return;</span>
+		        }
+<span class="nc" id="L124">		        boolean actualizado = facade.updateProfile(s.getEmail(), user, password);</span>
+<span class="nc" id="L125">		        System.out.println(actualizado);</span>
+<span class="nc" id="L126">		        thisFrame.setVisible(false);</span>
+		       
+		        
+<span class="nc" id="L129">			}</span>
+		});
+<span class="nc" id="L131">		btnupdate.setBounds(244, 278, 84, 20);</span>
+<span class="nc" id="L132">		getContentPane().add(btnupdate);</span>
+		
+		
+		
+		
+<span class="nc" id="L137">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

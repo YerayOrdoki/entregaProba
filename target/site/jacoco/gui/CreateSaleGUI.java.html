@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreateSaleGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">CreateSaleGUI.java</span></div><h1>CreateSaleGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.util.*;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.toedter.calendar.JCalendar;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import businessLogic.BLFacade;
+import configuration.UtilDate;
+import domain.Seller;
+
+
+public class CreateSaleGUI extends JFrame {
+	
+    File targetFile;
+    BufferedImage targetImg;
+<span class="nc" id="L31">    String encodedfile = null;</span>
+
+    public JPanel panel_1;
+    private static final int baseSize = 128;
+	private static final String basePath=&quot;src/main/resources/images/&quot;;
+
+	
+	private static final long serialVersionUID = 1L;
+
+	private String sellerMail;
+<span class="nc" id="L41">	private JTextField fieldTitle=new JTextField();</span>
+<span class="nc" id="L42">	private JTextField fieldDescription=new JTextField();</span>
+	
+<span class="nc" id="L44">	private JLabel jLabelTitle = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Title&quot;));</span>
+<span class="nc" id="L45">	private JLabel jLabelDescription = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Description&quot;)); </span>
+<span class="nc" id="L46">	private JLabel jLabelProductStatus = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Status&quot;));</span>
+<span class="nc" id="L47">	private JLabel jLabelPrice = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Price&quot;));</span>
+<span class="nc" id="L48">	private JTextField jTextFieldPrice = new JTextField();</span>
+
+<span class="nc" id="L50">	private JCalendar jCalendar = new JCalendar();</span>
+<span class="nc" id="L51">	private Calendar calendarAct = null;</span>
+<span class="nc" id="L52">	private Calendar calendarAnt = null;</span>
+
+<span class="nc" id="L54">	private JScrollPane scrollPaneEvents = new JScrollPane();</span>
+	
+<span class="nc" id="L56">	JComboBox&lt;String&gt; jComboBoxStatus = new JComboBox&lt;String&gt;();</span>
+<span class="nc" id="L57">	DefaultComboBoxModel&lt;String&gt; statusOptions = new DefaultComboBoxModel&lt;String&gt;();</span>
+	List&lt;String&gt; status;
+
+
+<span class="nc" id="L61">	private JButton jButtonCreate = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.CreateProduct&quot;));</span>
+<span class="nc" id="L62">	private JButton jButtonClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Close&quot;));</span>
+<span class="nc" id="L63">	private JLabel jLabelMsg = new JLabel();</span>
+<span class="nc" id="L64">	private JLabel jLabelError = new JLabel();</span>
+	private JFrame thisFrame;
+<span class="nc" id="L66">	private final JButton btnNewButton_2 = new JButton(&quot;grabar Imagen&quot;); //$NON-NLS-1$ //$NON-NLS-2$</span>
+
+<span class="nc" id="L68">	public CreateSaleGUI(String mail) {</span>
+
+<span class="nc" id="L70">		thisFrame=this;</span>
+<span class="nc" id="L71">		this.sellerMail=mail;</span>
+<span class="nc" id="L72">		this.getContentPane().setLayout(null);</span>
+<span class="nc" id="L73">		this.setSize(new Dimension(604, 370));</span>
+<span class="nc" id="L74">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.CreateProduct&quot;));</span>
+
+<span class="nc" id="L76">		jLabelTitle.setBounds(new Rectangle(6, 24, 92, 20));</span>
+		
+<span class="nc" id="L78">		jLabelPrice.setBounds(new Rectangle(6, 141, 101, 20));</span>
+<span class="nc" id="L79">		jTextFieldPrice.setBounds(new Rectangle(97, 141, 60, 20));</span>
+
+		
+<span class="nc" id="L82">		scrollPaneEvents.setBounds(new Rectangle(25, 44, 346, 116));</span>
+<span class="nc" id="L83">		jButtonCreate.setFont(new Font(&quot;Lucida Grande&quot;, Font.BOLD, 15));</span>
+
+<span class="nc" id="L85">		jButtonCreate.setBounds(new Rectangle(100, 222, 216, 41));</span>
+
+<span class="nc" id="L87">		jButtonCreate.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L89">				jLabelMsg.setText(&quot;&quot;);</span>
+<span class="nc" id="L90">				String error=check_fields_Errors();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">				if (error!=null) </span>
+<span class="nc" id="L92">					jLabelMsg.setText(error);</span>
+				else
+					try {
+<span class="nc" id="L95">						BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L96">						float price = Float.parseFloat(jTextFieldPrice.getText());</span>
+<span class="nc" id="L97">						String s=(String)jComboBoxStatus.getSelectedItem();</span>
+<span class="nc" id="L98">						int numStatus=status.indexOf(s);</span>
+<span class="nc" id="L99">						facade.createSale(fieldTitle.getText(), fieldDescription.getText(), numStatus, price,  UtilDate.trim(jCalendar.getDate()), sellerMail, targetFile);</span>
+<span class="nc" id="L100">						jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.ProductCreated&quot;));</span>
+					
+<span class="nc" id="L102">					} catch (Exception e1) {</span>
+
+						// TODO Auto-generated catch block
+<span class="nc" id="L105">						jLabelMsg.setText(e1.getMessage());</span>
+<span class="nc" id="L106">					}</span>
+<span class="nc" id="L107">			}</span>
+		});
+<span class="nc" id="L109">		jButtonClose.setBounds(new Rectangle(328, 228, 101, 30));</span>
+<span class="nc" id="L110">		jButtonClose.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L112">				thisFrame.setVisible(false);			}</span>
+		});
+
+<span class="nc" id="L115">		jLabelMsg.setBounds(new Rectangle(26, 275, 377, 20));</span>
+<span class="nc" id="L116">		jLabelMsg.setForeground(Color.red);</span>
+
+<span class="nc" id="L118">		jLabelError.setBounds(new Rectangle(16, 275, 384, 20));</span>
+<span class="nc" id="L119">		jLabelError.setForeground(Color.red);</span>
+		
+<span class="nc" id="L121">	    status=Utils.getStatus();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for(String s:status) statusOptions.addElement(s);</span>
+
+<span class="nc" id="L124">		this.getContentPane().add(jLabelMsg, null);</span>
+<span class="nc" id="L125">		this.getContentPane().add(jLabelError, null);</span>
+
+<span class="nc" id="L127">		this.getContentPane().add(jButtonClose, null);</span>
+<span class="nc" id="L128">		this.getContentPane().add(jButtonCreate, null);</span>
+<span class="nc" id="L129">		this.getContentPane().add(jLabelTitle, null);</span>
+		
+		
+<span class="nc" id="L132">		this.getContentPane().add(jLabelPrice, null);</span>
+<span class="nc" id="L133">		this.getContentPane().add(jTextFieldPrice, null);</span>
+		
+<span class="nc" id="L135">		jLabelProductStatus.setBounds(new Rectangle(40, 15, 140, 25));</span>
+<span class="nc" id="L136">		jLabelProductStatus.setBounds(6, 185, 140, 25);</span>
+<span class="nc" id="L137">		getContentPane().add(jLabelProductStatus);</span>
+		
+<span class="nc" id="L139">		jLabelDescription.setBounds(6, 56, 109, 16);</span>
+<span class="nc" id="L140">		getContentPane().add(jLabelDescription);</span>
+		
+		
+<span class="nc" id="L143">		fieldTitle.setBounds(98, 21, 250, 26);</span>
+<span class="nc" id="L144">		getContentPane().add(fieldTitle);</span>
+<span class="nc" id="L145">		fieldTitle.setColumns(10);</span>
+		
+		
+<span class="nc" id="L148">		fieldDescription.setBounds(98, 56, 250, 73);</span>
+<span class="nc" id="L149">		getContentPane().add(fieldDescription);</span>
+<span class="nc" id="L150">		fieldDescription.setColumns(10);</span>
+		
+<span class="nc" id="L152">		jComboBoxStatus.setModel(statusOptions);</span>
+<span class="nc" id="L153">		jComboBoxStatus.setBounds(90, 183, 114, 27);</span>
+<span class="nc" id="L154">		getContentPane().add(jComboBoxStatus);</span>
+		
+<span class="nc" id="L156">		JButton btnNewButton = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.LoadPicture&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L157">		btnNewButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L159">				JFileChooser fileChooser = new JFileChooser();</span>
+<span class="nc" id="L160">				FileNameExtensionFilter filter = new FileNameExtensionFilter(&quot;JPG &amp; GIF&quot;, &quot;jpg&quot;, &quot;gif&quot;);</span>
+<span class="nc" id="L161">				fileChooser.setFileFilter(filter);</span>
+<span class="nc" id="L162">		        int result = fileChooser.showOpenDialog(null);  </span>
+
+<span class="nc" id="L164">		        fileChooser.setBounds(30, 148, 320, 80);</span>
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		        if (result == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L167">		            targetFile = fileChooser.getSelectedFile();</span>
+<span class="nc" id="L168">		            panel_1.removeAll();</span>
+<span class="nc" id="L169">		            panel_1.repaint();</span>
+
+		            try {
+<span class="nc" id="L172">		                targetImg = rescale(ImageIO.read(targetFile));</span>
+<span class="nc" id="L173">		                encodeFileToBase64Binary(targetFile);</span>
+<span class="nc" id="L174">		            } catch (IOException ex) {</span>
+		                //Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
+<span class="nc" id="L176">		            }</span>
+		            
+<span class="nc" id="L178">		            panel_1.setLayout(new BorderLayout(0, 0));</span>
+<span class="nc" id="L179">		            panel_1.add(new JLabel(new ImageIcon(targetImg))); </span>
+<span class="nc" id="L180">		            setVisible(true);</span>
+
+		            }
+<span class="nc" id="L183">			}</span>
+		});
+<span class="nc" id="L185">		btnNewButton.setBounds(186, 138, 162, 29);</span>
+<span class="nc" id="L186">		getContentPane().add(btnNewButton);</span>
+		
+<span class="nc" id="L188">		panel_1 = new JPanel();</span>
+<span class="nc" id="L189">		panel_1.setBounds(461, 209, 124, 86);</span>
+<span class="nc" id="L190">		getContentPane().add(panel_1);</span>
+		
+<span class="nc" id="L192">		btnNewButton_2.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+			
+				try {
+<span class="nc" id="L196">					BufferedImage img = ImageIO.read(targetFile);</span>
+					
+<span class="nc" id="L198">				    File outputfile = new File(basePath+targetFile.getName());</span>
+
+<span class="nc" id="L200">				   ImageIO.write(img, &quot;png&quot;, outputfile);  // ignore returned boolean</span>
+<span class="nc" id="L201">				   System.out.println(&quot;file stored &quot;+img);</span>
+<span class="nc" id="L202">				} catch(IOException ex) {</span>
+				 //System.out.println(&quot;Write error for &quot; + outputfile.getPath()  &quot;: &quot; + ex.getMessage());
+<span class="nc" id="L204">				  }</span>
+				
+<span class="nc" id="L206">			}</span>
+		});
+<span class="nc" id="L208">		btnNewButton_2.setBounds(137, 350, 117, 29);</span>
+		
+<span class="nc" id="L210">		getContentPane().add(btnNewButton_2);</span>
+		
+<span class="nc" id="L212">		jCalendar.setBounds(new Rectangle(360, 50, 225, 150));</span>
+<span class="nc" id="L213">		this.getContentPane().add(jCalendar, null);</span>
+		
+<span class="nc" id="L215">		JLabel jLabelPublicationDate = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.PublicationDate&quot;));</span>
+<span class="nc" id="L216">		jLabelPublicationDate.setBounds(new Rectangle(6, 24, 92, 20));</span>
+<span class="nc" id="L217">		jLabelPublicationDate.setBounds(360, 26, 197, 20);</span>
+<span class="nc" id="L218">		getContentPane().add(jLabelPublicationDate);</span>
+
+<span class="nc" id="L220">		this.jCalendar.addPropertyChangeListener(new PropertyChangeListener() {</span>
+			public void propertyChange(PropertyChangeEvent propertychangeevent) {
+//			
+<span class="nc bnc" id="L223" title="All 2 branches missed.">				if (propertychangeevent.getPropertyName().equals(&quot;locale&quot;)) {</span>
+<span class="nc" id="L224">					jCalendar.setLocale((Locale) propertychangeevent.getNewValue());</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">				} else if (propertychangeevent.getPropertyName().equals(&quot;calendar&quot;)) {</span>
+<span class="nc" id="L226">					calendarAnt = (Calendar) propertychangeevent.getOldValue();</span>
+<span class="nc" id="L227">					calendarAct = (Calendar) propertychangeevent.getNewValue();</span>
+					
+<span class="nc" id="L229">					int monthAnt = calendarAnt.get(Calendar.MONTH);</span>
+<span class="nc" id="L230">					int monthAct = calendarAct.get(Calendar.MONTH);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">					if (monthAct!=monthAnt) {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">						if (monthAct==monthAnt+2) { </span>
+							// Si en JCalendar está 30 de enero y se avanza al mes siguiente, devolverá 2 de marzo (se toma como equivalente a 30 de febrero)
+							// Con este código se dejará como 1 de febrero en el JCalendar
+<span class="nc" id="L235">							calendarAct.set(Calendar.MONTH, monthAnt+1);</span>
+<span class="nc" id="L236">							calendarAct.set(Calendar.DAY_OF_MONTH, 1);</span>
+						}
+						
+<span class="nc" id="L239">						jCalendar.setCalendar(calendarAct);						</span>
+	
+					}
+<span class="nc" id="L242">					jCalendar.setCalendar(calendarAct);</span>
+<span class="nc" id="L243">					int offset = jCalendar.getCalendar().get(Calendar.DAY_OF_WEEK);</span>
+					
+<span class="nc bnc" id="L245" title="All 2 branches missed.">						if (Locale.getDefault().equals(new Locale(&quot;es&quot;)))</span>
+<span class="nc" id="L246">							offset += 4;</span>
+						else
+<span class="nc" id="L248">							offset += 5;</span>
+<span class="nc" id="L249">				Component o = (Component) jCalendar.getDayChooser().getDayPanel().getComponent(jCalendar.getCalendar().get(Calendar.DAY_OF_MONTH) + offset);</span>
+<span class="nc" id="L250">				}}});</span>
+		
+<span class="nc" id="L252">	}	 </span>
+
+	public BufferedImage rescale(BufferedImage originalImage)
+    {
+<span class="nc" id="L256">        BufferedImage resizedImage = new BufferedImage(baseSize, baseSize, BufferedImage.TYPE_INT_RGB);</span>
+<span class="nc" id="L257">        Graphics2D g = resizedImage.createGraphics();</span>
+<span class="nc" id="L258">        g.drawImage(originalImage, 0, 0, baseSize, baseSize, null);</span>
+<span class="nc" id="L259">        g.dispose();</span>
+<span class="nc" id="L260">        return resizedImage;</span>
+    }
+	private String check_fields_Errors() {
+		
+		try {
+<span class="nc bnc" id="L265" title="All 6 branches missed.">			if ((fieldTitle.getText().length()==0) || (fieldDescription.getText().length()==0)  || (jTextFieldPrice.getText().length()==0))</span>
+<span class="nc" id="L266">				return ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.ErrorQuery&quot;);</span>
+			else {
+
+				// trigger an exception if the introduced string is not a number
+<span class="nc" id="L270">					float price = Float.parseFloat(jTextFieldPrice.getText());</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">					if (price &lt;= 0) </span>
+<span class="nc" id="L272">						return ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.PriceMustBeGreaterThan0&quot;);</span>
+					
+					else 
+<span class="nc" id="L275">						return null;</span>
+			}
+<span class="nc" id="L277">		} catch (java.lang.NumberFormatException e1) {</span>
+
+<span class="nc" id="L279">			return  ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.ErrorNumber&quot;);		</span>
+<span class="nc" id="L280">		}catch (Exception e1) {</span>
+<span class="nc" id="L281">			e1.printStackTrace();</span>
+<span class="nc" id="L282">			return null;</span>
+
+		}
+	}
+	
+	
+public  String encodeFileToBase64Binary(File file){
+        try {
+            @SuppressWarnings(&quot;resource&quot;)
+<span class="nc" id="L291">			FileInputStream fileInputStreamReader = new FileInputStream(file);</span>
+<span class="nc" id="L292">            byte[] bytes = new byte[(int)file.length()];</span>
+<span class="nc" id="L293">            fileInputStreamReader.read(bytes);</span>
+<span class="nc" id="L294">            encodedfile=new String(Base64.getEncoder().encode(bytes));</span>
+
+<span class="nc" id="L296">        } catch (FileNotFoundException e) {</span>
+            // TODO Auto-generated catch block
+<span class="nc" id="L298">            e.printStackTrace();</span>
+<span class="nc" id="L299">        } catch (IOException e) {</span>
+            // TODO Auto-generated catch block
+<span class="nc" id="L301">            e.printStackTrace();</span>
+<span class="nc" id="L302">        }</span>
+
+<span class="nc" id="L304">        return encodedfile;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

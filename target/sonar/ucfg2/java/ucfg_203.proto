@@ -1,0 +1,82 @@
+
+QbusinessLogic.BLFacadeImplementation#getSales(Ljava/lang/String;)Ljava/util/List;A
+7src\main\java\businessLogic\BLFacadeImplementation.java? ?("startingBlock*‰
+startingBlock? ?((Œ
+‰
+> >(
+%6"
+__annotate*3
+
+__unknown_file (
+javax.jws.WebMethod*6
+
+__unknown_file (
+
+descjava.lang.StringX
+V
+?# ?('
+descjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%6*
+1*¢
+1@ @(…
+‚
+@ @(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerzx
+@ @(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()…
+‚
+A A(
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerøõ
+A A(,
+%3java.util.List"BdataAccess.DataAccess#getSales(Ljava/lang/String;)Ljava/util/List;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*6
+
+__unknown_file (
+
+descjava.lang.String2getSales(Ljava/lang/String;)_
+]
+A A(-
+ridesjava.util.List"__id*2
+
+__unknown_file (
+
+%3java.util.List…
+‚
+B B(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+B B(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"%
+C C(
+
+ridesjava.util.List:$
+? ?('
+descjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

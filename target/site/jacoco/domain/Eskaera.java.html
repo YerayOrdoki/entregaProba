@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Eskaera.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Eskaera.java</span></div><h1>Eskaera.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlID;
+
+@Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Eskaera implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@XmlID
+	@Transient
+	private String xmlId;
+
+	private String title;
+	private String status;
+	private String description;
+<span class="nc" id="L44">	private boolean bought = false;</span>
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date creationDate;
+
+	@ManyToOne
+	private Seller seller;
+	
+<span class="nc" id="L52">	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)</span>
+	private ArrayList&lt;EskaeraOferta&gt; ofertak = new ArrayList&lt;&gt;();
+	
+	@PostLoad
+	@PostPersist
+	private void actualizarXmlId() {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		if (id != null) {</span>
+<span class="nc" id="L59">			this.xmlId = &quot;eskaera_&quot; + id;</span>
+		}
+<span class="nc" id="L61">	}</span>
+
+	public String getXmlId() {
+<span class="nc bnc" id="L64" title="All 4 branches missed.">		if (xmlId == null &amp;&amp; id != null) {</span>
+<span class="nc" id="L65">			xmlId = &quot;eskaera_&quot; + id;</span>
+		}
+<span class="nc" id="L67">		return xmlId;</span>
+	}
+	
+<span class="nc" id="L70">	public Eskaera() {</span>
+<span class="nc" id="L71">	}</span>
+
+<span class="nc" id="L73">	public Eskaera(String title, String status, String description, Seller s) {</span>
+<span class="nc" id="L74">		this.title = title;</span>
+<span class="nc" id="L75">		this.status = status;</span>
+<span class="nc" id="L76">		this.description = description;</span>
+<span class="nc" id="L77">		this.creationDate = new Date();</span>
+<span class="nc" id="L78">		this.seller = s;</span>
+<span class="nc" id="L79">	}</span>
+
+	public boolean isBought() {
+<span class="nc" id="L82">		return bought;</span>
+	}
+
+	public void setBought(boolean bought) {
+<span class="nc" id="L86">		this.bought = bought;</span>
+<span class="nc" id="L87">	}</span>
+
+	public Integer getId() {
+<span class="nc" id="L90">		return id;</span>
+	}
+
+	public String getTitle() {
+<span class="nc" id="L94">		return title;</span>
+	}
+
+	public String getStatus() {
+<span class="nc" id="L98">		return status;</span>
+	}
+
+	public String getDescription() {
+<span class="nc" id="L102">		return description;</span>
+	}
+
+	public Date getCreationDate() {
+<span class="nc" id="L106">		return creationDate;</span>
+	}
+	
+	public Seller getSeller() {
+<span class="nc" id="L110">		return this.seller;</span>
+	}
+	
+	public List&lt;EskaeraOferta&gt; getOfertak(){
+<span class="nc" id="L114">		return  ofertak;</span>
+	}
+	
+	public EskaeraOferta addOferta(float amount, String message, Seller seller) {
+<span class="nc" id="L118">		EskaeraOferta oferta = new EskaeraOferta(amount, message, seller, this);</span>
+<span class="nc" id="L119">		ofertak.add(oferta);</span>
+<span class="nc" id="L120">		return oferta;</span>
+
+		
+	}
+	@Override
+	public String toString() {
+<span class="nc" id="L126">		return title + &quot; - &quot; + status + &quot; - &quot; + creationDate;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

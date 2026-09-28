@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuerySalesGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">QuerySalesGUI.java</span></div><h1>QuerySalesGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import businessLogic.BLFacade;
+import domain.Seller;
+import configuration.UtilDate;
+import domain.Sale;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+
+
+public class QuerySalesGUI extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
+<span class="nc" id="L21">	private final JLabel jLabelProducts = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.Products&quot;)); </span>
+
+<span class="nc" id="L23">	private JButton jButtonSearch = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.Search&quot;)); </span>
+<span class="nc" id="L24">	private JButton jButtonClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Close&quot;));</span>
+
+<span class="nc" id="L26">	private JScrollPane scrollPanelProducts = new JScrollPane();</span>
+<span class="nc" id="L27">	private JTable tableProducts= new JTable();</span>
+
+	private DefaultTableModel tableModelProducts;
+
+	private JFrame thisFrame; 
+
+<span class="nc" id="L33">	private String[] columnNamesProducts = new String[] {</span>
+<span class="nc" id="L34">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Title&quot;), </span>
+<span class="nc" id="L35">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.Price&quot;),</span>
+<span class="nc" id="L36">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateSaleGUI.PublicationDate&quot;),</span>
+
+	};
+	private JTextField jTextFieldSearch;
+	
+
+<span class="nc" id="L42">	public QuerySalesGUI(String email, Seller curr) {</span>
+<span class="nc" id="L43">		tableProducts.setEnabled(false);</span>
+<span class="nc" id="L44">		thisFrame=this;</span>
+<span class="nc" id="L45">		this.getContentPane().setLayout(null);</span>
+<span class="nc" id="L46">		this.setSize(new Dimension(700, 500));</span>
+<span class="nc" id="L47">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.FindProducts&quot;));</span>
+<span class="nc" id="L48">		jLabelProducts.setBounds(52, 108, 427, 16);</span>
+<span class="nc" id="L49">		this.getContentPane().add(jLabelProducts);</span>
+
+<span class="nc" id="L51">		jButtonClose.setBounds(new Rectangle(220, 379, 130, 30));</span>
+
+<span class="nc" id="L53">		jButtonClose.addActionListener(new ActionListener()</span>
+<span class="nc" id="L54">		{</span>
+			public void actionPerformed(ActionEvent e)
+			{
+<span class="nc" id="L57">				thisFrame.setVisible(false);</span>
+
+<span class="nc" id="L59">			}</span>
+		});		
+		
+<span class="nc" id="L62">		this.getContentPane().add(jButtonClose, null);</span>
+
+<span class="nc" id="L64">		scrollPanelProducts.setBounds(new Rectangle(52, 137, 459, 150));</span>
+
+<span class="nc" id="L66">		scrollPanelProducts.setViewportView(tableProducts);</span>
+<span class="nc" id="L67">		tableModelProducts = new DefaultTableModel(null, columnNamesProducts);</span>
+
+<span class="nc" id="L69">		tableProducts.setModel(tableModelProducts);</span>
+
+<span class="nc" id="L71">		tableModelProducts.setDataVector(null, columnNamesProducts);</span>
+<span class="nc" id="L72">		tableModelProducts.setColumnCount(4); // another column added to allocate ride objects</span>
+
+<span class="nc" id="L74">		tableProducts.getColumnModel().getColumn(0).setPreferredWidth(200);</span>
+<span class="nc" id="L75">		tableProducts.getColumnModel().getColumn(1).setPreferredWidth(10);</span>
+<span class="nc" id="L76">		tableProducts.getColumnModel().getColumn(1).setPreferredWidth(70);</span>
+
+
+<span class="nc" id="L79">		tableProducts.getColumnModel().removeColumn(tableProducts.getColumnModel().getColumn(3)); // not shown in JTable</span>
+
+<span class="nc" id="L81">		this.getContentPane().add(scrollPanelProducts, null);</span>
+		
+<span class="nc" id="L83">		jTextFieldSearch = new JTextField();</span>
+<span class="nc" id="L84">		jTextFieldSearch.setBounds(52, 56, 357, 26);</span>
+<span class="nc" id="L85">		getContentPane().add(jTextFieldSearch);</span>
+<span class="nc" id="L86">		jTextFieldSearch.setColumns(10);</span>
+		
+<span class="nc" id="L88">		 jButtonSearch.addActionListener(new ActionListener() {</span>
+		 	public void actionPerformed(ActionEvent e) {
+		 		try {
+<span class="nc" id="L91">					tableModelProducts.setDataVector(null, columnNamesProducts);</span>
+<span class="nc" id="L92">					tableModelProducts.setColumnCount(4); // another column added to allocate product object</span>
+
+<span class="nc" id="L94">					BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L95">					Date today = UtilDate.trim(new Date());</span>
+
+<span class="nc" id="L97">					List&lt;domain.Sale&gt; sales=facade.getPublishedSales(jTextFieldSearch.getText(),today);</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">					if (sales.isEmpty() ) jLabelProducts.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.NoProducts&quot;));</span>
+<span class="nc" id="L100">					else jLabelProducts.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.Products&quot;));</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">					for (domain.Sale sale:sales){</span>
+<span class="nc" id="L102">						Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+<span class="nc" id="L103">						row.add(sale.getTitle());</span>
+<span class="nc" id="L104">						row.add(sale.getPrice());</span>
+<span class="nc" id="L105">						row.add(new SimpleDateFormat(&quot;dd-MM-yyyy&quot;).format(sale.getPublicationDate()));</span>
+<span class="nc" id="L106">						row.add(sale); // product object added in order to obtain it with tableModelProducts.getValueAt(i,2)</span>
+<span class="nc" id="L107">						tableModelProducts.addRow(row);		</span>
+<span class="nc" id="L108">					}</span>
+<span class="nc" id="L109">				} catch (Exception e1) {</span>
+
+<span class="nc" id="L111">					e1.printStackTrace();</span>
+<span class="nc" id="L112">				}</span>
+<span class="nc" id="L113">				tableProducts.getColumnModel().getColumn(0).setPreferredWidth(200);</span>
+<span class="nc" id="L114">				tableProducts.getColumnModel().getColumn(1).setPreferredWidth(10);</span>
+<span class="nc" id="L115">				tableProducts.getColumnModel().getColumn(1).setPreferredWidth(70);</span>
+
+<span class="nc" id="L117">				tableProducts.getColumnModel().removeColumn(tableProducts.getColumnModel().getColumn(3)); // not shown in JTable</span>
+		 		
+<span class="nc" id="L119">		 	}</span>
+		 });
+<span class="nc" id="L121">		jButtonSearch.setBounds(427, 56, 117, 29);</span>
+<span class="nc" id="L122">		getContentPane().add(jButtonSearch);</span>
+		
+	    
+<span class="nc" id="L125">		tableProducts.addMouseListener(new MouseAdapter() {</span>
+		        @Override
+		        public void mousePressed(MouseEvent mouseEvent) {
+		            
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		            if(mouseEvent.getClickCount() == 2)</span>
+		            {
+<span class="nc" id="L131">				        JTable table =(JTable) mouseEvent.getSource();</span>
+<span class="nc" id="L132">		            	Point point = mouseEvent.getPoint();</span>
+<span class="nc" id="L133">				        int row = table.rowAtPoint(point);</span>
+<span class="nc" id="L134">		            	Sale s=(Sale) tableModelProducts.getValueAt(row, 3);</span>
+<span class="nc" id="L135">			            new ShowSaleGUI(s, curr, QuerySalesGUI.this);</span>
+		            }
+<span class="nc" id="L137">		        }</span>
+		 });
+<span class="nc" id="L139">	}</span>
+
+	public void refresh() {
+ 		try {
+<span class="nc" id="L143">			tableModelProducts.setDataVector(null, columnNamesProducts);</span>
+<span class="nc" id="L144">			tableModelProducts.setColumnCount(4); // another column added to allocate product object</span>
+
+<span class="nc" id="L146">			BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L147">			Date today = UtilDate.trim(new Date());</span>
+
+<span class="nc" id="L149">			List&lt;domain.Sale&gt; sales=facade.getPublishedSales(jTextFieldSearch.getText(),today);</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			if (sales.isEmpty() ) jLabelProducts.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.NoProducts&quot;));</span>
+<span class="nc" id="L152">			else jLabelProducts.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QuerySalesGUI.Products&quot;));</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			for (domain.Sale sale:sales){</span>
+<span class="nc" id="L154">				Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+<span class="nc" id="L155">				row.add(sale.getTitle());</span>
+<span class="nc" id="L156">				row.add(sale.getPrice());</span>
+<span class="nc" id="L157">				row.add(new SimpleDateFormat(&quot;dd-MM-yyyy&quot;).format(sale.getPublicationDate()));</span>
+<span class="nc" id="L158">				row.add(sale); // product object added in order to obtain it with tableModelProducts.getValueAt(i,2)</span>
+<span class="nc" id="L159">				tableModelProducts.addRow(row);		</span>
+<span class="nc" id="L160">			}</span>
+<span class="nc" id="L161">		} catch (Exception e1) {</span>
+
+<span class="nc" id="L163">			e1.printStackTrace();</span>
+<span class="nc" id="L164">		}</span>
+<span class="nc" id="L165">		tableProducts.getColumnModel().getColumn(0).setPreferredWidth(200);</span>
+<span class="nc" id="L166">		tableProducts.getColumnModel().getColumn(1).setPreferredWidth(10);</span>
+<span class="nc" id="L167">		tableProducts.getColumnModel().getColumn(1).setPreferredWidth(70);</span>
+
+<span class="nc" id="L169">		tableProducts.getColumnModel().removeColumn(tableProducts.getColumnModel().getColumn(3)); // not shown in JTable</span>
+ 		
+<span class="nc" id="L171"> 	}</span>
+	public QuerySalesGUI getThis() {
+<span class="nc" id="L173">	    return this;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

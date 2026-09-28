@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Emaitza.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">dataAccess</a> &gt; <span class="el_source">Emaitza.java</span></div><h1>Emaitza.java</h1><pre class="source lang-java linenums">package dataAccess;
+
+import domain.Admin;
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+import domain.Seller;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Emaitza implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private boolean logeatu;
+    private String email;
+    private Seller seller;
+    private Admin admin;
+
+<span class="nc" id="L18">    public Emaitza() {</span>
+    	
+<span class="nc" id="L20">    }</span>
+    
+<span class="fc" id="L22">    public Emaitza(boolean logeatu, String email, Seller s, Admin a) {</span>
+<span class="fc" id="L23">		this.logeatu = logeatu;</span>
+<span class="fc" id="L24">		this.email=email;</span>
+<span class="fc" id="L25">		this.seller = s;</span>
+<span class="fc" id="L26">		this.admin = a;</span>
+<span class="fc" id="L27">	}</span>
+	public boolean getLog() {
+<span class="fc" id="L29">		return this.logeatu;</span>
+	}
+	public String getEmail() {
+<span class="fc" id="L32">		return email;</span>
+	}
+	public Seller getSeller() {
+<span class="fc" id="L35">		return seller;</span>
+	}
+	public Admin getAdmin(){
+<span class="nc" id="L38">		return admin;</span>
+	}
+    public void setLog(boolean logeatu) {
+<span class="nc" id="L41">        this.logeatu = logeatu;</span>
+<span class="nc" id="L42">    }</span>
+
+
+    public void setEmail(String email) {
+<span class="nc" id="L46">        this.email = email;</span>
+<span class="nc" id="L47">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

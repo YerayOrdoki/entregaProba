@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigXML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">configuration</a> &gt; <span class="el_source">ConfigXML.java</span></div><h1>ConfigXML.java</h1><pre class="source lang-java linenums">package configuration;
+
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+/**
+ * It provides the configuration data from the &quot;resources/config.xml&quot; XML file
+ */
+public class ConfigXML {
+	
+<span class="fc" id="L18">	private String configFile = &quot;src/main/resources/config.xml&quot;;</span>
+		
+	private String businessLogicNode;
+
+	private String businessLogicPort;
+
+	private String businessLogicName;
+	
+	private static String dbFilename;
+
+	//Two possible values: true (if the database must be initialized ) or false (in other case)
+	private boolean isDatabaseInitialized;
+
+	//Two possible values: true (no instance of RemoteServer needs to be launched) or false (RemoteServer needs to be run first)
+	private boolean businessLogicLocal;
+
+	//Two possible values: true (if the database is in same node as business logic ) or false (in other case)
+	private boolean databaseLocal;
+	
+	private String databaseNode;
+	
+	private int databasePort;
+	
+
+	
+	private String user;
+	
+	private String password;
+	
+	private String locale;
+
+	public String getLocale() {
+<span class="nc" id="L50">		return locale;</span>
+	}
+	
+	public int getDatabasePort() {
+<span class="nc" id="L54">		return databasePort;</span>
+	}
+
+	public String getUser() {
+<span class="nc" id="L58">		return user;</span>
+	}
+
+	public String getPassword() {
+<span class="nc" id="L62">		return password;</span>
+	}
+	
+	public boolean isDatabaseLocal() {
+<span class="fc" id="L66">		return databaseLocal;</span>
+	}
+
+	public boolean isBusinessLogicLocal() {
+<span class="nc" id="L70">		return businessLogicLocal;</span>
+	}
+<span class="fc" id="L72">	private static ConfigXML theInstance = new ConfigXML();</span>
+
+<span class="fc" id="L74">	private ConfigXML(){</span>
+		
+		  try {
+<span class="fc" id="L77">			  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L78">			  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="fc" id="L79">			  Document doc = dBuilder.parse(new File(configFile));</span>
+<span class="fc" id="L80">			  doc.getDocumentElement().normalize();</span>
+
+<span class="fc" id="L82">			  NodeList list = doc.getElementsByTagName(&quot;config&quot;);</span>
+<span class="fc" id="L83">			  Element config = (Element) list.item(0); // list.item(0) is a Node that is an Element</span>
+
+			  
+				//Two possible values: true (no instance of RemoteServer needs to be launched) or false (RemoteServer needs to be run first)
+<span class="fc" id="L87">			  String value= ((Element)config.getElementsByTagName(&quot;businessLogic&quot;).item(0)).getAttribute(&quot;local&quot;);</span>
+<span class="fc" id="L88">			  businessLogicLocal=value.equals(&quot;true&quot;);</span>
+
+<span class="fc" id="L90">			  businessLogicNode = getTagValue(&quot;businessLogicNode&quot;, config);</span>
+
+<span class="fc" id="L92">			  businessLogicPort = getTagValue(&quot;businessLogicPort&quot;, config);</span>
+
+<span class="fc" id="L94">			  businessLogicName = getTagValue(&quot;businessLogicName&quot;, config);</span>
+			  
+<span class="fc" id="L96">			  locale = getTagValue(&quot;locale&quot;, config);</span>
+
+			  
+			  
+				
+
+<span class="fc" id="L102">			  dbFilename = getTagValue(&quot;dbFilename&quot;, config);</span>
+
+				//Two possible values: true (no instance of RemoteServer needs to be launched) or false (RemoteServer needs to be run first)
+<span class="fc" id="L105">			  value= ((Element)config.getElementsByTagName(&quot;database&quot;).item(0)).getAttribute(&quot;local&quot;);</span>
+<span class="fc" id="L106">			  databaseLocal=value.equals(&quot;true&quot;);</span>
+			  
+			  
+				//Two possible values: true (if the database must be initialized ) or false (in other case)
+<span class="fc" id="L110">			  String dbOpenValue= ((Element)config.getElementsByTagName(&quot;database&quot;).item(0)).getAttribute(&quot;initialize&quot;);</span>
+<span class="fc" id="L111">			  isDatabaseInitialized= dbOpenValue.equals(&quot;true&quot;);;</span>
+
+	
+<span class="fc" id="L114">			  databaseNode = getTagValue(&quot;databaseNode&quot;, config);</span>
+			  
+<span class="fc" id="L116">			  databasePort=Integer.parseInt(getTagValue(&quot;databasePort&quot;, config));</span>
+				
+<span class="fc" id="L118">			  user=getTagValue(&quot;user&quot;, config);</span>
+				
+<span class="fc" id="L120">			  password=getTagValue(&quot;password&quot;, config);</span>
+
+<span class="fc" id="L122">			  System.out.print(&quot;Read from config.xml: &quot;);</span>
+<span class="fc" id="L123">			  System.out.print(&quot;\t businessLogicLocal=&quot;+businessLogicLocal);</span>
+<span class="fc" id="L124">			  System.out.print(&quot;\t databaseLocal=&quot;+databaseLocal);</span>
+<span class="fc" id="L125">			  System.out.println(&quot;\t dataBaseInitialized=&quot;+isDatabaseInitialized); </span>
+					  
+<span class="nc" id="L127">		  } catch (Exception e) {</span>
+<span class="nc" id="L128">			System.out.println(&quot;Error in ConfigXML.java: problems with &quot;+ configFile);</span>
+<span class="nc" id="L129">		    e.printStackTrace();</span>
+<span class="fc" id="L130">		  }		</span>
+		
+<span class="fc" id="L132">	}</span>
+
+	private static String getTagValue(String sTag, Element eElement)
+	 {
+<span class="fc" id="L136">		  NodeList nlList= eElement.getElementsByTagName(sTag).item(0).getChildNodes();</span>
+<span class="fc" id="L137">		  Node nValue = (Node) nlList.item(0);</span>
+
+<span class="fc" id="L139">		  return nValue.getNodeValue();</span>
+
+	 }
+	
+	public static ConfigXML getInstance() {
+<span class="fc" id="L144">		return theInstance;</span>
+	}
+
+	public String getBusinessLogicNode() {
+<span class="nc" id="L148">		return businessLogicNode;</span>
+	}
+
+	public String getBusinessLogicPort() {
+<span class="nc" id="L152">		return businessLogicPort;</span>
+	}
+
+	public String getBusinessLogicName() {
+<span class="nc" id="L156">		return businessLogicName;</span>
+	}
+	
+	public String getDbFilename(){
+<span class="fc" id="L160">		return dbFilename;</span>
+	}
+
+	public boolean isDatabaseInitialized(){
+<span class="fc" id="L164">		return isDatabaseInitialized;</span>
+	}
+
+	public String getDatabaseNode() {
+<span class="nc" id="L168">		return databaseNode;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

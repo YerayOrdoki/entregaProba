@@ -1,0 +1,204 @@
+
+1.0yerayordoki_si2p1JavaFrontend"1790438441288*java2.B¯
+-
+(src/main/java/domain/IntegerAdapter.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+domain7
+
+domain.IntegerAdapter9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(5:1)-(16:2)14
+
+simple-name15
+
+IntegerAdapter16
+3
+-javax.xml.bind.annotation.adapters.XmlAdapter18
+
+unknown19
+
+extends20
+
+
+uses21
+
+java.lang.String23
+
+java.lang.Integer25
+L
+Fdomain.IntegerAdapter#unmarshal(Ljava/lang/String;)Ljava/lang/Integer;27
+
+method28
+
+(7:5)-(9:6)29
+
+	unmarshal30
+
+returns31
+
+	has param32
+
+is type33
+
+
+references34
+5
+/java.lang.Integer#parseInt(Ljava/lang/String;)I36
+
+calls37
+J
+Ddomain.IntegerAdapter#marshal(Ljava/lang/Integer;)Ljava/lang/String;39
+
+(11:5)-(15:6)40
+
+marshal41
+4
+.java.lang.Integer#toString()Ljava/lang/String;43J
+
+1
+12
+
+
+3
+4 Z
+
+5
+5768jË
+
+17
+171819
+M
+38G
+383928 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+40
+
+
+15
+41
+
+42
+424328
+
+35
+353628
+M
+26G
+262728 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+29
+
+
+15
+30
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+
+22
+222319
+
+24
+242519r˜
+
+81720*
+1% (@
+
+81721*
+1% (/
+
+82221*
+10 (6
+
+82421*
+18 (?
+
+262431*
+1 (
+
+262232*
+1 ($
+
+262421*
+1 (
+
+262233*
+1% (&
+
+262221*
+1 ($
+
+262434*
+1 ( 
+
+263537*
+1 ( 
+
+262421*
+1 (
+
+382231*
+1 (
+
+382432*
+1 ("
+
+382221*
+1 (
+
+382433*
+1# ()
+
+382421*
+1 ("
+
+382231*
+1 (
+
+382434*
+1 (
+
+384237*
+1 (

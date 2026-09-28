@@ -1,0 +1,106 @@
+
+gbusinessLogic.BLFacadeImplementation#isLogged(Ljava/lang/String;Ljava/lang/String;)LdataAccess/Emaitza;A
+7src\main\java\businessLogic\BLFacadeImplementation.javat t(&"startingBlock*ð
+startingBlockt& t(?‹
+ˆ
+t t(
+%6"
+__annotate*3
+
+__unknown_file (
+javax.jws.WebMethod*5
+
+__unknown_file (
+
+logjava.lang.StringW
+U
+t. t(1
+logjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%6Œ
+‰
+t t(
+%7"
+__annotate*3
+
+__unknown_file (
+javax.jws.WebMethod*6
+
+__unknown_file (
+
+passjava.lang.StringX
+V
+t: t(>
+passjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%7*
+1*‰	
+1u u(…
+‚
+u u(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerzx
+u u(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()…
+‚
+v v(
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerÛØ
+v v(.
+%3dataAccess.Emaitza"XdataAccess.DataAccess#isLogged(Ljava/lang/String;Ljava/lang/String;)LdataAccess/Emaitza;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*5
+
+__unknown_file (
+
+logjava.lang.String*6
+
+__unknown_file (
+
+passjava.lang.String2.isLogged(Ljava/lang/String;Ljava/lang/String;)c
+a
+v v(/
+bdataAccess.Emaitza"__id*6
+
+__unknown_file (
+
+%3dataAccess.Emaitza…
+‚
+w w(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+w w(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"%
+x x(
+
+bdataAccess.Emaitza:#
+t' t(2
+logjava.lang.String:$
+t3 t(>
+passjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

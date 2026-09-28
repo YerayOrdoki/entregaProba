@@ -1,0 +1,25 @@
+
+"gui.RegisterGUI#%field_initializer,
+"src\main\java\gui\RegisterGUI.java ("1*Ñ
+1
+__unknown_file (:8
+  (&
+%0javax.swing.JLabel"javax.swing.JLabelh
+f
+ ((
+%1"javax.swing.JLabel#<init>()V*6
+
+__unknown_file (
+
+%0javax.swing.JLabell
+j
+ () 
+gui.RegisterGUI"
+	jLabelMsg"__id*6
+
+__unknown_file (
+
+%0javax.swing.JLabel"
+ ž(
+implicit returnB
+gui.RegisterGUI

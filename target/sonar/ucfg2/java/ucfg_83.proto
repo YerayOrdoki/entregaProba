@@ -1,0 +1,94 @@
+
+ domain.Seller#%field_initializer*
+ src\main\java\domain\Seller.java ("1*¬
+1
+__unknown_file (<:
+#  #(/
+%0java.util.ArrayList"java.util.ArrayListj
+h
+# #(1
+%1"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%0java.util.ArrayListg
+e
+! #(2
+domain.Seller"
+sales"__id*7
+
+__unknown_file (
+
+%0java.util.ArrayList<:
+&" &(1
+%2java.util.ArrayList"java.util.ArrayListj
+h
+& &(3
+%3"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%2java.util.ArrayListi
+g
+$ &(4
+domain.Seller"	
+boughts"__id*7
+
+__unknown_file (
+
+%2java.util.ArrayList<:
+)! )(0
+%4java.util.ArrayList"java.util.ArrayListj
+h
+) )(2
+%5"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%4java.util.ArrayListh
+f
+' )(3
+domain.Seller"
+basket"__id*7
+
+__unknown_file (
+
+%4java.util.ArrayList<:
+,& ,(8
+%6java.util.ArrayList"java.util.ArrayListj
+h
+," ,(:
+%7"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%6java.util.ArrayListj
+h
+* ,(;
+domain.Seller"
+
+eskaerak"__id*7
+
+__unknown_file (
+
+%6java.util.ArrayList<:
+/, /(=
+%8java.util.ArrayList"java.util.ArrayListj
+h
+/( /(?
+%9"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%8java.util.ArrayListq
+o
+- /(@$
+domain.Seller"
+reviewsReceived"__id*7
+
+__unknown_file (
+
+%8java.util.ArrayList"
+ È(
+implicit returnB
+domain.Seller

@@ -1,0 +1,7 @@
+organization=yerayordoki
+projectKey=yerayordoki_si2p1
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.108320
+dashboardUrl=https://sonarcloud.io/dashboard?id=yerayordoki_si2p1
+ceTaskId=AaDecqA8kiisMh1txR63
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AaDecqA8kiisMh1txR63

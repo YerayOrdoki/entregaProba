@@ -1,0 +1,49 @@
+
+#gui.ComplaintGUI#%field_initializer-
+#src\main\java\gui\ComplaintGUI.java
+ 
+("1*¯
+1
+__unknown_file (@>
+% (.
+%0javax.swing.JTextArea"javax.swing.JTextArean
+l
+! (0
+%1"javax.swing.JTextArea#<init>()V*9
+
+__unknown_file (
+
+%0javax.swing.JTextAreao
+m
+ (1 
+gui.ComplaintGUI"
+
+textArea"__id*9
+
+__unknown_file (
+
+%0javax.swing.JTextArea<:
+" ()
+%2javax.swing.JButton"javax.swing.JButton¡
+ž
+ (o
+%3"/javax.swing.JButton#<init>(Ljava/lang/String;)V*7
+
+__unknown_file (
+
+%2javax.swing.JButton*"
+
+__unknown_file (
+""l
+j
+ (p
+gui.ComplaintGUI"	
+btnSend"__id*7
+
+__unknown_file (
+
+%2javax.swing.JButton"
+
+ $(
+implicit returnB
+gui.ComplaintGUI

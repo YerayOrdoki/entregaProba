@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataAccess.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">dataAccess</a> &gt; <span class="el_source">DataAccess.java</span></div><h1>DataAccess.java</h1><pre class="source lang-java linenums">package dataAccess;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+import javax.jws.WebMethod;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
+import configuration.ConfigXML;
+import configuration.UtilDate;
+import domain.Seller;
+import domain.Sale;
+import exceptions.FileNotUploadedException;
+import exceptions.MustBeLaterThanTodayException;
+import exceptions.SaleAlreadyExistException;
+import gui.MainGUIErregistratua;
+import domain.Admin;
+import domain.Complaint;
+import domain.Eskaera;
+import domain.EskaeraOferta;
+import domain.Review;
+
+/**
+ * It implements the data access to the objectDb database
+ */
+public class DataAccess  {
+	private  EntityManager  db;
+	private  EntityManagerFactory emf;
+    private static final int baseSize = 160;
+
+	private static final String basePath=&quot;src/main/resources/images/&quot;;
+
+
+
+<span class="fc" id="L47">	ConfigXML c=ConfigXML.getInstance();</span>
+
+<span class="fc" id="L49">     public DataAccess()  {</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if (c.isDatabaseInitialized()) {</span>
+<span class="nc" id="L51">			String fileName=c.getDbFilename();</span>
+
+<span class="nc" id="L53">			File fileToDelete= new File(fileName);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">			if(fileToDelete.delete()){</span>
+<span class="nc" id="L55">				File fileToDeleteTemp= new File(fileName+&quot;$&quot;);</span>
+<span class="nc" id="L56">				fileToDeleteTemp.delete();</span>
+<span class="nc" id="L57">				System.out.println(&quot;File deleted&quot;);</span>
+<span class="nc" id="L58">			 } else {</span>
+<span class="nc" id="L59">				 System.out.println(&quot;Operation failed&quot;);</span>
+				}
+		}
+<span class="fc" id="L62">		open();</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">		if  (c.isDatabaseInitialized()) </span>
+<span class="nc" id="L64">			initializeDB();</span>
+<span class="fc" id="L65">		System.out.println(&quot;DataAccess created =&gt; isDatabaseLocal: &quot;+c.isDatabaseLocal()+&quot; isDatabaseInitialized: &quot;+c.isDatabaseInitialized());</span>
+
+<span class="fc" id="L67">		close();</span>
+
+<span class="fc" id="L69">	}</span>
+     
+<span class="fc" id="L71">    public DataAccess(EntityManager db) {</span>
+<span class="fc" id="L72">    	this.db=db;</span>
+<span class="fc" id="L73">    }</span>
+
+	
+	
+	/**
+	 * This method  initializes the database with some products and sellers.
+	 * This method is invoked by the business logic (constructor of BLFacadeImplementation) when the option &quot;initialize&quot; is declared in the tag dataBaseOpenMode of resources/config.xml file
+	 */	
+	public void initializeDB(){
+		
+<span class="nc" id="L83">		db.getTransaction().begin();</span>
+
+		try { 
+	       
+		    //Create sellers 
+<span class="nc" id="L88">			Seller seller1=new Seller(&quot;seller1@gmail.com&quot;,&quot;Aitor Fernandez&quot;, &quot;aurrera&quot;);</span>
+<span class="nc" id="L89">			Seller seller2=new Seller(&quot;seller22@gmail.com&quot;,&quot;Ane Gaztañaga&quot;, &quot;aurrera&quot;);</span>
+<span class="nc" id="L90">			Seller seller3=new Seller(&quot;seller3@gmail.com&quot;,&quot;Test Seller&quot;, &quot;aurrera&quot;);</span>
+
+			
+			//Create products
+<span class="nc" id="L94">			Date today = UtilDate.trim(new Date());</span>
+		
+			
+<span class="nc" id="L97">			seller1.addSale(&quot;futbol baloia&quot;, &quot;oso polita, gutxi erabilita&quot;, 0, 2,  today, null);</span>
+<span class="nc" id="L98">			seller1.addSale(&quot;salomon mendiko botak&quot;, &quot;44 zenbakia, 3 ateraldi&quot;,20,  2,  today, null);</span>
+<span class="nc" id="L99">			seller1.addSale(&quot;samsung 42\&quot; telebista&quot;, &quot;berria, erabili gabe&quot;, 175, 1,  today, null);</span>
+
+
+<span class="nc" id="L102">			seller2.addSale(&quot;imac 27&quot;, &quot;7 urte, dena ondo dabil&quot;, 1, 200,today, null);</span>
+<span class="nc" id="L103">			seller2.addSale(&quot;iphone 17&quot;, &quot;oso gutxi erabilita&quot;, 2, 400, today, null);</span>
+<span class="nc" id="L104">			seller2.addSale(&quot;orbea mendiko bizikleta&quot;, &quot;29\&quot; 10 urte, mantenua behar du&quot;, 3,225, today, null);</span>
+<span class="nc" id="L105">			seller2.addSale(&quot;polar kilor erlojua&quot;, &quot;Vantage M, ondo dago&quot;, 3, 30, today, null);</span>
+
+<span class="nc" id="L107">			seller3.addSale(&quot;sukaldeko mahaia&quot;, &quot;1.8*0.8, 4 aulkiekin. Prezio finkoa&quot;, 3,45, today, null);</span>
+
+			
+<span class="nc" id="L110">			db.persist(seller1);</span>
+<span class="nc" id="L111">			db.persist(seller2);</span>
+<span class="nc" id="L112">			db.persist(seller3);</span>
+
+	
+<span class="nc" id="L115">			db.getTransaction().commit();</span>
+<span class="nc" id="L116">			System.out.println(&quot;Db initialized&quot;);</span>
+		}
+<span class="nc" id="L118">		catch (Exception e){</span>
+<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="nc" id="L120">		}</span>
+<span class="nc" id="L121">	}</span>
+	
+	
+	/**
+	 * This method creates/adds a product to a seller
+	 * 
+	 * @param title of the product
+	 * @param description of the product
+	 * @param status 
+	 * @param selling price
+	 * @param category of a product
+	 * @param publicationDate
+	 * @return Product
+ 	 * @throws SaleAlreadyExistException if the same product already exists for the seller
+	 */
+	public Sale createSale(String title, String description, int status, float price,  Date pubDate, String sellerEmail, File file) throws  FileNotUploadedException, MustBeLaterThanTodayException, SaleAlreadyExistException {
+		
+
+<span class="nc" id="L139">		System.out.println(&quot;&gt;&gt; DataAccess: createProduct=&gt; title= &quot;+title+&quot; seller=&quot;+sellerEmail);</span>
+		try {
+		
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			if(pubDate.before(UtilDate.trim(new Date()))) {</span>
+<span class="nc" id="L144">				throw new MustBeLaterThanTodayException(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;DataAccess.ErrorSaleMustBeLaterThanToday&quot;));</span>
+			}
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (file==null)</span>
+<span class="nc" id="L147">				throw new FileNotUploadedException(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;DataAccess.ErrorFileNotUploadedException&quot;));</span>
+
+<span class="nc" id="L149">			db.getTransaction().begin();</span>
+			
+<span class="nc" id="L151">			Seller seller = db.find(Seller.class, sellerEmail);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (seller.doesSaleExist(title)) {</span>
+<span class="nc" id="L153">				db.getTransaction().commit();</span>
+<span class="nc" id="L154">				throw new SaleAlreadyExistException(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;DataAccess.SaleAlreadyExist&quot;));</span>
+			}
+
+<span class="nc" id="L157">			Sale sale = seller.addSale(title, description, status, price, pubDate, file);</span>
+			
+<span class="nc" id="L159">			db.persist(sale);</span>
+<span class="nc" id="L160">			db.merge(seller); </span>
+<span class="nc" id="L161">			db.getTransaction().commit();</span>
+<span class="nc" id="L162">			 System.out.println(&quot;sale stored &quot;+sale+ &quot; &quot;+seller);</span>
+
+			
+
+<span class="nc" id="L166">			   System.out.println(&quot;hasta aqui&quot;);</span>
+
+<span class="nc" id="L168">			return sale;</span>
+<span class="nc" id="L169">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L170">			   e.printStackTrace();</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L172">			db.getTransaction().commit();</span>
+<span class="nc" id="L173">			return null;</span>
+		}
+		
+		
+	}
+	
+	/**
+	 * This method retrieves all the products that contain a desc text in a title
+	 * 
+	 * @param desc the text to search
+	 * @return collection of products that contain desc in a title
+	 */
+	public List&lt;Sale&gt; getSales(String desc) {
+<span class="nc" id="L186">		System.out.println(&quot;&gt;&gt; DataAccess: getProducts=&gt; from= &quot;+desc);</span>
+
+<span class="nc" id="L188">		List&lt;Sale&gt; res = new ArrayList&lt;Sale&gt;();	</span>
+<span class="nc" id="L189">		TypedQuery&lt;Sale&gt; query = db.createQuery(&quot;SELECT s FROM Sale s WHERE s.title LIKE ?1&quot;,Sale.class);   </span>
+<span class="nc" id="L190">		query.setParameter(1, &quot;%&quot;+desc+&quot;%&quot;);</span>
+		
+<span class="nc" id="L192">		List&lt;Sale&gt; sales = query.getResultList();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">	 	 for (Sale sale:sales){</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">	 		 if(sale.getStatus()!=10) {</span>
+<span class="nc" id="L195">		   res.add(sale);</span>
+	 		 }
+<span class="nc" id="L197">		  }</span>
+<span class="nc" id="L198">	 	return res;</span>
+	}
+	
+	/**
+	 * This method retrieves the products that contain a desc text in a title and the publicationDate today or before
+	 * 
+	 * @param desc the text to search
+	 * @return collection of products that contain desc in a title
+	 */
+	public List&lt;Sale&gt; getPublishedSales(String desc, Date pubDate) {
+<span class="nc" id="L208">		System.out.println(&quot;&gt;&gt; DataAccess: getProducts=&gt; from= &quot;+desc);</span>
+
+<span class="nc" id="L210">		List&lt;Sale&gt; res = new ArrayList&lt;Sale&gt;();	</span>
+<span class="nc" id="L211">		TypedQuery&lt;Sale&gt; query = db.createQuery(&quot;SELECT s FROM Sale s WHERE s.title LIKE ?1 AND s.pubDate &lt;=?2&quot;,Sale.class);   </span>
+<span class="nc" id="L212">		query.setParameter(1, &quot;%&quot;+desc+&quot;%&quot;);</span>
+<span class="nc" id="L213">		query.setParameter(2,pubDate);</span>
+		
+<span class="nc" id="L215">		List&lt;Sale&gt; sales = query.getResultList();</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">	 	 for (Sale sale:sales){</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		   if(sale.getStatus()!=10) res.add(sale);</span>
+<span class="nc" id="L218">		  }</span>
+<span class="nc" id="L219">	 	return res;</span>
+	}
+
+public void open(){
+		
+<span class="fc" id="L224">		String fileName=c.getDbFilename();</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">		if (c.isDatabaseLocal()) {</span>
+<span class="fc" id="L226">			emf = Persistence.createEntityManagerFactory(&quot;objectdb:&quot;+fileName);</span>
+<span class="fc" id="L227">			db = emf.createEntityManager();</span>
+		} else {
+<span class="nc" id="L229">			Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L230">			  properties.put(&quot;javax.persistence.jdbc.user&quot;, c.getUser());</span>
+<span class="nc" id="L231">			  properties.put(&quot;javax.persistence.jdbc.password&quot;, c.getPassword());</span>
+
+<span class="nc" id="L233">			  emf = Persistence.createEntityManagerFactory(&quot;objectdb://&quot;+c.getDatabaseNode()+&quot;:&quot;+c.getDatabasePort()+&quot;/&quot;+fileName, properties);</span>
+<span class="nc" id="L234">			  db = emf.createEntityManager();</span>
+    	   }
+<span class="fc" id="L236">		System.out.println(&quot;DataAccess opened =&gt; isDatabaseLocal: &quot;+c.isDatabaseLocal());</span>
+
+		
+<span class="fc" id="L239">	}</span>
+
+	public BufferedImage getFile(String fileName) {
+<span class="nc" id="L242">		File file=new File(basePath+fileName);</span>
+<span class="nc" id="L243">		BufferedImage targetImg=null;</span>
+		try {
+<span class="nc" id="L245">             targetImg = rescale(ImageIO.read(file));</span>
+<span class="nc" id="L246">        } catch (IOException ex) {</span>
+            //Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
+<span class="nc" id="L248">        }</span>
+<span class="nc" id="L249">		return targetImg;</span>
+
+	}
+	
+	public List&lt;Seller&gt; getUser(String log, String pass) {
+<span class="nc" id="L254">		TypedQuery&lt;Seller&gt; query = db.createQuery(&quot;SELECT s FROM Seller s&quot;,Seller.class);   </span>
+<span class="nc" id="L255">		return query.getResultList();</span>
+	}
+	
+	public BufferedImage rescale(BufferedImage originalImage)
+    {
+<span class="nc" id="L260">		System.out.println(&quot;rescale &quot;+originalImage);</span>
+<span class="nc" id="L261">        BufferedImage resizedImage = new BufferedImage(baseSize, baseSize, BufferedImage.TYPE_INT_RGB);</span>
+<span class="nc" id="L262">        Graphics2D g = resizedImage.createGraphics();</span>
+<span class="nc" id="L263">        g.drawImage(originalImage, 0, 0, baseSize, baseSize, null);</span>
+<span class="nc" id="L264">        g.dispose();</span>
+<span class="nc" id="L265">        return resizedImage;</span>
+    }
+	
+	
+	public Emaitza isLogged(String log, String pass) {
+<span class="nc bnc" id="L270" title="All 4 branches missed.">		if(log == null || pass == null) return new Emaitza(false, &quot;&quot;, null, null);</span>
+		Emaitza ema;
+<span class="nc" id="L272">		TypedQuery&lt;Seller&gt; query = db.createQuery(&quot;SELECT s FROM Seller s WHERE s.name=?1 AND s.pass=?2&quot;,Seller.class);   </span>
+<span class="nc" id="L273">		query.setParameter(1, log);</span>
+<span class="nc" id="L274">		query.setParameter(2, pass);</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		if(!query.getResultList().isEmpty()) {</span>
+<span class="nc" id="L276">			ema = new Emaitza(true, query.getResultList().get(0).getEmail(), query.getResultList().get(0), null);</span>
+		}else {
+<span class="nc" id="L278">			ema = new Emaitza(false, &quot;&quot;, null, null);</span>
+		}
+<span class="nc" id="L280">		return ema;</span>
+	}
+	
+	public Emaitza isAdminLogged(int ID, String pass) {
+<span class="nc bnc" id="L284" title="All 4 branches missed.">	if((Integer) ID == null || pass == null) return new Emaitza(false, &quot;&quot;, null, null);</span>
+	Emaitza ema;
+<span class="nc" id="L286">	TypedQuery&lt;Admin&gt; query = db.createQuery(&quot;SELECT a FROM Admin a WHERE a.ID=?1 AND a.pass=?2&quot;, Admin.class);</span>
+<span class="nc" id="L287">	query.setParameter(1, ID);</span>
+<span class="nc" id="L288">	query.setParameter(2, pass);</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">	if(!query.getResultList().isEmpty()) {</span>
+<span class="nc" id="L290">		ema = new Emaitza(true,&quot;&quot;, null, query.getResultList().get(0));</span>
+	}else {
+<span class="nc" id="L292">		ema = new Emaitza(false, &quot;&quot;, null, null);</span>
+	}
+<span class="nc" id="L294">	return ema;</span>
+	}
+	
+	public Emaitza isRegistered(String mail, String user, String password) {
+<span class="fc bfc" id="L298" title="All 6 branches covered.">		if(mail ==null || user == null || password == null) return new Emaitza(false, &quot;&quot;, null, null);</span>
+<span class="fc" id="L299">		Seller s = db.find(Seller.class, mail);</span>
+<span class="fc" id="L300">		Emaitza ema = new Emaitza(false, &quot;&quot;, null, null);</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		if(s != null) return ema;</span>
+<span class="fc" id="L302">		TypedQuery&lt;Seller&gt; query = db.createQuery(&quot;SELECT s FROM Seller s WHERE s.name=?1&quot;, Seller.class);</span>
+<span class="fc" id="L303">		query.setParameter(1,  user);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">		if(!query.getResultList().isEmpty()) {</span>
+<span class="fc" id="L305">			return ema;</span>
+		}
+<span class="fc" id="L307">		db.getTransaction().begin();</span>
+<span class="fc" id="L308">		Seller s1 = new Seller(mail, user, password);</span>
+<span class="fc" id="L309">		ema = new Emaitza(true, mail, s1, null);</span>
+<span class="fc" id="L310">		db.persist(s1);</span>
+<span class="fc" id="L311">		db.getTransaction().commit();</span>
+<span class="fc" id="L312">		return ema;</span>
+		}
+	
+	public Emaitza isAdminRegistered(int ID, String pass) {
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		if((Integer) ID == null) return new Emaitza(false, &quot;&quot;, null, null);</span>
+<span class="nc" id="L317">		Admin s = db.find(Admin.class, ID);</span>
+<span class="nc" id="L318">		Emaitza ema = new Emaitza(false, &quot;&quot;, null, null);</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if(s != null) return ema;</span>
+<span class="nc" id="L320">		TypedQuery&lt;Seller&gt; query = db.createQuery(&quot;SELECT a FROM Admin a WHERE a.ID=?1&quot;, Seller.class);</span>
+<span class="nc" id="L321">		query.setParameter(1,  ID);</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if(!query.getResultList().isEmpty()) {</span>
+<span class="nc" id="L323">			return ema;</span>
+		}
+<span class="nc" id="L325">		db.getTransaction().begin();</span>
+<span class="nc" id="L326">		Admin s1 = new Admin(ID, pass);</span>
+<span class="nc" id="L327">		ema = new Emaitza(true, &quot;&quot;, null, s1);</span>
+<span class="nc" id="L328">		db.persist(s1);</span>
+<span class="nc" id="L329">		db.getTransaction().commit();</span>
+<span class="nc" id="L330">		return ema;</span>
+		}
+	
+	public String getEmail(String name, String pass) {
+<span class="nc" id="L334">		String str = &quot;&quot;;</span>
+<span class="nc bnc" id="L335" title="All 4 branches missed.">		if(name == null || pass ==null) return str;</span>
+<span class="nc" id="L336">		TypedQuery&lt;Seller&gt; query = db.createQuery(&quot;SELECT s FROM Seller s WHERE s.name=?1 AND s.pass=?2&quot;, Seller.class);</span>
+<span class="nc" id="L337">		query.setParameter(1, name);</span>
+<span class="nc" id="L338">		query.setParameter(2, pass);</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		if(!query.getResultList().isEmpty()) {</span>
+<span class="nc" id="L340">			return query.getResultList().get(0).getEmail();</span>
+		}
+<span class="nc" id="L342">		return str;</span>
+	}
+	
+	public void buySale(Sale s, Seller current) {
+<span class="nc bnc" id="L346" title="All 8 branches missed.">		if(s == null || current == null || s.getSaleNumber() == null || current.getEmail() == null) return;</span>
+		try {
+<span class="nc" id="L348">	        db.getTransaction().begin();</span>
+
+<span class="nc" id="L350">	        Sale foundS = db.find(Sale.class, s.getSaleNumber());</span>
+<span class="nc" id="L351">	        Seller foundCurrent = db.find(Seller.class, current.getEmail());</span>
+
+<span class="nc bnc" id="L353" title="All 4 branches missed.">	        if (foundS == null || foundCurrent == null) {</span>
+<span class="nc" id="L354">	            throw new RuntimeException(&quot;Sale or buyer not found&quot;);</span>
+	        }
+<span class="nc" id="L356">	        foundS.setStatus(10);</span>
+	        
+<span class="nc" id="L358">	        float p = s.getPrice();</span>
+<span class="nc" id="L359">	        foundCurrent.setDirua(-p);</span>
+<span class="nc" id="L360">	        foundCurrent.addBought(foundS);</span>
+<span class="nc" id="L361">	        Seller seller = foundS.getSeller();</span>
+<span class="nc" id="L362">	        seller.setDirua(p);</span>
+		
+<span class="nc" id="L364">	        db.merge(foundS);</span>
+<span class="nc" id="L365">	        db.merge(foundCurrent);</span>
+<span class="nc" id="L366">	        db.merge(seller);</span>
+<span class="nc" id="L367">	        db.getTransaction().commit();</span>
+<span class="nc" id="L368">		} catch(Exception e) {</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">			if(db.getTransaction().isActive()) {</span>
+<span class="nc" id="L370">				db.getTransaction().commit();</span>
+			}
+<span class="nc" id="L372">			throw e;</span>
+<span class="nc" id="L373">		}</span>
+		
+
+<span class="nc" id="L376">	}</span>
+	public boolean updateProfile(String email, String newName, String newPassword) {
+<span class="nc bnc" id="L378" title="All 6 branches missed.">		if (email == null || newName == null || newPassword == null) {</span>
+<span class="nc" id="L379">			return false;</span>
+		}
+		try {
+<span class="nc" id="L382">	        db.getTransaction().begin();</span>
+	        
+<span class="nc" id="L384">	        Seller seller = db.find(Seller.class, email);</span>
+	        
+<span class="nc bnc" id="L386" title="All 2 branches missed.">	        if (seller != null) {</span>
+<span class="nc" id="L387">	            seller.setName(newName);</span>
+<span class="nc" id="L388">	            seller.setPass(newPassword);</span>
+	            
+	            
+<span class="nc" id="L391">	            db.merge(seller);</span>
+<span class="nc" id="L392">	            db.getTransaction().commit();</span>
+<span class="nc" id="L393">	            return true;</span>
+	        }
+	        
+<span class="nc" id="L396">	        db.getTransaction().commit();</span>
+<span class="nc" id="L397">	        return false;</span>
+	        
+<span class="nc" id="L399">	    } catch (Exception e) {</span>
+<span class="nc" id="L400">	        e.printStackTrace();</span>
+<span class="nc" id="L401">	        db.getTransaction().rollback();</span>
+<span class="nc" id="L402">	        return false;</span>
+	    }
+	}
+	
+	public Seller getSellerByEmail(String email) {
+<span class="nc bnc" id="L407" title="All 2 branches missed.">		if(email == null) return null;</span>
+<span class="nc" id="L408">		db.getTransaction().begin();</span>
+<span class="nc" id="L409">		Seller s = db.find(Seller.class, email);</span>
+<span class="nc" id="L410">		db.getTransaction().commit();</span>
+<span class="nc" id="L411">		return s;</span>
+	}
+	
+	public void updateMoney(String email, float amount) {
+<span class="nc bnc" id="L415" title="All 2 branches missed.">		if(email == null) return;</span>
+<span class="nc" id="L416">	    db.getTransaction().begin();</span>
+<span class="nc" id="L417">	    Seller seller = db.find(Seller.class, email);</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">	    if (seller != null) {</span>
+<span class="nc" id="L419">	        seller.setDirua(amount);</span>
+<span class="nc" id="L420">	        db.merge(seller);</span>
+	    }
+<span class="nc" id="L422">	    db.getTransaction().commit();</span>
+<span class="nc" id="L423">	}</span>
+	
+	public void createComplaint(String message, Seller complainant, Sale sale) {
+<span class="nc bnc" id="L426" title="All 10 branches missed.">		if (message == null || complainant == null || sale == null || complainant.getEmail() == null || sale.getSaleNumber() == null) return;</span>
+<span class="nc" id="L427">		    db.getTransaction().begin();</span>
+
+<span class="nc" id="L429">		    Seller c = db.find(Seller.class, complainant.getEmail());</span>
+<span class="nc" id="L430">		    Sale s = db.find(Sale.class, sale.getSaleNumber());</span>
+
+<span class="nc" id="L432">		    Complaint complaint = new Complaint(message, c, s);</span>
+<span class="nc" id="L433">		    db.persist(complaint);</span>
+
+<span class="nc" id="L435">		    db.getTransaction().commit();</span>
+<span class="nc" id="L436">		}</span>
+		/*
+		 * 		db.getTransaction().begin();
+	    
+	    Seller c = db.find(Seller.class, complainant.getEmail());
+	    Sale s = db.find(Sale.class, sale.getSaleNumber());
+	    s.createComplaint(message, c, s);
+	    
+	    // no hay que crear objetos desde DataAccess para minimizar las depedencias
+	    // habría que hacerlo mediante s.createComplaint(message, c ...
+		 */
+
+	public List&lt;Complaint&gt; getUnmanagedComplaints() {
+<span class="nc" id="L449">	    TypedQuery&lt;Complaint&gt; query = db.createQuery(&quot;SELECT c FROM Complaint c WHERE c.managed = false ORDER BY c.date DESC&quot;,Complaint.class);</span>
+<span class="nc" id="L450">	    return query.getResultList();</span>
+	}
+	
+	
+	public void markComplaintAsManaged(Integer complaintId) {
+<span class="nc bnc" id="L455" title="All 2 branches missed.">	    if (complaintId == null) return;</span>
+
+<span class="nc" id="L457">	    db.getTransaction().begin();</span>
+
+<span class="nc" id="L459">	    Complaint complaint = db.find(Complaint.class, complaintId);</span>
+
+<span class="nc bnc" id="L461" title="All 2 branches missed.">	    if (complaint != null) {</span>
+<span class="nc" id="L462">	        complaint.setManaged(true);</span>
+<span class="nc" id="L463">	        db.merge(complaint);</span>
+	    }
+
+<span class="nc" id="L466">	    db.getTransaction().commit();</span>
+<span class="nc" id="L467">	}</span>
+	
+	public void buyBasket(String email) {
+<span class="nc" id="L470">	    db.getTransaction().begin();</span>
+<span class="nc" id="L471">	    Seller buyer = db.find(Seller.class, email);</span>
+<span class="nc" id="L472">	    List&lt;Sale&gt; basket = buyer.getBasket();</span>
+	    
+<span class="nc bnc" id="L474" title="All 2 branches missed.">	    for (Sale s : new ArrayList&lt;&gt;(basket)) { </span>
+<span class="nc" id="L475">	        Sale sale = db.find(Sale.class, s.getSaleNumber());</span>
+<span class="nc" id="L476">	        Seller sellerOfProduct = sale.getSeller();</span>
+	        
+	        
+<span class="nc" id="L479">	        buyer.setDirua(-sale.getPrice());</span>
+<span class="nc" id="L480">	        sellerOfProduct.setDirua(sale.getPrice());</span>
+	        
+	       
+<span class="nc" id="L483">	        sale.setStatus(10); </span>
+<span class="nc" id="L484">	        buyer.addBought(sale);</span>
+<span class="nc" id="L485">	    }</span>
+<span class="nc" id="L486">	    buyer.clearBasket(); </span>
+<span class="nc" id="L487">	    db.getTransaction().commit();</span>
+<span class="nc" id="L488">	}</span>
+
+	public void addProductToBasket(String email, int saleNumber) {
+<span class="nc" id="L491">		db.getTransaction().begin(); </span>
+	    try {
+<span class="nc" id="L493">	        Seller buyer = db.find(Seller.class, email);</span>
+<span class="nc" id="L494">	        Sale productToAdd = db.find(Sale.class, saleNumber);</span>
+	        
+<span class="nc bnc" id="L496" title="All 2 branches missed.">	        if (buyer.getBasket() == null) {</span>
+<span class="nc" id="L497">	            buyer.setBasket(new ArrayList&lt;Sale&gt;());</span>
+	        }
+	        
+<span class="nc" id="L500">	        List&lt;Sale&gt; currentBasket = buyer.getBasket();</span>
+	        
+	        
+<span class="nc bnc" id="L503" title="All 2 branches missed.">	        if (!currentBasket.isEmpty()) {</span>
+<span class="nc" id="L504">	            Seller firstSeller = currentBasket.get(0).getSeller();</span>
+<span class="nc bnc" id="L505" title="All 2 branches missed.">	            if (!firstSeller.getEmail().equals(productToAdd.getSeller().getEmail())) {</span>
+<span class="nc" id="L506">	                db.getTransaction().rollback(); </span>
+<span class="nc" id="L507">	                throw new RuntimeException(&quot;Solo puedes añadir productos del mismo vendedor.&quot;);</span>
+	            }
+	        }
+	        
+<span class="nc" id="L511">	        buyer.addToBasket(productToAdd);</span>
+<span class="nc" id="L512">	        db.getTransaction().commit();</span>
+<span class="nc" id="L513">	        System.out.println(&quot;Producto guardado en BD. Tamaño cesta: &quot; + buyer.getBasket().size());</span>
+	        
+<span class="nc" id="L515">	    } catch (Exception e) {</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">	        if (db.getTransaction().isActive()) db.getTransaction().rollback();</span>
+<span class="nc" id="L517">	        throw e;</span>
+<span class="nc" id="L518">	    }</span>
+<span class="nc" id="L519">	}</span>
+	
+	public void clearBasket(String email) {
+<span class="nc" id="L522">		db.getTransaction().begin();</span>
+<span class="nc" id="L523">	    Seller buyer = db.find(Seller.class, email);</span>
+<span class="nc bnc" id="L524" title="All 4 branches missed.">	    if (buyer != null &amp;&amp; buyer.getBasket() != null) {</span>
+<span class="nc" id="L525">	        buyer.getBasket().clear();</span>
+<span class="nc" id="L526">	        db.getTransaction().commit();</span>
+	    } else {
+<span class="nc" id="L528">	        db.getTransaction().rollback();</span>
+	    }
+<span class="nc" id="L530">	}</span>
+	
+	public void buyMultipleSales(List&lt;Sale&gt; sales, Seller buyer) {
+<span class="nc" id="L533">	    db.getTransaction().begin();</span>
+<span class="nc" id="L534">	    Seller b = db.find(Seller.class, buyer.getEmail());</span>
+	    
+<span class="nc bnc" id="L536" title="All 2 branches missed.">	    for (Sale s : sales) {</span>
+<span class="nc" id="L537">	        Sale saleInDb = db.find(Sale.class, s.getSaleNumber());</span>
+<span class="nc" id="L538">	        Seller vendor = saleInDb.getSeller();</span>
+	        
+<span class="nc" id="L540">	        float price = saleInDb.getPrice();</span>
+	        
+<span class="nc" id="L542">	        b.setDirua(-price);</span>
+	        
+<span class="nc" id="L544">	        vendor.setDirua(price);</span>
+	        
+<span class="nc" id="L546">	        saleInDb.setStatus(10); </span>
+	       
+<span class="nc" id="L548">	        b.addBought(saleInDb);</span>
+<span class="nc" id="L549">	    }</span>
+<span class="nc" id="L550">	    db.getTransaction().commit();</span>
+<span class="nc" id="L551">	}</span>
+	
+	public List&lt;Sale&gt; getBasket(String email) {
+<span class="nc" id="L554">		Seller seller = db.find(Seller.class, email);</span>
+<span class="nc bnc" id="L555" title="All 4 branches missed.">	    if (seller != null &amp;&amp; seller.getBasket() != null) {</span>
+	      
+<span class="nc" id="L557">	        seller.getBasket().size(); </span>
+<span class="nc" id="L558">	        return new ArrayList&lt;Sale&gt;(seller.getBasket());</span>
+	    }
+<span class="nc" id="L560">	    return new ArrayList&lt;Sale&gt;();</span>
+	}
+	
+	
+	public void close(){
+<span class="fc" id="L565">		db.close();</span>
+<span class="fc" id="L566">		System.out.println(&quot;DataAcess closed&quot;);</span>
+<span class="fc" id="L567">	}</span>
+	public Eskaera createEskaera(String title, String description, String status, String sellerEmail) {		
+		try {
+<span class="nc" id="L570">			db.getTransaction().begin();</span>
+			
+<span class="nc" id="L572">			Seller seller = db.find(Seller.class, sellerEmail);</span>
+			
+<span class="nc bnc" id="L574" title="All 2 branches missed.">			if (seller == null) {</span>
+<span class="nc" id="L575">				db.getTransaction().commit();</span>
+<span class="nc" id="L576">				return null;</span>
+			}
+			
+<span class="nc" id="L579">			Eskaera eskaera = seller.addEskaera(title, description, status);</span>
+			
+<span class="nc" id="L581">			db.persist(eskaera);</span>
+<span class="nc" id="L582">			db.merge(seller);</span>
+<span class="nc" id="L583">			db.getTransaction().commit();</span>
+			
+			
+<span class="nc" id="L586">			return eskaera;</span>
+			
+<span class="nc" id="L588">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L589">			e.printStackTrace();</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">			if (db.getTransaction().isActive()) {</span>
+<span class="nc" id="L591">				db.getTransaction().rollback();}</span>
+<span class="nc" id="L592">			return null;</span>
+		}
+	}
+	public List&lt;Eskaera&gt; getEskaerak(String search) {
+
+<span class="nc bnc" id="L597" title="All 4 branches missed.">		if (search == null || search.trim().isEmpty()) {</span>
+<span class="nc" id="L598">			return db.createQuery(&quot;SELECT e FROM Eskaera e&quot;, Eskaera.class).getResultList();</span>
+		}
+
+<span class="nc" id="L601">		return db.createQuery(&quot;SELECT e FROM Eskaera e WHERE LOWER(e.title) LIKE LOWER(:search)&quot;,Eskaera.class).setParameter(&quot;search&quot;, &quot;%&quot; + search + &quot;%&quot;).getResultList();</span>
+	}
+	
+	public Eskaera getEskaeraByID(Integer id) {
+<span class="nc bnc" id="L605" title="All 2 branches missed.">		if(id == null) return null;</span>
+<span class="nc" id="L606">		return db.find(Eskaera.class, id);</span>
+	}
+	
+	public boolean createEskaeraOferta(Integer eskID, String selEmail, float amount, String message) {
+<span class="nc bnc" id="L610" title="All 6 branches missed.">		if(eskID ==  null || selEmail == null || message.trim().isEmpty()) {</span>
+<span class="nc" id="L611">			return false;</span>
+		}
+		try {
+<span class="nc" id="L614">			db.getTransaction().begin();</span>
+<span class="nc" id="L615">			Eskaera eskaera = db.find(Eskaera.class, eskID);</span>
+<span class="nc" id="L616">			Seller seller = db.find(Seller.class, selEmail);</span>
+<span class="nc bnc" id="L617" title="All 4 branches missed.">			if(eskaera == null || seller == null) {</span>
+<span class="nc" id="L618">				db.getTransaction().rollback();</span>
+				
+			}
+<span class="nc" id="L621">			EskaeraOferta oferta = eskaera.addOferta(amount, message, seller);</span>
+<span class="nc" id="L622">			db.persist(oferta);</span>
+<span class="nc" id="L623">			db.merge(eskaera);</span>
+<span class="nc" id="L624">			db.getTransaction().commit();</span>
+<span class="nc" id="L625">			return true;</span>
+
+			
+			
+			
+<span class="nc" id="L630">		}catch(Exception e){</span>
+<span class="nc" id="L631">			e.printStackTrace();</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">			if(db.getTransaction().isActive()) {</span>
+<span class="nc" id="L633">				db.getTransaction().rollback();</span>
+<span class="nc" id="L634">				return false;</span>
+			}
+		}
+<span class="nc" id="L637">		return true;</span>
+	}
+	
+	public List&lt;Eskaera&gt; getMyEskaerak(Seller s) {
+<span class="nc" id="L641">		TypedQuery&lt;Eskaera&gt; query = db.createQuery(&quot;SELECT e FROM Eskaera e WHERE e.seller=?1&quot;, Eskaera.class);</span>
+<span class="nc" id="L642">		query.setParameter(1, s);</span>
+<span class="nc" id="L643">		return query.getResultList();</span>
+	}
+	
+	
+	public List&lt;EskaeraOferta&gt; getOffersByEskaera(Eskaera esk){
+<span class="nc" id="L648">		TypedQuery&lt;EskaeraOferta&gt; query = db.createQuery(&quot;SELECT eo FROM EskaeraOferta eo WHERE eo.eskaera=?1&quot; ,EskaeraOferta.class);</span>
+<span class="nc" id="L649">		query.setParameter(1, esk);</span>
+<span class="nc" id="L650">		return query.getResultList();</span>
+	}
+	
+	public Sale createSaleFromEskaeraOfer(Integer ofertaID){
+		try {
+<span class="nc" id="L655">			db.getTransaction().begin();</span>
+<span class="nc" id="L656">			EskaeraOferta esk = db.find(EskaeraOferta.class, ofertaID);</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">			if(esk == null) {</span>
+<span class="nc" id="L658">				db.getTransaction().rollback();</span>
+<span class="nc" id="L659">				return null;</span>
+			}
+<span class="nc" id="L661">			Eskaera eskaera = esk.getEskaera();</span>
+<span class="nc" id="L662">			Seller seller = esk.getSeller();</span>
+<span class="nc bnc" id="L663" title="All 4 branches missed.">			if(eskaera == null || seller == null) {</span>
+<span class="nc" id="L664">				db.getTransaction().rollback();</span>
+<span class="nc" id="L665">				return null;</span>
+			}
+<span class="nc" id="L667">			Sale sale = seller.addSale(eskaera.getTitle(), esk.getMessage(), 0, esk.getAmount(), new Date(), null);</span>
+<span class="nc" id="L668">			eskaera.setBought(true);</span>
+<span class="nc" id="L669">			db.persist(sale);</span>
+<span class="nc" id="L670">			db.merge(seller);</span>
+<span class="nc" id="L671">			db.merge(eskaera);</span>
+<span class="nc" id="L672">			db.getTransaction().commit();</span>
+<span class="nc" id="L673">			return sale;</span>
+			
+<span class="nc" id="L675">		}catch(Exception e) {</span>
+<span class="nc" id="L676">			e.printStackTrace();</span>
+<span class="nc bnc" id="L677" title="All 2 branches missed.">			if(db.getTransaction().isActive()) db.getTransaction().rollback();</span>
+		}
+<span class="nc" id="L679">		return null;</span>
+	}
+	
+	public void createReview(String authorEmail, int saleNumber, String comment, int stars) {
+<span class="nc bnc" id="L683" title="All 4 branches missed.">	    if (stars &lt; 1 || stars &gt; 5) throw new RuntimeException(&quot;Las estrellas deben estar entre 1 y 5.&quot;);</span>
+	    
+<span class="nc" id="L685">	    db.getTransaction().begin();</span>
+	    try {
+<span class="nc" id="L687">	        Sale s = db.find(Sale.class, saleNumber);</span>
+<span class="nc" id="L688">	        Seller author = db.find(Seller.class, authorEmail);</span>
+<span class="nc" id="L689">	        Seller target = s.getSeller();</span>
+
+<span class="nc bnc" id="L691" title="All 2 branches missed.">	        if (s.getStatus() != 10) {</span>
+<span class="nc" id="L692">	            throw new RuntimeException(&quot;Solo puedes valorar productos ya comprados.&quot;);</span>
+	        }
+
+<span class="nc" id="L695">	        Review newReview = new Review(author, target, s, comment, stars);</span>
+<span class="nc" id="L696">	        target.addReview(newReview);</span>
+	        
+<span class="nc" id="L698">	        db.persist(newReview);</span>
+<span class="nc" id="L699">	        db.getTransaction().commit();</span>
+<span class="nc" id="L700">	    } catch (Exception e) {</span>
+<span class="nc" id="L701">	        db.getTransaction().rollback();</span>
+<span class="nc" id="L702">	        throw e;</span>
+<span class="nc" id="L703">	    }</span>
+<span class="nc" id="L704">	}</span>
+	
+	public List&lt;Sale&gt; getBoughtsBySeller(String email) {
+<span class="nc" id="L707">	    Seller seller = db.find(Seller.class, email);</span>
+<span class="nc bnc" id="L708" title="All 2 branches missed.">	    if (seller == null) {</span>
+<span class="nc" id="L709">	        return new ArrayList&lt;Sale&gt;();</span>
+	    }
+<span class="nc" id="L711">	    return seller.getBoughts();</span>
+	}
+
+	public List&lt;Sale&gt; getSalesBySeller(String email) {
+<span class="nc" id="L715">	    Seller seller = db.find(Seller.class, email);</span>
+<span class="nc bnc" id="L716" title="All 2 branches missed.">	    if (seller == null) {</span>
+<span class="nc" id="L717">	        return new ArrayList&lt;Sale&gt;();</span>
+	    }
+<span class="nc" id="L719">	    return seller.getSales();</span>
+	}
+	public List&lt;Review&gt; getReviewsBySeller(String email) {
+<span class="nc" id="L722">	    open();</span>
+
+	    
+<span class="nc" id="L725">	        Seller seller = db.find(Seller.class, email);</span>
+
+<span class="nc bnc" id="L727" title="All 2 branches missed.">	        if (seller == null) {</span>
+<span class="nc" id="L728">	            return new ArrayList&lt;Review&gt;();</span>
+	        }
+
+<span class="nc" id="L731">	        seller.getReviewsReceived().size();</span>
+
+<span class="nc" id="L733">	        return new ArrayList&lt;Review&gt;(seller.getReviewsReceived());</span>
+
+	    
+	}
+	public String getSellerEmailBySale(Integer saleId) {
+
+<span class="nc" id="L739">			Sale sale = db.find(Sale.class, saleId);</span>
+
+<span class="nc bnc" id="L741" title="All 4 branches missed.">			if (sale == null || sale.getSeller() == null) {</span>
+<span class="nc" id="L742">				return null;</span>
+			}
+
+<span class="nc" id="L745">			return sale.getSeller().getEmail();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

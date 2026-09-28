@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShowEskaeraGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ShowEskaeraGUI.java</span></div><h1>ShowEskaeraGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import domain.Eskaera;
+import domain.Seller;
+
+import javax.swing.JLabel;
+
+import java.util.ResourceBundle;
+
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+
+public class ShowEskaeraGUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	private JPanel contentPane;
+
+	private Eskaera eskaera;
+	private Seller currentSeller;
+
+<span class="nc" id="L27">	public ShowEskaeraGUI(Eskaera eskaera, Seller currentSeller) {</span>
+<span class="nc" id="L28">		this.eskaera = eskaera;</span>
+<span class="nc" id="L29">		this.currentSeller = currentSeller;</span>
+
+<span class="nc" id="L31">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L32">		setBounds(100, 100, 500, 350);</span>
+<span class="nc" id="L33">		setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Eskaera&quot;));</span>
+
+<span class="nc" id="L35">		contentPane = new JPanel();</span>
+<span class="nc" id="L36">		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L37">		setContentPane(contentPane);</span>
+<span class="nc" id="L38">		contentPane.setLayout(null);</span>
+
+<span class="nc" id="L40">		JLabel lblTitle = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Title&quot;));</span>
+<span class="nc" id="L41">		lblTitle.setBounds(40, 30, 80, 20);</span>
+<span class="nc" id="L42">		contentPane.add(lblTitle);</span>
+
+<span class="nc" id="L44">		JLabel lblTitleValue = new JLabel(eskaera.getTitle());</span>
+<span class="nc" id="L45">		lblTitleValue.setBounds(130, 30, 300, 20);</span>
+<span class="nc" id="L46">		contentPane.add(lblTitleValue);</span>
+
+<span class="nc" id="L48">		JLabel lblStatus = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Estado&quot;));</span>
+<span class="nc" id="L49">		lblStatus.setBounds(40, 65, 80, 20);</span>
+<span class="nc" id="L50">		contentPane.add(lblStatus);</span>
+
+<span class="nc" id="L52">		JLabel lblStatusValue = new JLabel(eskaera.getStatus());</span>
+<span class="nc" id="L53">		lblStatusValue.setBounds(130, 65, 300, 20);</span>
+<span class="nc" id="L54">		contentPane.add(lblStatusValue);</span>
+
+<span class="nc" id="L56">		JLabel lblDescription = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Desk&quot;));</span>
+<span class="nc" id="L57">		lblDescription.setBounds(40, 100, 100, 20);</span>
+<span class="nc" id="L58">		contentPane.add(lblDescription);</span>
+
+<span class="nc" id="L60">		JTextArea textAreaDescription = new JTextArea();</span>
+<span class="nc" id="L61">		textAreaDescription.setEditable(false);</span>
+<span class="nc" id="L62">		textAreaDescription.setLineWrap(true);</span>
+<span class="nc" id="L63">		textAreaDescription.setWrapStyleWord(true);</span>
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		if (eskaera.getDescription() != null) {</span>
+<span class="nc" id="L66">			textAreaDescription.setText(eskaera.getDescription());</span>
+		}
+
+<span class="nc" id="L69">		JScrollPane scrollPane = new JScrollPane(textAreaDescription);</span>
+<span class="nc" id="L70">		scrollPane.setBounds(130, 100, 300, 100);</span>
+<span class="nc" id="L71">		contentPane.add(scrollPane);</span>
+
+<span class="nc" id="L73">		JButton btnOffer = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.MakeOffer&quot;));</span>
+<span class="nc" id="L74">		btnOffer.setBounds(110, 240, 130, 30);</span>
+<span class="nc" id="L75">		contentPane.add(btnOffer);</span>
+
+<span class="nc" id="L77">		JButton btnClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Close&quot;));</span>
+<span class="nc" id="L78">		btnClose.setBounds(260, 240, 100, 30);</span>
+<span class="nc" id="L79">		contentPane.add(btnClose);</span>
+
+<span class="nc" id="L81">		btnOffer.addActionListener(e -&gt; {</span>
+<span class="nc" id="L82">			OfertaEginGUI gui = new OfertaEginGUI(eskaera, currentSeller);</span>
+<span class="nc" id="L83">			gui.setVisible(true);</span>
+<span class="nc" id="L84">		});</span>
+
+<span class="nc" id="L86">		btnClose.addActionListener(e -&gt; dispose());</span>
+<span class="nc" id="L87">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BuyGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">BuyGUI.java</span></div><h1>BuyGUI.java</h1><pre class="source lang-java linenums">package gui;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import businessLogic.BLFacade;
+
+import javax.swing.JLabel;
+
+import domain.*;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+
+
+
+public class BuyGUI extends JFrame {
+	private JFrame thisFrame;
+	private QuerySalesGUI querySalesGUI;
+	private ShowSaleGUI showGUI;
+	private Sale currentSale;
+    private Seller currentSeller;
+	
+<span class="nc" id="L28">	public BuyGUI(Sale s, Seller curr, QuerySalesGUI querySalesGUI, ShowSaleGUI showGUI) {</span>
+<span class="nc" id="L29">		thisFrame = this;</span>
+<span class="nc" id="L30">		this.showGUI = showGUI;</span>
+<span class="nc" id="L31">		this.currentSale = s;</span>
+<span class="nc" id="L32">		this.currentSeller = curr;</span>
+<span class="nc" id="L33">		this.querySalesGUI = querySalesGUI;</span>
+<span class="nc" id="L34">		this.setVisible(true);</span>
+<span class="nc" id="L35">		this.setSize(new Dimension(604, 370));</span>
+<span class="nc" id="L36">		getContentPane().setLayout(null);</span>
+		
+<span class="nc" id="L38">		JLabel lblProduktua = new JLabel(&quot;Produktua:&quot;);</span>
+<span class="nc" id="L39">		lblProduktua.setBounds(41, 35, 96, 25);</span>
+<span class="nc" id="L40">		lblProduktua.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BuyGUI.Product&quot;));</span>
+<span class="nc" id="L41">		getContentPane().add(lblProduktua);</span>
+		
+<span class="nc" id="L43">		JLabel lblPrezioa = new JLabel(&quot;Prezioa:&quot;);</span>
+<span class="nc" id="L44">		lblPrezioa.setBounds(41, 89, 46, 14);</span>
+<span class="nc" id="L45">		lblPrezioa.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BuyGUI.Price&quot;));</span>
+<span class="nc" id="L46">		getContentPane().add(lblPrezioa);</span>
+		
+<span class="nc" id="L48">		JLabel price = new JLabel(s.getTitle().toString());</span>
+<span class="nc" id="L49">		price.setBounds(207, 40, 191, 14);</span>
+<span class="nc" id="L50">		getContentPane().add(price);</span>
+		
+<span class="nc" id="L52">		double pr= s.getPrice();</span>
+<span class="nc" id="L53">		String str1 = Double.toString(pr);</span>
+<span class="nc" id="L54">		JLabel lblNewLabel_1 = new JLabel(str1+&quot;€&quot;);</span>
+<span class="nc" id="L55">		lblNewLabel_1.setBounds(207, 99, 191, 14);</span>
+<span class="nc" id="L56">		getContentPane().add(lblNewLabel_1);</span>
+		
+<span class="nc" id="L58">		JButton btnErosi = new JButton(&quot;Erosi&quot;);</span>
+<span class="nc" id="L59">		btnErosi.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BuyGUI.Buy&quot;));</span>
+<span class="nc" id="L60">		btnErosi.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L62">				BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L63">				currentSeller = facade.getSellerByEmail(currentSeller.getEmail());</span>
+<span class="nc" id="L64">				float p = currentSale.getPrice();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">				if(currentSeller.getDirua() &lt; p) {</span>
+<span class="nc" id="L66">					System.out.println(&quot;Ez duzu saldo nahikoa&quot;);</span>
+<span class="nc" id="L67">					return;</span>
+				}
+<span class="nc" id="L69">				facade.buySale(currentSale, currentSeller);</span>
+<span class="nc" id="L70">				currentSeller.setDirua(-p);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">				if (querySalesGUI != null) {</span>
+<span class="nc" id="L72">                    querySalesGUI.refresh();</span>
+                }
+<span class="nc" id="L74">				thisFrame.setVisible(false);</span>
+<span class="nc" id="L75">				thisFrame.dispose();</span>
+				
+<span class="nc bnc" id="L77" title="All 2 branches missed.">				 if (showGUI != null) {</span>
+<span class="nc" id="L78">	                    showGUI.setVisible(false);</span>
+<span class="nc" id="L79">	                    showGUI.dispose();</span>
+	                }
+
+				
+<span class="nc" id="L83">			}</span>
+		});
+<span class="nc" id="L85">		btnErosi.setBounds(48, 185, 89, 23);</span>
+<span class="nc" id="L86">		getContentPane().add(btnErosi);</span>
+		
+<span class="nc" id="L88">		JButton btnAtzera = new JButton(&quot;Atzera&quot;);</span>
+<span class="nc" id="L89">		btnAtzera.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Close&quot;));</span>
+<span class="nc" id="L90">		btnAtzera.setBounds(226, 185, 89, 23);</span>
+<span class="nc" id="L91">		btnAtzera.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L93">				thisFrame.setVisible(false);			}</span>
+		});
+<span class="nc" id="L95">		getContentPane().add(btnAtzera);</span>
+<span class="nc" id="L96">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Complaint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Complaint.java</span></div><h1>Complaint.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.*;
+import javax.xml.bind.annotation.*;
+
+@Entity
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Complaint implements Serializable {
+    @Id 
+    @GeneratedValue
+    private Integer id;
+    private String message;
+    private Date date;
+<span class="nc" id="L16">    private boolean managed = false;;</span>
+
+    @ManyToOne
+    @XmlIDREF
+    private Seller complainant;
+    @ManyToOne
+    @XmlIDREF
+    private Sale sale;        
+
+<span class="nc" id="L25">    public Complaint() { super(); }</span>
+
+<span class="nc" id="L27">    public Complaint(String message, Seller complainant, Sale sale) {</span>
+<span class="nc" id="L28">        this.message = message;</span>
+<span class="nc" id="L29">        this.complainant = complainant;</span>
+<span class="nc" id="L30">        this.sale = sale;</span>
+<span class="nc" id="L31">        this.date = new Date();</span>
+<span class="nc" id="L32">    }</span>
+
+   
+<span class="nc" id="L35">    public String getMessage() { return message; }</span>
+<span class="nc" id="L36">    public Date getDate() { return date; }</span>
+<span class="nc" id="L37">    public Seller getComplainant() { return complainant; }</span>
+<span class="nc" id="L38">    public Sale getSale() { return sale; }</span>
+    public Integer getID() {
+<span class="nc" id="L40">    	return this.id;</span>
+    }
+    public boolean isManaged() {
+<span class="nc" id="L43">    	return this.managed;</span>
+    }
+    public void setManaged(boolean a) {
+<span class="nc" id="L46">    	this.managed = a;</span>
+<span class="nc" id="L47">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

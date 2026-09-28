@@ -1,0 +1,55 @@
+
+*domain.Seller#toString()Ljava/lang/String;*
+ src\main\java\domain\Seller.javav v("1*Á
+1w	 w(d
+b
+w	 w(
+%0java.lang.String"__id*8
+
+__unknown_file (*
+domain.Seller"
+emailg
+e
+w	 w(
+%1java.lang.String"__concat*$
+w	 w(
+
+%0java.lang.String*
+w w(
+;c
+a
+w w(
+%2java.lang.String"__id*7
+
+__unknown_file (*
+domain.Seller"
+namez
+x
+w	 w(
+%3java.lang.String"__concat*$
+w	 w(
+
+%1java.lang.String*$
+w w(
+
+%2java.lang.Stringb
+`
+w w(
+%4java.util.List"__id*8
+
+__unknown_file (*
+domain.Seller"
+salesx
+v
+w	 w(
+%5java.lang.String"__concat*$
+w	 w(
+
+%3java.lang.String*"
+w w(
+
+%4java.util.List"$
+w w(
+
+%5java.lang.StringB
+domain.SellerH

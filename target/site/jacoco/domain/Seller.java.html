@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Seller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Seller.java</span></div><h1>Seller.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+public class Seller implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@XmlID
+	@Id 
+	private String email;
+	private String name; 
+	private String pass;
+	private float dirua;
+	
+<span class="fc" id="L33">	@XmlTransient</span>
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	private List&lt;Sale&gt; sales = new ArrayList&lt;Sale&gt;();
+<span class="fc" id="L36">	@XmlTransient</span>
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	private List&lt;Sale&gt; boughts = new ArrayList&lt;Sale&gt;();
+<span class="fc" id="L39">	@XmlTransient</span>
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List&lt;Sale&gt; basket = new ArrayList&lt;Sale&gt;();
+<span class="fc" id="L42">	@XmlTransient</span>
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List&lt;Eskaera&gt; eskaerak = new ArrayList&lt;Eskaera&gt;();
+<span class="fc" id="L45">	@XmlTransient</span>
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List&lt;Review&gt; reviewsReceived = new ArrayList&lt;Review&gt;();
+
+	public Seller() {
+<span class="fc" id="L50">		super();</span>
+<span class="fc" id="L51">	}</span>
+
+<span class="fc" id="L53">	public Seller(String email, String name, String password) {</span>
+<span class="fc" id="L54">		this.email = email;</span>
+<span class="fc" id="L55">		this.name = name;</span>
+<span class="fc" id="L56">		this.pass = password;</span>
+<span class="fc" id="L57">		this.dirua = 0;</span>
+		
+<span class="fc" id="L59">	}</span>
+	
+	public void addBought(Sale s) {
+<span class="nc" id="L62">		this.boughts.add(s);</span>
+<span class="nc" id="L63">	}</span>
+	
+	public void addSell(Sale s) {
+<span class="nc" id="L66">		this.sales.add(s);</span>
+<span class="nc" id="L67">	}</span>
+	
+	
+	public String getEmail() {
+<span class="fc" id="L71">		return email;</span>
+	}
+
+	public void setEmail(String email) {
+<span class="nc" id="L75">		this.email = email;</span>
+<span class="nc" id="L76">	}</span>
+
+	public String getName() {
+<span class="fc" id="L79">		return name;</span>
+	}
+
+	public void setName(String name) {
+<span class="nc" id="L83">		this.name = name;</span>
+<span class="nc" id="L84">	}</span>
+	
+	public String getPass() {
+<span class="nc" id="L87">		return pass;</span>
+	}
+	
+	public float getDirua() {
+<span class="nc" id="L91">		return this.dirua;</span>
+	}
+	
+	public void setDirua(float dirua) {
+<span class="nc" id="L95">		this.dirua += dirua;</span>
+<span class="nc" id="L96">	}</span>
+	
+	public void addToBasket(Sale s) {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">	    if (this.basket == null) {</span>
+<span class="nc" id="L100">	        this.basket = new ArrayList&lt;Sale&gt;();</span>
+	    }
+<span class="nc" id="L102">	    this.basket.add(s);</span>
+<span class="nc" id="L103">	}</span>
+
+	public List&lt;Sale&gt; getBasket() { 
+<span class="nc" id="L106">	    return basket; </span>
+	}
+	
+	public void clearBasket() {
+<span class="nc bnc" id="L110" title="All 2 branches missed.">	    if (this.basket != null) {</span>
+<span class="nc" id="L111">	        this.basket.clear();</span>
+	    }
+<span class="nc" id="L113">	}</span>
+	public void setBasket(List&lt;Sale&gt; basket) {
+<span class="nc" id="L115">	    this.basket = basket;</span>
+<span class="nc" id="L116">	}</span>
+	
+	public String toString(){
+<span class="nc" id="L119">		return email+&quot;;&quot;+name+sales;</span>
+	}
+	
+<span class="nc" id="L122">	public List&lt;Sale&gt; getSales(){return sales;}</span>
+<span class="nc" id="L123">	public List&lt;Sale&gt; getBoughts() {return boughts;}</span>
+	
+	public void addReview(Review r) {
+<span class="nc" id="L126">	    this.reviewsReceived.add(r);</span>
+<span class="nc" id="L127">	}</span>
+
+	public List&lt;Review&gt; getReviewsReceived() {
+<span class="nc" id="L130">	    return reviewsReceived;</span>
+	}
+
+	public float getAverageRating() {
+<span class="nc bnc" id="L134" title="All 4 branches missed.">	    if (reviewsReceived == null || reviewsReceived.isEmpty()) return 0;</span>
+<span class="nc" id="L135">	    float sum = 0;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">	    for (Review r : reviewsReceived) sum += r.getStars();</span>
+<span class="nc" id="L137">	    return sum / reviewsReceived.size();</span>
+	}
+	
+	/**
+	 * This method creates/adds a sale to a seller
+	 * 
+	 * @param title of the sale
+	 * @param description of the sale
+	 * @param status 
+	 * @param selling price
+	 * @param publicationDate
+	 * @return Sale
+	 */
+	
+	
+
+
+	public Sale addSale(String title, String description, int status, float price,  Date pubDate, File file)  {
+		
+<span class="nc" id="L156">		Sale sale=new Sale(title, description, status, price,  pubDate, file, this);</span>
+<span class="nc" id="L157">        sales.add(sale);</span>
+<span class="nc" id="L158">        return sale;</span>
+	}
+	/**
+	 * This method checks if the ride already exists for that driver
+	 * 
+	 * @param from the origin location 
+	 * @param to the destination location 
+	 * @param date the date of the ride 
+	 * @return true if the ride exists and false in other case
+	 */
+	public boolean doesSaleExist(String title)  {	
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (Sale s:sales)</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			if ( s.getTitle().compareTo(title)==0 )</span>
+<span class="nc" id="L171">			 return true;</span>
+<span class="nc" id="L172">		return false;</span>
+	}
+		
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L178">			return true;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L180">			return false;</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L182">			return false;</span>
+<span class="nc" id="L183">		Seller other = (Seller) obj;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (email != other.email)</span>
+<span class="nc" id="L185">			return false;</span>
+<span class="nc" id="L186">		return true;</span>
+	}
+
+	public void setPass(String newPassword) {
+		// TODO Auto-generated method stub
+<span class="nc" id="L191">		this.pass= newPassword;</span>
+<span class="nc" id="L192">	}</span>
+	public Eskaera addEskaera(String title, String description, String status) {
+<span class="nc" id="L194">		Eskaera eskaera = new Eskaera(title, description, status,this);</span>
+<span class="nc" id="L195">		eskaerak.add(eskaera);</span>
+<span class="nc" id="L196">		return eskaera;</span>
+	}
+
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminMainGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">AdminMainGUI.java</span></div><h1>AdminMainGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+/**
+ * @author Software Engineering teachers
+ */
+
+
+import javax.swing.*;
+
+import businessLogic.BLFacade;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+
+public class AdminMainGUI extends JFrame {
+	
+    private String sellerMail;
+	private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L29">	private JPanel jContentPane = null;</span>
+<span class="nc" id="L30">	private JButton jButtonRegister = null;</span>
+<span class="nc" id="L31">	private JButton jButtonLogin = null;</span>
+
+    private static BLFacade appFacadeInterface;
+	
+	public static BLFacade getBusinessLogic(){
+<span class="nc" id="L36">		return appFacadeInterface;</span>
+	}
+	 
+	public static void setBussinessLogic (BLFacade facade){
+<span class="nc" id="L40">		appFacadeInterface=facade;</span>
+<span class="nc" id="L41">	}</span>
+	protected JLabel jLabelSelectOption;
+	private JRadioButton rdbtnNewRadioButton;
+	private JRadioButton rdbtnNewRadioButton_1;
+	private JRadioButton rdbtnNewRadioButton_2;
+	private JPanel panel;
+<span class="nc" id="L47">	private final ButtonGroup buttonGroup = new ButtonGroup();</span>
+	
+	/**
+	 * This is the default constructor
+	 */
+	public AdminMainGUI(String mail) {
+<span class="nc" id="L53">		super();</span>
+
+<span class="nc" id="L55">		this.sellerMail=mail;</span>
+		
+<span class="nc" id="L57">		this.setSize(495, 290);</span>
+<span class="nc" id="L58">		jLabelSelectOption = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.SelectOption&quot;));</span>
+<span class="nc" id="L59">		jLabelSelectOption.setBounds(0, 0, 479, 50);</span>
+<span class="nc" id="L60">		jLabelSelectOption.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 13));</span>
+<span class="nc" id="L61">		jLabelSelectOption.setForeground(Color.BLACK);</span>
+<span class="nc" id="L62">		jLabelSelectOption.setHorizontalAlignment(SwingConstants.CENTER);</span>
+		
+<span class="nc" id="L64">		rdbtnNewRadioButton = new JRadioButton(&quot;English&quot;);</span>
+<span class="nc" id="L65">		rdbtnNewRadioButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L67">				Locale.setDefault(new Locale(&quot;en&quot;));</span>
+<span class="nc" id="L68">				paintAgain();				}</span>
+		});
+<span class="nc" id="L70">		buttonGroup.add(rdbtnNewRadioButton);</span>
+		
+<span class="nc" id="L72">		rdbtnNewRadioButton_1 = new JRadioButton(&quot;Euskara&quot;);</span>
+<span class="nc" id="L73">		rdbtnNewRadioButton_1.setSelected(true);</span>
+<span class="nc" id="L74">		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L76">				Locale.setDefault(new Locale(&quot;eus&quot;));</span>
+<span class="nc" id="L77">				paintAgain();				}</span>
+		});
+<span class="nc" id="L79">		buttonGroup.add(rdbtnNewRadioButton_1);</span>
+		
+<span class="nc" id="L81">		rdbtnNewRadioButton_2 = new JRadioButton(&quot;Castellano&quot;);</span>
+<span class="nc" id="L82">		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L84">				Locale.setDefault(new Locale(&quot;es&quot;));</span>
+<span class="nc" id="L85">				paintAgain();</span>
+<span class="nc" id="L86">			}</span>
+		});
+<span class="nc" id="L88">		buttonGroup.add(rdbtnNewRadioButton_2);</span>
+	
+<span class="nc" id="L90">		panel = new JPanel();</span>
+<span class="nc" id="L91">		panel.setBounds(0, 176, 479, 33);</span>
+<span class="nc" id="L92">		panel.add(rdbtnNewRadioButton_1);</span>
+<span class="nc" id="L93">		panel.add(rdbtnNewRadioButton_2);</span>
+<span class="nc" id="L94">		panel.add(rdbtnNewRadioButton);</span>
+		
+	
+		
+		
+<span class="nc" id="L99">		jButtonLogin = new JButton();</span>
+<span class="nc" id="L100">		jButtonLogin.setBounds(0, 100, 479, 50);</span>
+<span class="nc" id="L101">		jButtonLogin.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;AdminMainGUI.Login&quot;));</span>
+<span class="nc" id="L102">		jButtonLogin.addActionListener(new java.awt.event.ActionListener() {</span>
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+<span class="nc" id="L104">				JFrame a = new AdminLoginGUI();</span>
+
+<span class="nc" id="L106">				a.setVisible(true);</span>
+<span class="nc" id="L107">			}</span>
+		});
+		
+<span class="nc" id="L110">		jButtonRegister = new JButton();</span>
+<span class="nc" id="L111">		jButtonRegister.setBounds(0, 50, 479, 50);</span>
+<span class="nc" id="L112">		jButtonRegister.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;AdminMainGUI.Register&quot;));</span>
+<span class="nc" id="L113">		jButtonRegister.addActionListener(new java.awt.event.ActionListener() {</span>
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+<span class="nc" id="L115">				JFrame a = new AdminRegisterGUI();</span>
+
+<span class="nc" id="L117">				a.setVisible(true);</span>
+<span class="nc" id="L118">			}</span>
+		});
+		
+<span class="nc" id="L121">		jContentPane = new JPanel();</span>
+<span class="nc" id="L122">		jContentPane.setLayout(null);</span>
+<span class="nc" id="L123">		jContentPane.add(jLabelSelectOption);</span>
+<span class="nc" id="L124">		jContentPane.add(jButtonRegister);</span>
+<span class="nc" id="L125">		jContentPane.add(jButtonLogin);</span>
+<span class="nc" id="L126">		jContentPane.add(panel);</span>
+		
+		
+<span class="nc" id="L129">		setContentPane(jContentPane);</span>
+		
+		
+		
+<span class="nc" id="L133">		addWindowListener(new WindowAdapter() {</span>
+			@Override
+			public void windowClosing(WindowEvent e) {
+<span class="nc" id="L136">				System.exit(1);</span>
+<span class="nc" id="L137">			}</span>
+		});
+<span class="nc" id="L139">	}</span>
+	
+<span class="nc" id="L141">	public AdminMainGUI() {</span>
+		// TODO Auto-generated constructor stub
+<span class="nc" id="L143">	}</span>
+
+	private void paintAgain() {
+<span class="nc" id="L146">		jLabelSelectOption.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.SelectOption&quot;));</span>
+<span class="nc" id="L147">		jButtonLogin.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;AdminMainGUI.Login&quot;));</span>
+<span class="nc" id="L148">		jButtonRegister.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;AdminMainGUI.Register&quot;));</span>
+<span class="nc" id="L149">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.MainTitle&quot;)+ &quot;: &quot;+sellerMail);</span>
+<span class="nc" id="L150">	}</span>
+} // @jve:decl-index=0:visual-constraint=&quot;0,0&quot;
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfertaEginGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">OfertaEginGUI.java</span></div><h1>OfertaEginGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import businessLogic.BLFacade;
+import domain.Eskaera;
+import domain.Seller;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
+public class OfertaEginGUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	private Eskaera eskaera;
+	private Seller currentSeller;
+
+	/**
+	 * Create the frame.
+	 */
+<span class="nc" id="L31">	public OfertaEginGUI(Eskaera eskaera, Seller s) {</span>
+<span class="nc" id="L32">		this.eskaera = eskaera;</span>
+<span class="nc" id="L33">		this.currentSeller = s;</span>
+
+<span class="nc" id="L35">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L36">		setBounds(100, 100, 450, 300);</span>
+
+<span class="nc" id="L38">		contentPane = new JPanel();</span>
+<span class="nc" id="L39">		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L40">		setContentPane(contentPane);</span>
+<span class="nc" id="L41">		contentPane.setLayout(null);</span>
+
+<span class="nc" id="L43">		JLabel lblNewLabel = new JLabel(&quot;Cantidad:&quot;);</span>
+<span class="nc" id="L44">		lblNewLabel.setBounds(189, 62, 83, 14);</span>
+<span class="nc" id="L45">		contentPane.add(lblNewLabel);</span>
+
+<span class="nc" id="L47">		JLabel lblNewLabel_1 = new JLabel(&quot;Mensaje:&quot;);</span>
+<span class="nc" id="L48">		lblNewLabel_1.setBounds(38, 112, 154, 14);</span>
+<span class="nc" id="L49">		contentPane.add(lblNewLabel_1);</span>
+
+<span class="nc" id="L51">		textField = new JTextField();</span>
+<span class="nc" id="L52">		textField.setBounds(282, 59, 86, 20);</span>
+<span class="nc" id="L53">		contentPane.add(textField);</span>
+<span class="nc" id="L54">		textField.setColumns(10);</span>
+
+<span class="nc" id="L56">		textField_1 = new JTextField();</span>
+<span class="nc" id="L57">		textField_1.setBounds(184, 109, 191, 71);</span>
+<span class="nc" id="L58">		contentPane.add(textField_1);</span>
+<span class="nc" id="L59">		textField_1.setColumns(10);</span>
+
+<span class="nc" id="L61">		JButton btnNewButton = new JButton(&quot;Enviar&quot;);</span>
+<span class="nc" id="L62">		btnNewButton.setBounds(173, 227, 89, 23);</span>
+<span class="nc" id="L63">		contentPane.add(btnNewButton);</span>
+
+<span class="nc" id="L65">		JLabel lblNewLabel_2 = new JLabel(&quot;Oferta para: &quot; + eskaera.getTitle());</span>
+<span class="nc" id="L66">		lblNewLabel_2.setBounds(38, 21, 330, 14);</span>
+<span class="nc" id="L67">		contentPane.add(lblNewLabel_2);</span>
+
+<span class="nc" id="L69">		btnNewButton.addActionListener(e -&gt; eginOferta());</span>
+<span class="nc" id="L70">	}</span>
+
+	private void eginOferta() {
+		try {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">			if (eskaera == null) {</span>
+<span class="nc" id="L75">				JOptionPane.showMessageDialog(this, &quot;No se ha seleccionado ninguna eskaera&quot;);</span>
+<span class="nc" id="L76">				return;</span>
+			}
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">			if (currentSeller == null) {</span>
+<span class="nc" id="L80">				JOptionPane.showMessageDialog(this, &quot;No hay seller logueado&quot;);</span>
+<span class="nc" id="L81">				return;</span>
+			}
+
+<span class="nc" id="L84">			String amountText = textField.getText().trim();</span>
+<span class="nc" id="L85">			String message = textField_1.getText().trim();</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">			if (amountText.isEmpty()) {</span>
+<span class="nc" id="L88">				JOptionPane.showMessageDialog(this, &quot;Introduce una cantidad&quot;);</span>
+<span class="nc" id="L89">				return;</span>
+			}
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">			if (message.isEmpty()) {</span>
+<span class="nc" id="L93">				JOptionPane.showMessageDialog(this, &quot;Introduce un mensaje&quot;);</span>
+<span class="nc" id="L94">				return;</span>
+			}
+
+<span class="nc" id="L97">			float amount = Float.parseFloat(amountText.replace(&quot;,&quot;, &quot;.&quot;));</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			if (amount &lt;= 0) {</span>
+<span class="nc" id="L100">				JOptionPane.showMessageDialog(this, &quot;La cantidad debe ser mayor que 0&quot;);</span>
+<span class="nc" id="L101">				return;</span>
+			}
+
+<span class="nc" id="L104">			BLFacade facade = MainGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L106">			boolean result = facade.createEskaeraOferta(</span>
+<span class="nc" id="L107">					eskaera.getId(),</span>
+<span class="nc" id="L108">					currentSeller.getEmail(),</span>
+					amount,
+					message
+			);
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if (result) {</span>
+<span class="nc" id="L114">				JOptionPane.showMessageDialog(this, &quot;Oferta enviada correctamente&quot;);</span>
+<span class="nc" id="L115">				dispose();</span>
+			} else {
+<span class="nc" id="L117">				JOptionPane.showMessageDialog(this, &quot;No se ha podido enviar la oferta&quot;);</span>
+			}
+
+<span class="nc" id="L120">		} catch (NumberFormatException ex) {</span>
+<span class="nc" id="L121">			JOptionPane.showMessageDialog(this, &quot;Cantidad no válida&quot;);</span>
+<span class="nc" id="L122">		} catch (Exception ex) {</span>
+<span class="nc" id="L123">			ex.printStackTrace();</span>
+<span class="nc" id="L124">			JOptionPane.showMessageDialog(this, &quot;Error al enviar la oferta&quot;);</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc" id="L126">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,32 @@
+
+3dataAccess.ObjectdbManagerServer#%field_initializer=
+3src\main\java\dataAccess\ObjectdbManagerServer.java (""1*ˆ
+1
+__unknown_file (:8
+) (/
+%0javax.swing.JPanel"javax.swing.JPanelh
+f
+% (1
+%1"javax.swing.JPanel#<init>()V*6
+
+__unknown_file (
+
+%0javax.swing.JPanelÄ
+~
+ (24"
+ dataAccess.ObjectdbManagerServer"
+contentPanel"__id*6
+
+__unknown_file (
+
+%0javax.swing.JPanelç
+ä
+   (E4"
+ dataAccess.ObjectdbManagerServer"
+objectDbpath"__id*B
+
+__unknown_file (&$
+"src\\main\\resources\\objectdb.jar"
+ É(
+implicit returnB$"
+ dataAccess.ObjectdbManagerServer

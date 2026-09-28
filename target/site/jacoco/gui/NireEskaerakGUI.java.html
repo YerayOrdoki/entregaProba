@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NireEskaerakGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">NireEskaerakGUI.java</span></div><h1>NireEskaerakGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import businessLogic.BLFacade;
+import domain.Eskaera;
+import domain.Seller;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+public class NireEskaerakGUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	private JPanel contentPane;
+	private JTable tableEskaerak;
+	private DefaultTableModel tableModelEskaerak;
+
+<span class="nc" id="L24">	private JLabel jLabelTitle = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainEskaerakGUI.NireEskaerak&quot;));</span>
+<span class="nc" id="L25">	private JButton jButtonClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Close&quot;));</span>
+
+	private Seller currentSeller;
+
+<span class="nc" id="L29">	private String[] columnNamesEskaerak = new String[] {</span>
+<span class="nc" id="L30">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Title&quot;),</span>
+<span class="nc" id="L31">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ShowEskaeraGUI.Estado&quot;),</span>
+<span class="nc" id="L32">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QueryEskaerakGUI.Fecha&quot;)</span>
+	};
+
+<span class="nc" id="L35">	public NireEskaerakGUI(Seller currentSeller) {</span>
+<span class="nc" id="L36">		this.currentSeller = currentSeller;</span>
+
+<span class="nc" id="L38">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L39">		setBounds(100, 100, 650, 400);</span>
+<span class="nc" id="L40">		setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainEskaerakGUI.NireEskaerak&quot;));</span>
+
+<span class="nc" id="L42">		contentPane = new JPanel();</span>
+<span class="nc" id="L43">		setContentPane(contentPane);</span>
+<span class="nc" id="L44">		contentPane.setLayout(null);</span>
+
+<span class="nc" id="L46">		jLabelTitle.setBounds(40, 25, 300, 20);</span>
+<span class="nc" id="L47">		contentPane.add(jLabelTitle);</span>
+
+<span class="nc" id="L49">		tableModelEskaerak = new DefaultTableModel(null, columnNamesEskaerak) {</span>
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+<span class="nc" id="L54">				return false;</span>
+			}
+		};
+
+<span class="nc" id="L58">		tableEskaerak = new JTable(tableModelEskaerak);</span>
+
+<span class="nc" id="L60">		JScrollPane scrollPane = new JScrollPane(tableEskaerak);</span>
+<span class="nc" id="L61">		scrollPane.setBounds(40, 60, 550, 220);</span>
+<span class="nc" id="L62">		contentPane.add(scrollPane);</span>
+
+<span class="nc" id="L64">		jButtonClose.setBounds(260, 310, 100, 25);</span>
+<span class="nc" id="L65">		contentPane.add(jButtonClose);</span>
+
+<span class="nc" id="L67">		jButtonClose.addActionListener(e -&gt; dispose());</span>
+
+<span class="nc" id="L69">		tableEskaerak.addMouseListener(new MouseAdapter() {</span>
+			@Override
+			public void mouseClicked(MouseEvent e) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">				if (e.getClickCount() == 2) {</span>
+<span class="nc" id="L73">					int row = tableEskaerak.rowAtPoint(e.getPoint());</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">					if (row == -1) {</span>
+<span class="nc" id="L76">						return;</span>
+					}
+
+<span class="nc" id="L79">					Eskaera eskaera = (Eskaera) tableEskaerak.getModel().getValueAt(row, 3);</span>
+
+<span class="nc" id="L81">					EskaeraOffersGUI gui = new EskaeraOffersGUI(eskaera, currentSeller);</span>
+<span class="nc" id="L82">					gui.setVisible(true);</span>
+				}
+<span class="nc" id="L84">			}</span>
+		});
+
+<span class="nc" id="L87">		refresh();</span>
+<span class="nc" id="L88">	}</span>
+
+	private void refresh() {
+		try {
+<span class="nc" id="L92">			tableModelEskaerak.setDataVector(null, columnNamesEskaerak);</span>
+<span class="nc" id="L93">			tableModelEskaerak.setColumnCount(4);</span>
+
+<span class="nc" id="L95">			BLFacade facade = MainGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L97">			List&lt;Eskaera&gt; eskaerak = facade.getMyEskaerak(currentSeller);</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">			for (Eskaera eskaera : eskaerak) {</span>
+<span class="nc" id="L100">				Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+
+<span class="nc" id="L102">				row.add(eskaera.getTitle());</span>
+<span class="nc" id="L103">				row.add(eskaera.getStatus());</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">				if (eskaera.getCreationDate() != null) {</span>
+<span class="nc" id="L106">					row.add(new SimpleDateFormat(&quot;dd-MM-yyyy&quot;).format(eskaera.getCreationDate()));</span>
+				} else {
+<span class="nc" id="L108">					row.add(&quot;&quot;);</span>
+				}
+
+<span class="nc" id="L111">				row.add(eskaera);</span>
+
+<span class="nc" id="L113">				tableModelEskaerak.addRow(row);</span>
+<span class="nc" id="L114">			}</span>
+
+<span class="nc" id="L116">			tableEskaerak.getColumnModel().getColumn(0).setPreferredWidth(200);</span>
+<span class="nc" id="L117">			tableEskaerak.getColumnModel().getColumn(1).setPreferredWidth(100);</span>
+<span class="nc" id="L118">			tableEskaerak.getColumnModel().getColumn(2).setPreferredWidth(100);</span>
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">			if (tableEskaerak.getColumnModel().getColumnCount() &gt; 3) {</span>
+<span class="nc" id="L121">				tableEskaerak.getColumnModel().removeColumn(tableEskaerak.getColumnModel().getColumn(3));</span>
+			}
+
+<span class="nc" id="L124">		} catch (Exception e) {</span>
+<span class="nc" id="L125">			e.printStackTrace();</span>
+<span class="nc" id="L126">		}</span>
+<span class="nc" id="L127">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

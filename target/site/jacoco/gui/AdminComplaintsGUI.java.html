@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminComplaintsGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">AdminComplaintsGUI.java</span></div><h1>AdminComplaintsGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import businessLogic.BLFacade;
+import domain.Complaint;
+import domain.Sale;
+import domain.Seller;
+
+public class AdminComplaintsGUI extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+
+    private JTable table;
+    private DefaultTableModel tabla;
+    private JTextArea complaintText;
+    private JButton btnMarkManaged;
+
+<span class="nc" id="L25">    private List&lt;Complaint&gt; complaints = new ArrayList&lt;Complaint&gt;();</span>
+
+<span class="nc" id="L27">    public AdminComplaintsGUI() {</span>
+<span class="nc" id="L28">        setTitle(&quot;Complaints pendientes&quot;);</span>
+<span class="nc" id="L29">        setSize(800, 500);</span>
+<span class="nc" id="L30">        setLocationRelativeTo(null);</span>
+
+<span class="nc" id="L32">        tabla = new DefaultTableModel(</span>
+            new Object[] { &quot;Producto&quot;, &quot;Vendedor&quot;, &quot;Comprador&quot;, &quot;Fecha&quot;, &quot;Gestionada&quot; }, 
+            0
+        );
+
+<span class="nc" id="L37">        table = new JTable(tabla);</span>
+<span class="nc" id="L38">        complaintText = new JTextArea();</span>
+<span class="nc" id="L39">        complaintText.setEditable(false);</span>
+<span class="nc" id="L40">        complaintText.setLineWrap(true);</span>
+<span class="nc" id="L41">        complaintText.setWrapStyleWord(true);</span>
+
+<span class="nc" id="L43">        btnMarkManaged = new JButton(&quot;Marcar como gestionada&quot;);</span>
+
+<span class="nc" id="L45">        JPanel bottomPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L46">        bottomPanel.setBorder(BorderFactory.createTitledBorder(&quot;Queja&quot;));</span>
+<span class="nc" id="L47">        bottomPanel.add(new JScrollPane(complaintText), BorderLayout.CENTER);</span>
+<span class="nc" id="L48">        bottomPanel.add(btnMarkManaged, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L50">        setLayout(new GridLayout(2, 1));</span>
+<span class="nc" id="L51">        add(new JScrollPane(table));</span>
+<span class="nc" id="L52">        add(bottomPanel);</span>
+
+<span class="nc" id="L54">        loadComplaints();</span>
+
+<span class="nc" id="L56">        table.getSelectionModel().addListSelectionListener(e -&gt; {</span>
+<span class="nc" id="L57">            int row = table.getSelectedRow();</span>
+
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            if (row &gt;= 0 &amp;&amp; row &lt; complaints.size()) {</span>
+<span class="nc" id="L60">                Complaint c = complaints.get(row);</span>
+<span class="nc" id="L61">                complaintText.setText(c.getMessage());</span>
+            }
+<span class="nc" id="L63">        });</span>
+
+<span class="nc" id="L65">        btnMarkManaged.addActionListener(e -&gt; {</span>
+<span class="nc" id="L66">            int row = table.getSelectedRow();</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (row == -1) {</span>
+<span class="nc" id="L69">                return;</span>
+            }
+
+<span class="nc" id="L72">            Complaint c = complaints.get(row);</span>
+
+<span class="nc" id="L74">            BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L75">            facade.markComplaintAsManaged(c.getID());</span>
+
+<span class="nc" id="L77">            JOptionPane.showMessageDialog(this, &quot;Queja marcada como gestionada&quot;);</span>
+
+<span class="nc" id="L79">            loadComplaints();</span>
+<span class="nc" id="L80">            complaintText.setText(&quot;&quot;);</span>
+<span class="nc" id="L81">        });</span>
+<span class="nc" id="L82">    }</span>
+
+    private void loadComplaints() {
+<span class="nc" id="L85">        BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L86">        complaints = facade.getUnmanagedComplaints();</span>
+<span class="nc" id="L87">        tabla.setRowCount(0);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (Complaint c : complaints) {</span>
+<span class="nc" id="L89">            Sale sale = c.getSale();</span>
+<span class="nc" id="L90">            Seller complainant = c.getComplainant();</span>
+<span class="nc" id="L91">            String productTitle = &quot;&quot;;</span>
+<span class="nc" id="L92">            String sellerEmail = &quot;&quot;;</span>
+<span class="nc" id="L93">            String complainantEmail = &quot;&quot;;</span>
+<span class="nc" id="L94">            String managedText = &quot;&quot;;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (sale != null) {</span>
+<span class="nc" id="L96">                productTitle = sale.getTitle();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if (sale.getSeller() != null) {</span>
+<span class="nc" id="L98">                    sellerEmail = sale.getSeller().getEmail();</span>
+                }
+            }
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (complainant != null) {</span>
+<span class="nc" id="L102">                complainantEmail = complainant.getEmail();</span>
+            }
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (c.isManaged()) {</span>
+<span class="nc" id="L105">                managedText = &quot;Sí&quot;;</span>
+            } else {
+<span class="nc" id="L107">                managedText = &quot;No&quot;;</span>
+            }
+<span class="nc" id="L109">            tabla.addRow(new Object[] {</span>
+                productTitle,
+                sellerEmail,
+                complainantEmail,
+<span class="nc" id="L113">                c.getDate(),</span>
+                managedText
+            });
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

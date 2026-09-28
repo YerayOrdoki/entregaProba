@@ -1,0 +1,49 @@
+
+%gui.UserHistoryGUI#%field_initializer/
+%src\main\java\gui\UserHistoryGUI.java ("1*ç
+1
+__unknown_file (<:
+& (-
+%0javax.swing.JButton"javax.swing.JButton¡
+ž
+" (z
+%1"/javax.swing.JButton#<init>(Ljava/lang/String;)V*7
+
+__unknown_file (
+
+%0javax.swing.JButton*"
+
+__unknown_file (
+""r
+p
+ ({%
+gui.UserHistoryGUI"
+btnReclamar"__id*7
+
+__unknown_file (
+
+%0javax.swing.JButton<:
+% (,
+%2javax.swing.JButton"javax.swing.JButton¡
+ž
+! (v
+%3"/javax.swing.JButton#<init>(Ljava/lang/String;)V*7
+
+__unknown_file (
+
+%2javax.swing.JButton*"
+
+__unknown_file (
+""q
+o
+ (w$
+gui.UserHistoryGUI"
+
+btnValorar"__id*7
+
+__unknown_file (
+
+%2javax.swing.JButton"
+ f(
+implicit returnB
+gui.UserHistoryGUI

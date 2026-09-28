@@ -1,0 +1,59 @@
+
+IdataAccess.DataAccess#getEskaeraByID(Ljava/lang/Integer;)Ldomain/Eskaera;4
+(src\main\java\dataAccess\DataAccess.java‹ ‹("3*%
+2
+› ›("
+
+› ›(
+""*û
+3
+› ›(}
+{
+
+› ›(
+%0boolean"	__compare*
+
+› ›(
+
+==*'
+
+› ›(
+
+idjava.lang.Integer*
+
+› ›(
+""*
+1
+2*Å
+1
+ﬁ	 ﬁ(z
+x
+
+ﬁ	 ﬁ(%
+%1javax.persistence.EntityManager"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+dbÕ 
+
+ﬁ	 ﬁ(#
+%2domain.Eskaera"[javax.persistence.EntityManager#find(Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;*C
+
+__unknown_file ('
+%
+%1javax.persistence.EntityManager*"
+
+__unknown_file (
+""*5
+
+__unknown_file (
+
+idjava.lang.Integer2)find(Ljava/lang/Class;Ljava/lang/Object;)"$
+
+ﬁ ﬁ($
+
+%2domain.Eskaera:%
+
+‹ ‹()
+idjava.lang.IntegerB
+dataAccess.DataAccessH

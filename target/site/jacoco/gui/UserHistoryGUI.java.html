@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserHistoryGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">UserHistoryGUI.java</span></div><h1>UserHistoryGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import domain.*;
+import businessLogic.BLFacade;
+
+import java.awt.*;
+import java.util.ResourceBundle;
+import java.util.List;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class UserHistoryGUI extends JFrame {
+    private JTable tableSales, tableBoughts;
+    private DefaultTableModel modelSales, modelBoughts;
+<span class="nc" id="L17">    private JButton btnReclamar = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Complaint&quot;));</span>
+<span class="nc" id="L18">    private JButton btnValorar = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Review&quot;));</span>
+
+<span class="nc" id="L20">    public UserHistoryGUI(Seller s) {</span>
+<span class="nc" id="L21">        BLFacade facade = MainGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L23">        List&lt;Sale&gt; sales = facade.getSalesBySeller(s.getEmail());</span>
+<span class="nc" id="L24">        List&lt;Sale&gt; boughts = facade.getBoughtsBySeller(s.getEmail());</span>
+
+<span class="nc" id="L26">        setTitle(&quot;Historial: &quot; + s.getName());</span>
+<span class="nc" id="L27">        setSize(700, 600);</span>
+<span class="nc" id="L28">        getContentPane().setLayout(new GridLayout(2, 1)); </span>
+
+<span class="nc" id="L30">        JPanel panelSales = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L31">        panelSales.setBorder(BorderFactory.createTitledBorder(&quot;Sales&quot;));</span>
+<span class="nc" id="L32">        modelSales = new DefaultTableModel(new Object[]{</span>
+<span class="nc" id="L33">                ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Product&quot;),</span>
+<span class="nc" id="L34">                ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Price&quot;),</span>
+<span class="nc" id="L35">                ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Status&quot;)</span>
+        }, 0);
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        for (Sale sale : sales) {</span>
+<span class="nc" id="L39">            modelSales.addRow(new Object[]{</span>
+<span class="nc" id="L40">                    sale.getTitle(),</span>
+<span class="nc" id="L41">                    sale.getPrice() + &quot;€&quot;,</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">                    sale.getStatus() == 10</span>
+<span class="nc" id="L43">                            ? ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Sold&quot;)</span>
+<span class="nc" id="L44">                            : ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.OnSale&quot;)</span>
+            });
+<span class="nc" id="L46">        }</span>
+
+<span class="nc" id="L48">        tableSales = new JTable(modelSales);</span>
+<span class="nc" id="L49">        panelSales.add(new JScrollPane(tableSales), BorderLayout.CENTER);</span>
+
+<span class="nc" id="L51">        JPanel panelBoughts = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L52">        panelBoughts.setBorder(BorderFactory.createTitledBorder(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.MyBoughts&quot;)));</span>
+<span class="nc" id="L53">        modelBoughts = new DefaultTableModel(new Object[]{</span>
+<span class="nc" id="L54">                ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Product&quot;),</span>
+<span class="nc" id="L55">                ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Price&quot;)</span>
+        }, 0);
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Sale bought : boughts) {</span>
+<span class="nc" id="L59">            modelBoughts.addRow(new Object[]{</span>
+<span class="nc" id="L60">                    bought.getTitle(),</span>
+<span class="nc" id="L61">                    bought.getPrice() + &quot;€&quot;</span>
+            });
+<span class="nc" id="L63">        }</span>
+
+<span class="nc" id="L65">        tableBoughts = new JTable(modelBoughts);</span>
+<span class="nc" id="L66">        panelBoughts.add(new JScrollPane(tableBoughts), BorderLayout.CENTER);</span>
+
+<span class="nc" id="L68">        JPanel panelAccionesCompras = new JPanel(new FlowLayout());</span>
+<span class="nc" id="L69">        panelAccionesCompras.add(btnReclamar);</span>
+<span class="nc" id="L70">        panelAccionesCompras.add(btnValorar);</span>
+<span class="nc" id="L71">        panelBoughts.add(panelAccionesCompras, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L73">        btnReclamar.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L75">                int fila = tableBoughts.getSelectedRow();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (fila != -1) {</span>
+<span class="nc" id="L77">                    Sale ventaSeleccionada = boughts.get(fila);</span>
+<span class="nc" id="L78">                    JFrame recGUI = new ComplaintGUI(s, ventaSeleccionada);</span>
+<span class="nc" id="L79">                    recGUI.setVisible(true);</span>
+<span class="nc" id="L80">                } else {</span>
+<span class="nc" id="L81">                    JOptionPane.showMessageDialog(null, ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.Select&quot;));</span>
+                }
+<span class="nc" id="L83">            }</span>
+        });
+
+<span class="nc" id="L86">        btnValorar.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L88">                int fila = tableBoughts.getSelectedRow();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                if (fila != -1) {</span>
+<span class="nc" id="L90">                    Sale ventaSeleccionada = boughts.get(fila);</span>
+<span class="nc" id="L91">                    JFrame revGUI = new ReviewGUI(s, ventaSeleccionada);</span>
+<span class="nc" id="L92">                    revGUI.setVisible(true);</span>
+<span class="nc" id="L93">                } else {</span>
+<span class="nc" id="L94">                    JOptionPane.showMessageDialog(null, ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;UserHistoryGUI.SelectASeller&quot;));</span>
+                }
+<span class="nc" id="L96">            }</span>
+        });
+
+<span class="nc" id="L99">        getContentPane().add(panelSales);</span>
+<span class="nc" id="L100">        getContentPane().add(panelBoughts);</span>
+<span class="nc" id="L101">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

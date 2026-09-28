@@ -1,0 +1,20 @@
+
+Fdomain.IntegerAdapter#unmarshal(Ljava/lang/String;)Ljava/lang/Integer;2
+(src\main\java\domain\IntegerAdapter.java ("1*Ú
+1 (±
+®
+ ("	
+%0int"/java.lang.Integer#parseInt(Ljava/lang/String;)I*1
+
+__unknown_file ("
+java.lang.Integer*3
+
+__unknown_file (
+
+sjava.lang.String"
+ (#
+	
+%0int:!
+ (%
+sjava.lang.StringB
+domain.IntegerAdapterH

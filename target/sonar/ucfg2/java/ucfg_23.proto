@@ -1,0 +1,44 @@
+
+>dataAccess.DataAccess#getUnmanagedComplaints()Ljava/util/List;4
+(src\main\java\dataAccess\DataAccess.javaÀ À(."1*—
+1
+Á# Á(%z
+x
+
+Á# Á(%%
+%0javax.persistence.EntityManager"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+db§¤
+Á# Á(‹"
+%1javax.persistence.TypedQuery"njavax.persistence.EntityManager#createQuery(Ljava/lang/String;Ljava/lang/Class;)Ljavax/persistence/TypedQuery;*C
+
+__unknown_file ('
+%
+%0javax.persistence.EntityManager*f
+
+__unknown_file (JH
+FSELECT c FROM Complaint c WHERE c.managed = false ORDER BY c.date DESC*"
+
+__unknown_file (
+""20createQuery(Ljava/lang/String;Ljava/lang/Class;)~
+|
+Á Á(Œ%
+queryjavax.persistence.TypedQuery"__id*@
+
+__unknown_file ($
+"
+%1javax.persistence.TypedQuery¹¶
+
+Â Â(!
+%2java.util.List"<javax.persistence.TypedQuery#getResultList()Ljava/util/List;*C
+
+__unknown_file ('
+%
+queryjavax.persistence.TypedQuery2getResultList()"$
+
+Â Â("
+
+%2java.util.ListB
+dataAccess.DataAccessH

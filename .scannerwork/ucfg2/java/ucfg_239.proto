@@ -1,0 +1,95 @@
+
+`businessLogic.BLFacadeImplementation#createSaleFromEskaeraOfer(Ljava/lang/Integer;)Ldomain/Sale;C
+7src\main\java\businessLogic\BLFacadeImplementation.java– –()"startingBlock*ƒ
+startingBlock
+–) –(5ƒ
+€
+
+• •(
+%6"
+__annotate*)
+
+__unknown_file (
+	WebMethod*5
+
+__unknown_file (
+
+idjava.lang.IntegerY
+W
+
+–2 –(4
+idjava.lang.Integer"__annotation*"
+
+__unknown_file (
+
+%6*
+1*À
+1
+— —(‡
+„
+
+— —(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+
+— —(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()‡
+„
+
+˜ ˜(
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager—”
+
+˜ ˜(5
+%3domain.Sale"QdataAccess.DataAccess#createSaleFromEskaeraOfer(Ljava/lang/Integer;)Ldomain/Sale;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*5
+
+__unknown_file (
+
+idjava.lang.Integer2.createSaleFromEskaeraOfer(Ljava/lang/Integer;)W
+U
+
+˜ ˜(6
+sdomain.Sale"__id*/
+
+__unknown_file (
+
+%3domain.Sale‡
+„
+
+™ ™(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager~|
+
+™ ™(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()" 
+
+š š(
+
+sdomain.Sale:%
+
+–* –(4
+idjava.lang.IntegerB(&
+$businessLogic.BLFacadeImplementationH

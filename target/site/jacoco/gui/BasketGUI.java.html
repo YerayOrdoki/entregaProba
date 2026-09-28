@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasketGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">BasketGUI.java</span></div><h1>BasketGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.util.*;
+import businessLogic.BLFacade;
+import domain.Sale;
+import domain.Seller;
+
+public class BasketGUI extends JFrame {
+    private JTable table;
+    private DefaultTableModel model;
+    private List&lt;Sale&gt; basketItems;
+    private Seller currentUser;
+
+<span class="nc" id="L29">    public BasketGUI(Seller user) { </span>
+<span class="nc" id="L30">        this.currentUser = user;</span>
+<span class="nc" id="L31">        BLFacade facade = MainGUI.getBusinessLogic();</span>
+        
+       
+<span class="nc" id="L34">        this.basketItems = facade.getBasket(user.getEmail()); </span>
+        
+<span class="nc" id="L36">        setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.MyBasket&quot;));</span>
+<span class="nc" id="L37">        setSize(500, 400);</span>
+<span class="nc" id="L38">        setLayout(new BorderLayout());</span>
+
+        
+<span class="nc" id="L41">        model = new DefaultTableModel(new Object[]{ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.Product&quot;), ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.Price&quot;)}, 0);</span>
+        
+       
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        for(Sale s : basketItems) {</span>
+<span class="nc" id="L45">            model.addRow(new Object[]{s.getTitle(), s.getPrice()});</span>
+<span class="nc" id="L46">        }</span>
+        
+<span class="nc" id="L48">        table = new JTable(model);</span>
+<span class="nc" id="L49">        add(new JScrollPane(table), BorderLayout.CENTER);</span>
+
+<span class="nc" id="L51">        JButton btnBuy = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.Checkout&quot;));</span>
+<span class="nc" id="L52">        btnBuy.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (basketItems.isEmpty()) {</span>
+<span class="nc" id="L54">                JOptionPane.showMessageDialog(this, ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.EmptyBasket&quot;));</span>
+<span class="nc" id="L55">                return;</span>
+            }
+            try {
+<span class="nc" id="L58">                BLFacade facade1 = MainGUI.getBusinessLogic();</span>
+                
+<span class="nc" id="L60">                facade1.buyMultipleSales(basketItems, currentUser);</span>
+                
+            
+<span class="nc" id="L63">                facade1.clearBasket(currentUser.getEmail());</span>
+                
+<span class="nc" id="L65">                JOptionPane.showMessageDialog(this, ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.SuccessBuy&quot;));</span>
+<span class="nc" id="L66">                basketItems.clear();</span>
+<span class="nc" id="L67">                dispose();</span>
+<span class="nc" id="L68">            } catch (Exception ex) {</span>
+<span class="nc" id="L69">                JOptionPane.showMessageDialog(this, ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;BasketGUI.Error&quot;) + ex.getMessage());</span>
+<span class="nc" id="L70">            }</span>
+<span class="nc" id="L71">        });</span>
+<span class="nc" id="L72">        add(btnBuy, BorderLayout.SOUTH);</span>
+<span class="nc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

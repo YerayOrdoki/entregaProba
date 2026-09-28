@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainGUIErregistratua.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">MainGUIErregistratua.java</span></div><h1>MainGUIErregistratua.java</h1><pre class="source lang-java linenums">package gui;
+
+/**
+ * @author Software Engineering teachers
+ */
+
+
+import javax.swing.*;
+
+import businessLogic.BLFacade;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import domain.Seller; 
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+
+public class MainGUIErregistratua extends JFrame {
+	
+	private Seller currentUser;
+    private String sellerMail;
+	private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L32">	private JPanel jContentPane = null;</span>
+<span class="nc" id="L33">	private JButton jButtonCreateQuery = null;</span>
+<span class="nc" id="L34">	private JButton jButtonQueryQueries = null;</span>
+	private JButton btnProfile;
+	private JButton btndirua;
+	private JButton btnEskaeraEgin;
+	private JButton btnCarrito;
+
+    private static BLFacade appFacadeInterface;
+	
+	public static BLFacade getBusinessLogic(){
+<span class="nc" id="L43">		return appFacadeInterface;</span>
+	}
+	public Seller getCurrentUser() {
+<span class="nc" id="L46">		return this.currentUser;</span>
+	}
+	 
+	public static void setBussinessLogic (BLFacade facade){
+<span class="nc" id="L50">		appFacadeInterface=facade;</span>
+<span class="nc" id="L51">	}</span>
+	protected JLabel jLabelSelectOption;
+	private JRadioButton rdbtnNewRadioButton;
+	private JRadioButton rdbtnNewRadioButton_1;
+	private JRadioButton rdbtnNewRadioButton_2;
+	private JPanel panel;
+<span class="nc" id="L57">	private final ButtonGroup buttonGroup = new ButtonGroup();</span>
+	private JButton btnhistory;
+
+	
+	/**
+	 * This is the default constructor
+	 */
+	public MainGUIErregistratua(String mail, Seller curr) {
+<span class="nc" id="L65">		super();</span>
+<span class="nc" id="L66">		this.currentUser = curr;</span>
+
+<span class="nc" id="L68">		this.sellerMail=mail;</span>
+		
+<span class="nc" id="L70">		this.setSize(666, 494);</span>
+<span class="nc" id="L71">		jLabelSelectOption = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.SelectOption&quot;));</span>
+<span class="nc" id="L72">		jLabelSelectOption.setBounds(0, 1, 650, 40);</span>
+<span class="nc" id="L73">		jLabelSelectOption.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 13));</span>
+<span class="nc" id="L74">		jLabelSelectOption.setForeground(Color.BLACK);</span>
+<span class="nc" id="L75">		jLabelSelectOption.setHorizontalAlignment(SwingConstants.CENTER);</span>
+		
+<span class="nc" id="L77">		btnProfile = new JButton();</span>
+<span class="nc" id="L78">		btnProfile.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.ChangeProfile&quot;));</span>
+		
+<span class="nc" id="L80">		btndirua = new JButton(); </span>
+<span class="nc" id="L81">		btndirua.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.Money&quot;));</span>
+		
+<span class="nc" id="L83">		rdbtnNewRadioButton = new JRadioButton(&quot;English&quot;);</span>
+<span class="nc" id="L84">		rdbtnNewRadioButton.setBounds(360, 7, 57, 21);</span>
+<span class="nc" id="L85">		rdbtnNewRadioButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L87">				Locale.setDefault(new Locale(&quot;en&quot;));</span>
+<span class="nc" id="L88">				paintAgain();				}</span>
+		});
+<span class="nc" id="L90">		buttonGroup.add(rdbtnNewRadioButton);</span>
+		
+<span class="nc" id="L92">		rdbtnNewRadioButton_1 = new JRadioButton(&quot;Euskara&quot;);</span>
+<span class="nc" id="L93">		rdbtnNewRadioButton_1.setBounds(216, 7, 61, 21);</span>
+<span class="nc" id="L94">		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L96">				Locale.setDefault(new Locale(&quot;eus&quot;));</span>
+<span class="nc" id="L97">				paintAgain();				}</span>
+		});
+<span class="nc" id="L99">		buttonGroup.add(rdbtnNewRadioButton_1);</span>
+		
+<span class="nc" id="L101">		rdbtnNewRadioButton_2 = new JRadioButton(&quot;Castellano&quot;);</span>
+<span class="nc" id="L102">		rdbtnNewRadioButton_2.setBounds(282, 7, 73, 21);</span>
+<span class="nc" id="L103">		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L105">				Locale.setDefault(new Locale(&quot;es&quot;));</span>
+<span class="nc" id="L106">				paintAgain();</span>
+<span class="nc" id="L107">			}</span>
+		});
+<span class="nc" id="L109">		buttonGroup.add(rdbtnNewRadioButton_2);</span>
+	
+<span class="nc" id="L111">		panel = new JPanel();</span>
+<span class="nc" id="L112">		panel.setBounds(0, 340, 650, 113);</span>
+<span class="nc" id="L113">		panel.setLayout(null);</span>
+<span class="nc" id="L114">		panel.add(rdbtnNewRadioButton_1);</span>
+<span class="nc" id="L115">		panel.add(rdbtnNewRadioButton_2);</span>
+<span class="nc" id="L116">		panel.add(rdbtnNewRadioButton);</span>
+		
+		
+<span class="nc" id="L119">		jButtonCreateQuery = new JButton();</span>
+<span class="nc" id="L120">		jButtonCreateQuery.setBounds(0, 52, 650, 70);</span>
+<span class="nc" id="L121">		jButtonCreateQuery.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.CreateSale&quot;));</span>
+<span class="nc" id="L122">		jButtonCreateQuery.addActionListener(new java.awt.event.ActionListener() {</span>
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+<span class="nc" id="L124">				JFrame a = new CreateSaleGUI(sellerMail);</span>
+<span class="nc" id="L125">				a.setVisible(true);</span>
+<span class="nc" id="L126">			}</span>
+		});
+<span class="nc" id="L128">		selectCurrentLanguage();</span>
+<span class="nc" id="L129">		jButtonQueryQueries = new JButton();</span>
+<span class="nc" id="L130">		jButtonQueryQueries.setBounds(0, 119, 650, 70);</span>
+<span class="nc" id="L131">		jButtonQueryQueries.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.QuerySales&quot;));</span>
+<span class="nc" id="L132">		jButtonQueryQueries.addActionListener(new java.awt.event.ActionListener() {</span>
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+<span class="nc" id="L134">				JFrame a = new QuerySalesGUI(sellerMail, curr);</span>
+
+<span class="nc" id="L136">				a.setVisible(true);</span>
+<span class="nc" id="L137">			}</span>
+		});
+		
+<span class="nc" id="L140">		jContentPane = new JPanel();</span>
+<span class="nc" id="L141">		jContentPane.setLayout(null);</span>
+<span class="nc" id="L142">		jContentPane.add(jLabelSelectOption);</span>
+<span class="nc" id="L143">		jContentPane.add(jButtonCreateQuery);</span>
+<span class="nc" id="L144">		jContentPane.add(jButtonQueryQueries);</span>
+<span class="nc" id="L145">		jContentPane.add(panel);</span>
+		
+		
+<span class="nc" id="L148">		btnProfile.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L150">				BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L151">		        Seller m = facade.getSellerByEmail(curr.getEmail());</span>
+<span class="nc" id="L152">				JFrame a = new ProfileGUI(m);</span>
+<span class="nc" id="L153">				a.setVisible(true);</span>
+<span class="nc" id="L154">			}</span>
+		});
+<span class="nc" id="L156">		btnProfile.setBounds(21, 33, 163, 20);</span>
+<span class="nc" id="L157">		panel.add(btnProfile);</span>
+		
+		
+<span class="nc" id="L160">		btndirua.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L162">				BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L163">				Seller m = facade.getSellerByEmail(curr.getEmail());</span>
+<span class="nc" id="L164">				JFrame a = new MoneyGUI(m);</span>
+<span class="nc" id="L165">				a.setVisible(true);</span>
+				
+<span class="nc" id="L167">			}</span>
+		});
+<span class="nc" id="L169">		btndirua.setBounds(444, 35, 174, 20);</span>
+<span class="nc" id="L170">		panel.add(btndirua);</span>
+		
+<span class="nc" id="L172">		btnhistory = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIHistory&quot;)); </span>
+<span class="nc" id="L173">		btnhistory.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L175">				BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L176">		        Seller updatedSeller = facade.getSellerByEmail(curr.getEmail());</span>
+
+<span class="nc" id="L178">		        UserHistoryGUI historyWin = new UserHistoryGUI(updatedSeller);</span>
+<span class="nc" id="L179">		        historyWin.setVisible(true);</span>
+<span class="nc" id="L180">			}</span>
+		});
+<span class="nc" id="L182">		btnhistory.setBounds(226, 35, 174, 20);</span>
+<span class="nc" id="L183">		panel.add(btnhistory);</span>
+		
+<span class="nc" id="L185">		btnCarrito = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIErregistratua.Carrito&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L186">		btnCarrito.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L188">				JFrame basketWin = new BasketGUI(currentUser); </span>
+<span class="nc" id="L189">		        basketWin.setVisible(true);</span>
+<span class="nc" id="L190">			}</span>
+		});
+<span class="nc" id="L192">		btnCarrito.setBounds(282, 79, 89, 23);</span>
+<span class="nc" id="L193">		panel.add(btnCarrito);</span>
+		
+		
+		
+		
+<span class="nc" id="L198">		setContentPane(jContentPane);</span>
+		
+<span class="nc" id="L200">		btnEskaeraEgin = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIErregistratua.Eskaerak&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L201">		btnEskaeraEgin.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L203">				MainEskaerakGUI eskaeraGUI = new MainEskaerakGUI(currentUser);</span>
+<span class="nc" id="L204">				eskaeraGUI.setVisible(true);</span>
+<span class="nc" id="L205">			}</span>
+			
+		});
+<span class="nc" id="L208">		btnEskaeraEgin.setBounds(0, 187, 650, 70);</span>
+<span class="nc" id="L209">		jContentPane.add(btnEskaeraEgin);</span>
+<span class="nc" id="L210">		setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.MainTitle&quot;) +&quot;: &quot;+sellerMail);</span>
+		
+<span class="nc" id="L212">		addWindowListener(new WindowAdapter() {</span>
+			@Override
+			public void windowClosing(WindowEvent e) {
+<span class="nc" id="L215">				System.exit(1);</span>
+<span class="nc" id="L216">			}</span>
+		});
+<span class="nc" id="L218">	}</span>
+	private void selectCurrentLanguage() {
+<span class="nc" id="L220">		String lang = Locale.getDefault().getLanguage();</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (&quot;en&quot;.equals(lang)) {</span>
+<span class="nc" id="L223">			rdbtnNewRadioButton.setSelected(true);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		} else if (&quot;es&quot;.equals(lang)) {</span>
+<span class="nc" id="L225">			rdbtnNewRadioButton_2.setSelected(true);</span>
+<span class="nc bnc" id="L226" title="All 4 branches missed.">		} else if (&quot;eus&quot;.equals(lang) || &quot;eu&quot;.equals(lang)) {</span>
+<span class="nc" id="L227">			rdbtnNewRadioButton_1.setSelected(true);</span>
+		}
+<span class="nc" id="L229">	}</span>
+	
+	private void paintAgain() {
+<span class="nc" id="L232">		btnProfile.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.ChangeProfile&quot;));</span>
+<span class="nc" id="L233">		jLabelSelectOption.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.SelectOption&quot;));</span>
+<span class="nc" id="L234">		jButtonQueryQueries.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.QuerySales&quot;));</span>
+<span class="nc" id="L235">		jButtonCreateQuery.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.CreateSale&quot;));</span>
+<span class="nc" id="L236">		btndirua.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.Money&quot;));</span>
+<span class="nc" id="L237">		btnhistory.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIHistory&quot;));</span>
+<span class="nc" id="L238">		btnEskaeraEgin.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIErregistratua.Eskaerak&quot;));</span>
+<span class="nc" id="L239">		btnCarrito.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUIErregistratua.Carrito&quot;));</span>
+
+<span class="nc" id="L241">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.MainTitle&quot;)+ &quot;: &quot;+sellerMail);</span>
+<span class="nc" id="L242">	}</span>
+} // @jve:decl-index=0:visual-constraint=&quot;0,0&quot;
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

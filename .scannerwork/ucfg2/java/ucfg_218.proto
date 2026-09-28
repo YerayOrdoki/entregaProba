@@ -1,0 +1,106 @@
+
+[businessLogic.BLFacadeImplementation#isAdminLogged(ILjava/lang/String;)LdataAccess/Emaitza;A
+7src\main\java\businessLogic\BLFacadeImplementation.javaz z(+"startingBlock*Ω
+startingBlockz+ z(@r
+p
+z z(
+%6"
+__annotate*)
+
+__unknown_file (
+	WebMethod*'
+
+__unknown_file (
+	
+IDintI
+G
+z0 z(2	
+IDint"__annotation*"
+
+__unknown_file (
+
+%6Å
+
+z z(
+%7"
+__annotate*)
+
+__unknown_file (
+	WebMethod*6
+
+__unknown_file (
+
+passjava.lang.StringX
+V
+z; z(?
+passjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%7*
+1*„
+1{ {(Ö
+Ç
+{ {(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerzx
+{ {(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()Ö
+Ç
+| |(
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerµ≤
+| |(2
+%3dataAccess.Emaitza"LdataAccess.DataAccess#isAdminLogged(ILjava/lang/String;)LdataAccess/Emaitza;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*'
+
+__unknown_file (
+	
+IDint*6
+
+__unknown_file (
+
+passjava.lang.String2"isAdminLogged(ILjava/lang/String;)c
+a
+| |(3
+bdataAccess.Emaitza"__id*6
+
+__unknown_file (
+
+%3dataAccess.EmaitzaÖ
+Ç
+} }(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+} }(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"%
+~ ~(
+
+bdataAccess.Emaitza:
+z, z(3	
+IDint:$
+z4 z(?
+passjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

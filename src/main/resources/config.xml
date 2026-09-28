@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <businessLogic local="false"> 
+	<businessLogicNode>0.0.0.0</businessLogicNode>
+	<businessLogicPort>1099</businessLogicPort>
+	<businessLogicName>Market</businessLogicName>
+  </businessLogic>
+  <database local="true" initialize="false">
+	<databaseNode>0.0.0.0</databaseNode>
+	<dbFilename>src/main/resources/products.temp</dbFilename>
+	<databasePort>6136</databasePort>
+	<user>admin</user>
+	<password>admin</password>
+  </database>
+  <locale>eus</locale>
+</config>

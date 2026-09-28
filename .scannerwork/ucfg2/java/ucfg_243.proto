@@ -1,0 +1,95 @@
+
+[businessLogic.BLFacadeImplementation#getReviewsBySeller(Ljava/lang/String;)Ljava/util/List;C
+7src\main\java\businessLogic\BLFacadeImplementation.java≥ ≥(*"startingBlock*ê
+startingBlock
+≥* ≥(8é
+ã
+
+≤ ≤(
+%6"
+__annotate*2
+
+__unknown_file (
+java.lang.Override*7
+
+__unknown_file (
+
+emailjava.lang.String[
+Y
+
+≥2 ≥(7
+emailjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%6*
+1*¡
+1
+¥ ¥(á
+Ñ
+
+¥ ¥(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+
+¥ ¥(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()á
+Ñ
+
+µ µ( 
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerèå
+
+µ µ(:
+%3java.util.List"LdataAccess.DataAccess#getReviewsBySeller(Ljava/lang/String;)Ljava/util/List;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*7
+
+__unknown_file (
+
+emailjava.lang.String2&getReviewsBySeller(Ljava/lang/String;)]
+[
+
+µ µ(;
+ajava.util.List"__id*2
+
+__unknown_file (
+
+%3java.util.Listá
+Ñ
+
+∂ ∂(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager~|
+
+∂ ∂(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"#
+
+∑ ∑(
+
+ajava.util.List:'
+
+≥+ ≥(7
+emailjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

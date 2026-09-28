@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegisterGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">RegisterGUI.java</span></div><h1>RegisterGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import dataAccess.Emaitza;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import domain.Seller;
+
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Rectangle;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
+import java.awt.event.ActionEvent;
+import businessLogic.*;
+import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
+
+public class RegisterGUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+<span class="nc" id="L30">	private JLabel jLabelMsg = new JLabel();</span>
+	private JTextField registerUser;
+	private JPasswordField registerPassword;
+	private JPasswordField registerRepeatPassword; 
+	private JTextField registerEmail;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+<span class="nc" id="L40">		EventQueue.invokeLater(new Runnable() {</span>
+			public void run() {
+				try {
+<span class="nc" id="L43">					RegisterGUI frame = new RegisterGUI();</span>
+<span class="nc" id="L44">					frame.setVisible(true);</span>
+<span class="nc" id="L45">				} catch (Exception e) {</span>
+<span class="nc" id="L46">					e.printStackTrace();</span>
+<span class="nc" id="L47">				}</span>
+<span class="nc" id="L48">			}</span>
+		});
+<span class="nc" id="L50">	}</span>
+
+	/**
+	 * Create the frame.
+	 */
+<span class="nc" id="L55">	public RegisterGUI() {</span>
+<span class="nc" id="L56">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L57">		setBounds(100, 100, 450, 300);</span>
+<span class="nc" id="L58">		contentPane = new JPanel();</span>
+<span class="nc" id="L59">		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L60">		setContentPane(contentPane);</span>
+<span class="nc" id="L61">		contentPane.setLayout(null);</span>
+		
+<span class="nc" id="L63">		JLabel registerUserText = new JLabel(&quot;User:&quot;);</span>
+<span class="nc" id="L64">		registerUserText.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L65">		registerUserText.setBounds(20, 52, 187, 49);</span>
+<span class="nc" id="L66">		registerUserText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.User&quot;));</span>
+<span class="nc" id="L67">		contentPane.add(registerUserText);</span>
+		
+<span class="nc" id="L69">		JLabel registerPasswordText = new JLabel(&quot;Password:&quot;);</span>
+<span class="nc" id="L70">		registerPasswordText.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L71">		registerPasswordText.setBounds(25, 112, 157, 14);</span>
+<span class="nc" id="L72">		registerPasswordText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.Pass&quot;));</span>
+<span class="nc" id="L73">		contentPane.add(registerPasswordText);</span>
+		
+<span class="nc" id="L75">		registerUser = new JTextField();</span>
+<span class="nc" id="L76">		registerUser.setBounds(217, 68, 146, 20);</span>
+<span class="nc" id="L77">		contentPane.add(registerUser);</span>
+<span class="nc" id="L78">		registerUser.setColumns(10);</span>
+		
+<span class="nc" id="L80">		registerPassword = new JPasswordField();</span>
+<span class="nc" id="L81">		registerPassword.setBounds(217, 111, 146, 20);</span>
+<span class="nc" id="L82">		contentPane.add(registerPassword);</span>
+<span class="nc" id="L83">		registerPassword.setColumns(10);</span>
+		
+<span class="nc" id="L85">		JButton registerButton = new JButton(&quot;Register&quot;);</span>
+<span class="nc" id="L86">		registerButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+
+				
+<span class="nc" id="L90">				String email = registerEmail.getText().trim();</span>
+<span class="nc" id="L91">		        String user = registerUser.getText().trim();</span>
+<span class="nc" id="L92">		        char[] pass = registerPassword.getPassword();</span>
+<span class="nc" id="L93">		        String passStr = new String(pass);</span>
+<span class="nc" id="L94">		        char[] repeatPass = registerRepeatPassword.getPassword();</span>
+<span class="nc" id="L95">		        String passRepStr = new String(repeatPass);</span>
+		        
+		       
+<span class="nc bnc" id="L98" title="All 8 branches missed.">		        if (email.isEmpty() || user.isEmpty() || passStr.isEmpty() || passRepStr.isEmpty()) {</span>
+<span class="nc" id="L99">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.EmptyError&quot;));</span>
+<span class="nc" id="L100">		            return;</span>
+		        }
+		        
+		        
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		        if (!email.endsWith(&quot;@gmail.com&quot;)) {</span>
+<span class="nc" id="L105">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.MailError&quot;));</span>
+<span class="nc" id="L106">		        	return;</span>
+		        }
+		        
+		        
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		        if (!passStr.equals(passRepStr)) {</span>
+<span class="nc" id="L111">					jLabelMsg.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;RegisterGUI.PasswordError&quot;));</span>
+<span class="nc" id="L112">		        	return;</span>
+		        }
+				
+		        //TODO String hash = BCrypt.hashpw(passStr, BCrypt.gensalt());
+<span class="nc" id="L116">				BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L117">				Emaitza b = facade.isRegistered(registerEmail.getText(), registerUser.getText(), passStr);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">				if(b.getLog()) new MainGUIErregistratua(registerEmail.getText(), b.getSeller()).setVisible(true);</span>
+<span class="nc" id="L119">				System.out.println();</span>
+<span class="nc" id="L120">			}</span>
+		});
+<span class="nc" id="L122">		registerButton.setBounds(162, 227, 89, 23);</span>
+<span class="nc" id="L123">		contentPane.add(registerButton);</span>
+		
+<span class="nc" id="L125">		JLabel registerPasswordRepeatText = new JLabel(&quot;Repeat Password:&quot;);</span>
+<span class="nc" id="L126">		registerPasswordRepeatText.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L127">		registerPasswordRepeatText.setBounds(25, 154, 157, 14);</span>
+<span class="nc" id="L128">		registerPasswordRepeatText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.RepeatPass&quot;));</span>
+<span class="nc" id="L129">		contentPane.add(registerPasswordRepeatText);</span>
+		
+<span class="nc" id="L131">		registerRepeatPassword = new JPasswordField();</span>
+<span class="nc" id="L132">		registerRepeatPassword.setBounds(217, 153, 146, 20);</span>
+<span class="nc" id="L133">		contentPane.add(registerRepeatPassword);</span>
+<span class="nc" id="L134">		registerRepeatPassword.setColumns(10);</span>
+		
+<span class="nc" id="L136">		JLabel lblNewLabel = new JLabel(&quot;Email:&quot;);</span>
+<span class="nc" id="L137">		lblNewLabel.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L138">		lblNewLabel.setBounds(20, 27, 162, 14);</span>
+<span class="nc" id="L139">		lblNewLabel.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MainGUI.Email&quot;));</span>
+<span class="nc" id="L140">		contentPane.add(lblNewLabel);</span>
+		
+<span class="nc" id="L142">		registerEmail = new JTextField();</span>
+<span class="nc" id="L143">		registerEmail.setBounds(217, 26, 146, 20);</span>
+<span class="nc" id="L144">		contentPane.add(registerEmail);</span>
+<span class="nc" id="L145">		registerEmail.setColumns(10);</span>
+		
+<span class="nc" id="L147">		jLabelMsg.setBounds(new Rectangle(20, 184, 377, 20));</span>
+<span class="nc" id="L148">		jLabelMsg.setForeground(Color.red);</span>
+<span class="nc" id="L149">		this.getContentPane().add(jLabelMsg, null);</span>
+
+		
+
+
+<span class="nc" id="L154">	}</span>
+	public boolean correctPass(String p1, String p2) {
+<span class="nc" id="L156">		return p1.equals(p2);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

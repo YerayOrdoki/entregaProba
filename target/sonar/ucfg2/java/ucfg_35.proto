@@ -1,0 +1,62 @@
+
+DdataAccess.DataAccess#getMyEskaerak(Ldomain/Seller;)Ljava/util/List;4
+(src\main\java\dataAccess\DataAccess.javaÄ Ä(#"1*»	
+1
+Å Å( z
+x
+
+Å Å( %
+%0javax.persistence.EntityManager"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+dbâÜ
+
+Å Å(h"
+%1javax.persistence.TypedQuery"njavax.persistence.EntityManager#createQuery(Ljava/lang/String;Ljava/lang/Class;)Ljavax/persistence/TypedQuery;*C
+
+__unknown_file ('
+%
+%0javax.persistence.EntityManager*I
+
+__unknown_file (-+
+)SELECT e FROM Eskaera e WHERE e.seller=?1*"
+
+__unknown_file (
+""20createQuery(Ljava/lang/String;Ljava/lang/Class;)}
+{
+
+Å Å(i%
+queryjavax.persistence.TypedQuery"__id*@
+
+__unknown_file ($
+"
+%1javax.persistence.TypedQueryÕ 
+
+Ç Ç("
+%2javax.persistence.TypedQuery"\javax.persistence.TypedQuery#setParameter(ILjava/lang/Object;)Ljavax/persistence/TypedQuery;*C
+
+__unknown_file ('
+%
+queryjavax.persistence.TypedQuery* 
+
+__unknown_file (2*0
+
+__unknown_file (
+
+sdomain.Seller2!setParameter(ILjava/lang/Object;)π∂
+
+É	 É(
+%3java.util.List"<javax.persistence.TypedQuery#getResultList()Ljava/util/List;*C
+
+__unknown_file ('
+%
+queryjavax.persistence.TypedQuery2getResultList()"$
+
+É É(
+
+%3java.util.List: 
+
+Ä$ Ä(,
+sdomain.SellerB
+dataAccess.DataAccessH

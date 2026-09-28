@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReviewGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ReviewGUI.java</span></div><h1>ReviewGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.*;
+import java.awt.*;
+import businessLogic.BLFacade;
+import domain.Sale;
+import domain.Seller;
+
+public class ReviewGUI extends JFrame {
+<span class="nc" id="L10">    public ReviewGUI(Seller currentUser, Sale sale) {</span>
+<span class="nc" id="L11">        setTitle(&quot;Valorazioa&quot;);</span>
+<span class="nc" id="L12">        setSize(400, 300);</span>
+<span class="nc" id="L13">        setLayout(new GridLayout(4, 1));</span>
+
+<span class="nc" id="L15">        JPanel p1 = new JPanel();</span>
+<span class="nc" id="L16">        p1.add(new JLabel(&quot;Puntuación (1-5):&quot;));</span>
+<span class="nc" id="L17">        JSlider starsSlider = new JSlider(1, 5, 5); </span>
+<span class="nc" id="L18">        starsSlider.setMajorTickSpacing(1);</span>
+<span class="nc" id="L19">        starsSlider.setPaintTicks(true);</span>
+<span class="nc" id="L20">        starsSlider.setPaintLabels(true);</span>
+<span class="nc" id="L21">        p1.add(starsSlider);</span>
+
+<span class="nc" id="L23">        JPanel p2 = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L24">        p2.add(new JLabel(&quot;Comentario:&quot;), BorderLayout.NORTH);</span>
+<span class="nc" id="L25">        JTextArea commentArea = new JTextArea();</span>
+<span class="nc" id="L26">        p2.add(new JScrollPane(commentArea), BorderLayout.CENTER);</span>
+
+<span class="nc" id="L28">        JButton btnSend = new JButton(&quot;Enviar Valoración&quot;);</span>
+<span class="nc" id="L29">        btnSend.addActionListener(e -&gt; {</span>
+            try {
+<span class="nc" id="L31">                BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L32">                facade.createReview(currentUser.getEmail(), sale.getSaleNumber(), </span>
+<span class="nc" id="L33">                                   commentArea.getText(), starsSlider.getValue());</span>
+<span class="nc" id="L34">                JOptionPane.showMessageDialog(this, &quot;¡Gracias por tu valoración!&quot;);</span>
+<span class="nc" id="L35">                dispose();</span>
+<span class="nc" id="L36">            } catch (Exception ex) {</span>
+<span class="nc" id="L37">                JOptionPane.showMessageDialog(this, &quot;Error: &quot; + ex.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L38">            }</span>
+<span class="nc" id="L39">        });</span>
+
+<span class="nc" id="L41">        add(p1);</span>
+<span class="nc" id="L42">        add(p2);</span>
+<span class="nc" id="L43">        add(btnSend);</span>
+<span class="nc" id="L44">        setVisible(true);</span>
+<span class="nc" id="L45">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,95 @@
+
+TbusinessLogic.BLFacadeImplementation#getEskaerak(Ljava/lang/String;)Ljava/util/List;C
+7src\main\java\businessLogic\BLFacadeImplementation.javaÔ Ô($"startingBlock*è
+startingBlock
+Ô$ Ô(1é
+ã
+
+Ó Ó(
+%6"
+__annotate*3
+
+__unknown_file (
+javax.jws.WebMethod*6
+
+__unknown_file (
+
+descjava.lang.StringZ
+X
+
+Ô, Ô(0
+descjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%6*
+1*∫
+1
+ (á
+Ñ
+
+ (
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+
+ (
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()á
+Ñ
+
+Ò Ò($
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerÄ˝
+
+Ò Ò(6
+%3java.util.List"EdataAccess.DataAccess#getEskaerak(Ljava/lang/String;)Ljava/util/List;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*6
+
+__unknown_file (
+
+descjava.lang.String2getEskaerak(Ljava/lang/String;)a
+_
+
+Ò Ò(7
+list1java.util.List"__id*2
+
+__unknown_file (
+
+%3java.util.Listá
+Ñ
+
+Ú Ú(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager~|
+
+Ú Ú(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"'
+
+Û Û(
+
+list1java.util.List:&
+
+Ô% Ô(0
+descjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EskaeraOffersGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">EskaeraOffersGUI.java</span></div><h1>EskaeraOffersGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import businessLogic.BLFacade;
+import domain.Eskaera;
+import domain.EskaeraOferta;
+import domain.Sale;
+import domain.Seller;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
+import java.util.List;
+import java.util.Vector;
+
+public class EskaeraOffersGUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	private JPanel contentPane;
+	private JTable tableOffers;
+	private DefaultTableModel tableModelOffers;
+
+<span class="nc" id="L23">	private JLabel jLabelTitle = new JLabel(&quot;Ofertas recibidas&quot;);</span>
+<span class="nc" id="L24">	private JLabel jLabelEskaera = new JLabel();</span>
+
+<span class="nc" id="L26">	private JButton jButtonAccept = new JButton(&quot;Aceptar oferta&quot;);</span>
+<span class="nc" id="L27">	private JButton jButtonClose = new JButton(&quot;Cerrar&quot;);</span>
+
+	private Eskaera eskaera;
+	private Seller currentSeller;
+
+<span class="nc" id="L32">	private String[] columnNamesOffers = new String[] {</span>
+			&quot;Seller&quot;,
+			&quot;Cantidad&quot;,
+			&quot;Mensaje&quot;
+	};
+
+<span class="nc" id="L38">	public EskaeraOffersGUI(Eskaera eskaera, Seller currentSeller) {</span>
+<span class="nc" id="L39">		this.eskaera = eskaera;</span>
+<span class="nc" id="L40">		this.currentSeller = currentSeller;</span>
+
+<span class="nc" id="L42">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L43">		setBounds(100, 100, 700, 420);</span>
+<span class="nc" id="L44">		setTitle(&quot;Ofertas de eskaera&quot;);</span>
+
+<span class="nc" id="L46">		contentPane = new JPanel();</span>
+<span class="nc" id="L47">		setContentPane(contentPane);</span>
+<span class="nc" id="L48">		contentPane.setLayout(null);</span>
+
+<span class="nc" id="L50">		jLabelTitle.setBounds(40, 20, 300, 20);</span>
+<span class="nc" id="L51">		contentPane.add(jLabelTitle);</span>
+
+<span class="nc" id="L53">		jLabelEskaera.setBounds(40, 45, 500, 20);</span>
+<span class="nc" id="L54">		jLabelEskaera.setText(&quot;Eskaera: &quot; + eskaera.getTitle());</span>
+<span class="nc" id="L55">		contentPane.add(jLabelEskaera);</span>
+
+<span class="nc" id="L57">		tableModelOffers = new DefaultTableModel(null, columnNamesOffers) {</span>
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+<span class="nc" id="L62">				return false;</span>
+			}
+		};
+
+<span class="nc" id="L66">		tableOffers = new JTable(tableModelOffers);</span>
+
+<span class="nc" id="L68">		JScrollPane scrollPane = new JScrollPane(tableOffers);</span>
+<span class="nc" id="L69">		scrollPane.setBounds(40, 80, 600, 220);</span>
+<span class="nc" id="L70">		contentPane.add(scrollPane);</span>
+<span class="nc" id="L71">		jButtonAccept.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L73">				int row = tableOffers.getSelectedRow();</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">				if (row == -1) return;</span>
+<span class="nc" id="L75">				EskaeraOferta oferta = (EskaeraOferta) tableOffers.getModel().getValueAt(row, 3);</span>
+				try {
+					
+<span class="nc" id="L78">					BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L79">					Sale sale = facade.createSaleFromEskaeraOfer(oferta.getId());</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">					if(sale == null) return;</span>
+<span class="nc" id="L81">					facade.buySale(sale, currentSeller);</span>
+<span class="nc" id="L82">					dispose();</span>
+<span class="nc" id="L83">				}catch(Exception e) {</span>
+<span class="nc" id="L84">					e.printStackTrace();</span>
+<span class="nc" id="L85">				}</span>
+<span class="nc" id="L86">			}</span>
+		});
+
+<span class="nc" id="L89">		jButtonAccept.setBounds(190, 330, 140, 25);</span>
+<span class="nc" id="L90">		contentPane.add(jButtonAccept);</span>
+
+<span class="nc" id="L92">		jButtonClose.setBounds(360, 330, 100, 25);</span>
+<span class="nc" id="L93">		contentPane.add(jButtonClose);</span>
+
+<span class="nc" id="L95">		jButtonClose.addActionListener(e -&gt; dispose());</span>
+
+		
+
+	
+
+<span class="nc" id="L101">		refresh();</span>
+<span class="nc" id="L102">	}</span>
+
+	private void refresh() {
+		try {
+<span class="nc" id="L106">			tableModelOffers.setDataVector(null, columnNamesOffers);</span>
+<span class="nc" id="L107">			tableModelOffers.setColumnCount(4);</span>
+
+<span class="nc" id="L109">			BLFacade facade = MainGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L111">			List&lt;EskaeraOferta&gt; offers = facade.getOffersByEskaera(eskaera);</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			for (EskaeraOferta offer : offers) {</span>
+<span class="nc" id="L114">				Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">				if (offer.getSeller() != null) {</span>
+<span class="nc" id="L117">					row.add(offer.getSeller().getEmail());</span>
+				} else {
+<span class="nc" id="L119">					row.add(&quot;&quot;);</span>
+				}
+
+<span class="nc" id="L122">				row.add(offer.getAmount());</span>
+<span class="nc" id="L123">				row.add(offer.getMessage());</span>
+<span class="nc" id="L124">				row.add(offer);</span>
+
+<span class="nc" id="L126">				tableModelOffers.addRow(row);</span>
+<span class="nc" id="L127">			}</span>
+
+<span class="nc" id="L129">			tableOffers.getColumnModel().getColumn(0).setPreferredWidth(160);</span>
+<span class="nc" id="L130">			tableOffers.getColumnModel().getColumn(1).setPreferredWidth(80);</span>
+<span class="nc" id="L131">			tableOffers.getColumnModel().getColumn(2).setPreferredWidth(300);</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (tableOffers.getColumnModel().getColumnCount() &gt; 3) {</span>
+<span class="nc" id="L134">				tableOffers.getColumnModel().removeColumn(tableOffers.getColumnModel().getColumn(3));</span>
+			}
+
+<span class="nc" id="L137">		} catch (Exception e) {</span>
+<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L139">		}</span>
+<span class="nc" id="L140">	}</span>
+
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

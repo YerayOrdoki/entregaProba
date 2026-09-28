@@ -1,0 +1,27 @@
+
+Bgui.RegisterGUI#correctPass(Ljava/lang/String;Ljava/lang/String;)Z.
+"src\main\java\gui\RegisterGUI.java› ›("1*…
+1
+œ	 œ(ÔÑ
+
+œ	 œ(
+%0boolean",java.lang.String#equals(Ljava/lang/Object;)Z*4
+
+__unknown_file (
+
+p1java.lang.String*4
+
+__unknown_file (
+
+p2java.lang.String2equals(Ljava/lang/Object;)"
+
+œ œ(
+
+%0boolean:$
+
+› ›(&
+p1java.lang.String:$
+
+›' ›(0
+p2java.lang.StringB
+gui.RegisterGUIHX

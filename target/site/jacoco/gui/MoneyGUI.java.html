@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MoneyGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">MoneyGUI.java</span></div><h1>MoneyGUI.java</h1><pre class="source lang-java linenums">package gui;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import businessLogic.BLFacade;
+
+import javax.swing.JLabel;
+
+import domain.*;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import java.awt.Color;
+public class MoneyGUI extends JFrame {
+	
+	    private JFrame thisFrame;
+		private QuerySalesGUI querySalesGUI;
+		private ShowSaleGUI showGUI;
+		private Sale currentSale;
+	    private Seller currentSeller;
+	    private JTextField textaddMoney;
+	    private JTextField textdeleteMoney;
+<span class="nc" id="L29">	    private JLabel errorText = new JLabel();</span>
+		private Seller s;
+<span class="nc" id="L31">		public MoneyGUI(Seller s) {</span>
+<span class="nc" id="L32">			this.s = s;</span>
+<span class="nc" id="L33">			this.setSize(new Dimension(604, 370));</span>
+<span class="nc" id="L34">			getContentPane().setLayout(null);</span>
+			
+<span class="nc" id="L36">			errorText.setForeground(Color.RED);</span>
+			
+<span class="nc" id="L38">			JLabel lblSaldo = new JLabel();</span>
+<span class="nc" id="L39">			lblSaldo.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.Saldo&quot;));</span>
+<span class="nc" id="L40">			lblSaldo.setBounds(29, 41, 104, 20);</span>
+<span class="nc" id="L41">			getContentPane().add(lblSaldo);</span>
+			
+<span class="nc" id="L43">			JLabel lbladdMoney = new JLabel();</span>
+<span class="nc" id="L44">			lbladdMoney.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.AddMoney&quot;));</span>
+<span class="nc" id="L45">			lbladdMoney.setBounds(29, 114, 104, 20);</span>
+<span class="nc" id="L46">			getContentPane().add(lbladdMoney);</span>
+			
+<span class="nc" id="L48">			JLabel lbldeleteMoney = new JLabel();</span>
+<span class="nc" id="L49">			lbldeleteMoney.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.DeleteMoney&quot;));</span>
+<span class="nc" id="L50">			lbldeleteMoney.setBounds(285, 110, 104, 29);</span>
+<span class="nc" id="L51">			getContentPane().add(lbldeleteMoney);</span>
+			
+<span class="nc" id="L53">			JLabel lblNewSal = new JLabel();</span>
+<span class="nc" id="L54">			lblNewSal.setText(Float.toString(s.getDirua()));</span>
+<span class="nc" id="L55">			lblNewSal.setBounds(203, 43, 145, 18);</span>
+<span class="nc" id="L56">			getContentPane().add(lblNewSal);</span>
+			
+<span class="nc" id="L58">			textaddMoney = new JTextField();</span>
+<span class="nc" id="L59">			textaddMoney.setBounds(21, 157, 145, 29);</span>
+<span class="nc" id="L60">			getContentPane().add(textaddMoney);</span>
+<span class="nc" id="L61">			textaddMoney.setColumns(10);</span>
+			
+<span class="nc" id="L63">			textdeleteMoney = new JTextField();</span>
+<span class="nc" id="L64">			textdeleteMoney.setBounds(268, 157, 145, 29);</span>
+<span class="nc" id="L65">			getContentPane().add(textdeleteMoney);</span>
+<span class="nc" id="L66">			textdeleteMoney.setColumns(10);</span>
+			
+<span class="nc" id="L68">			JButton btnaddMoney = new JButton();</span>
+<span class="nc" id="L69">			btnaddMoney.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.AddMoney&quot;));</span>
+<span class="nc" id="L70">			btnaddMoney.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+					try {
+<span class="nc" id="L73">					errorText.setText(&quot;&quot;);</span>
+<span class="nc" id="L74">					int d = Integer.parseInt(textaddMoney.getText());</span>
+<span class="nc" id="L75">		            BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		            if (d &lt;= 0) {</span>
+		                
+<span class="nc" id="L78">		                errorText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.Positive&quot;));</span>
+		            }else {
+<span class="nc" id="L80">		            	s.setDirua(d); </span>
+<span class="nc" id="L81">		            	facade.updateMoney(s.getEmail(), d);</span>
+<span class="nc" id="L82">		            	lblNewSal.setText(Float.toString(s.getDirua()));</span>
+<span class="nc" id="L83">		            	textaddMoney.setText(&quot;&quot;);</span>
+		            }
+		            
+				
+<span class="nc" id="L87">					}catch (NumberFormatException ex) {</span>
+<span class="nc" id="L88">						errorText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.Baliozko&quot;));</span>
+<span class="nc" id="L89">			        }</span>
+<span class="nc" id="L90">				}</span>
+			});
+<span class="nc" id="L92">			btnaddMoney.setBounds(21, 196, 145, 46);</span>
+<span class="nc" id="L93">			getContentPane().add(btnaddMoney);</span>
+			
+<span class="nc" id="L95">			JButton btndeleteMoney = new JButton();</span>
+<span class="nc" id="L96">			btndeleteMoney.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.DeleteMoney&quot;));</span>
+<span class="nc" id="L97">			btndeleteMoney.addActionListener(new ActionListener() {</span>
+				public void actionPerformed(ActionEvent e) {
+					try {
+<span class="nc" id="L100">						errorText.setText(&quot;&quot;);</span>
+
+<span class="nc" id="L102">			            int c = Integer.parseInt(textdeleteMoney.getText());</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			            if (c &lt;= 0) {</span>
+<span class="nc" id="L104">			                errorText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.Positive&quot;));</span>
+<span class="nc" id="L105">			                return;</span>
+			            }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			            if (s.getDirua() &gt;= c) {</span>
+<span class="nc" id="L108">			                BLFacade facade = MainGUI.getBusinessLogic();</span>
+<span class="nc" id="L109">			                facade.updateMoney(s.getEmail(), -c);</span>
+<span class="nc" id="L110">			                s.setDirua(-c);</span>
+<span class="nc" id="L111">			                lblNewSal.setText( Float.toString(s.getDirua()));</span>
+<span class="nc" id="L112">			                textdeleteMoney.setText(&quot;&quot;);</span>
+<span class="nc" id="L113">			            } else {</span>
+<span class="nc" id="L114">			            	errorText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.NotEnoughFunds&quot;));</span>
+			            }
+			            
+<span class="nc" id="L117">			        } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L118">			        	errorText.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;MoneyGUI.Baliozko&quot;));</span>
+			           
+<span class="nc" id="L120">			        }</span>
+					
+<span class="nc" id="L122">				}</span>
+			});
+<span class="nc" id="L124">			btndeleteMoney.setBounds(268, 196, 145, 46);</span>
+<span class="nc" id="L125">			getContentPane().add(btndeleteMoney);</span>
+			
+			
+<span class="nc" id="L128">			errorText.setBounds(21, 265, 392, 29);</span>
+<span class="nc" id="L129">			getContentPane().add(errorText);</span>
+			
+			
+		
+		
+<span class="nc" id="L134">		}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

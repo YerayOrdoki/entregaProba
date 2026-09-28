@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BusinessLogicServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">yerayordoki_si2p1</a> &gt; <a href="index.source.html" class="el_package">businessLogic</a> &gt; <span class="el_source">BusinessLogicServer.java</span></div><h1>BusinessLogicServer.java</h1><pre class="source lang-java linenums">/**
+ * Package with the business logic of the application.
+ */
+package businessLogic;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import configuration.ConfigXML;
+
+import javax.swing.JTextArea;
+import javax.xml.ws.Endpoint;
+
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+/**
+ * It runs the business logic server as a separate process.
+ */
+public class BusinessLogicServer extends JDialog {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+<span class="nc" id="L35">	private final JPanel contentPanel = new JPanel();</span>
+	JTextArea textArea;
+	BLFacade server;
+	String service;
+
+	public static void main(String[] args) {
+		try {
+<span class="nc" id="L42">			BusinessLogicServer dialog = new BusinessLogicServer();</span>
+<span class="nc" id="L43">			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L44">			dialog.setVisible(true);</span>
+<span class="nc" id="L45">		} catch (Exception e) {</span>
+<span class="nc" id="L46">			e.printStackTrace();</span>
+<span class="nc" id="L47">		}</span>
+<span class="nc" id="L48">	}</span>
+
+
+<span class="nc" id="L51">	public BusinessLogicServer() {</span>
+<span class="nc" id="L52">		addWindowListener(new WindowAdapter() {</span>
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+<span class="nc" id="L55">				System.exit(1);</span>
+<span class="nc" id="L56">			}</span>
+		});
+<span class="nc" id="L58">		setTitle(&quot;BusinessLogicServer: running the business logic&quot;);</span>
+<span class="nc" id="L59">		setBounds(100, 100, 486, 209);</span>
+<span class="nc" id="L60">		getContentPane().setLayout(new BorderLayout());</span>
+<span class="nc" id="L61">		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L62">		getContentPane().add(contentPanel, BorderLayout.CENTER);</span>
+<span class="nc" id="L63">		contentPanel.setLayout(new BorderLayout(0, 0));</span>
+		{ 
+<span class="nc" id="L65">			textArea = new JTextArea();</span>
+<span class="nc" id="L66">			contentPanel.add(textArea);</span>
+		}
+		{
+<span class="nc" id="L69">			JPanel buttonPane = new JPanel();</span>
+<span class="nc" id="L70">			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));</span>
+<span class="nc" id="L71">			getContentPane().add(buttonPane, BorderLayout.SOUTH);</span>
+			{
+<span class="nc" id="L73">				JButton okButton = new JButton(&quot;Close&quot;);</span>
+<span class="nc" id="L74">				okButton.addActionListener(new ActionListener() {</span>
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L76">						textArea.append(&quot;\n\n\nClosing the server... &quot;);</span>
+					    
+							//server.close();
+						
+<span class="nc" id="L80">						System.exit(1);</span>
+<span class="nc" id="L81">					}</span>
+				});
+<span class="nc" id="L83">				okButton.setActionCommand(&quot;Close&quot;);</span>
+<span class="nc" id="L84">				buttonPane.add(okButton);</span>
+<span class="nc" id="L85">				getRootPane().setDefaultButton(okButton);</span>
+			}
+			{
+<span class="nc" id="L88">				JButton cancelButton = new JButton(&quot;Cancel&quot;);</span>
+<span class="nc" id="L89">				cancelButton.setActionCommand(&quot;Cancel&quot;);</span>
+<span class="nc" id="L90">				buttonPane.add(cancelButton);</span>
+			}
+		}
+		
+<span class="nc" id="L94">		ConfigXML c=ConfigXML.getInstance();</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (c.isBusinessLogicLocal()) {</span>
+<span class="nc" id="L97">			textArea.append(&quot;\nERROR, the business logic is configured as local&quot;);</span>
+		}
+		else {
+		try {
+
+			try{
+				
+<span class="nc bnc" id="L104" title="All 2 branches missed.">				if (!c.isDatabaseLocal()) {</span>
+<span class="nc" id="L105">					System.out.println(&quot;\nWARNING: Please be sure ObjectdbManagerServer is launched\n           in machine: &quot;+c.getDatabaseNode()+&quot; port: &quot;+c.getDatabasePort()+&quot;\n&quot;);	</span>
+				}
+				
+<span class="nc" id="L108">				service= &quot;http://&quot;+c.getBusinessLogicNode() +&quot;:&quot;+ c.getBusinessLogicPort()+&quot;/ws/&quot;+c.getBusinessLogicName();</span>
+				
+<span class="nc" id="L110">				Endpoint.publish(service, new BLFacadeImplementation());</span>
+				
+				
+			}
+<span class="nc" id="L114">			catch (Exception e) {</span>
+<span class="nc" id="L115">				System.out.println(&quot;Error in BusinessLogicServer: &quot;+e.toString());</span>
+<span class="nc" id="L116">				textArea.append(&quot;\nYou should have not launched DBManagerServer...\n&quot;);</span>
+<span class="nc" id="L117">				textArea.append(&quot;\n\nOr maybe there is a BusinessLogicServer already launched...\n&quot;);</span>
+<span class="nc" id="L118">				throw e;</span>
+<span class="nc" id="L119">			}</span>
+			
+<span class="nc" id="L121">			textArea.append(&quot;Running service at:\n\t&quot; + service);</span>
+<span class="nc" id="L122">			textArea.append(&quot;\n\n\nPress button to exit this server... &quot;);</span>
+			
+<span class="nc" id="L124">		  } catch (Exception e) {</span>
+<span class="nc" id="L125">			textArea.append(e.toString());</span>
+<span class="nc" id="L126">		  }</span>
+
+	  }
+<span class="nc" id="L129">	}</span>
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

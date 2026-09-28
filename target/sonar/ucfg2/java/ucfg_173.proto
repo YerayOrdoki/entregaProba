@@ -1,0 +1,46 @@
+
++gui.MainGUIErregistratua#%field_initializer5
++src\main\java\gui\MainGUIErregistratua.java (!"1*´
+1
+__unknown_file (d
+b
+   ($,
+gui.MainGUIErregistratua"
+jContentPane"__id*"
+
+__unknown_file (
+""j
+h
+! !(+2
+gui.MainGUIErregistratua"
+jButtonCreateQuery"__id*"
+
+__unknown_file (
+""k
+i
+" "(,3
+gui.MainGUIErregistratua"
+jButtonQueryQueries"__id*"
+
+__unknown_file (
+""DB
+9- 9(8
+%0javax.swing.ButtonGroup"javax.swing.ButtonGroupr
+p
+9) 9(:
+%1"!javax.swing.ButtonGroup#<init>()V*;
+
+__unknown_file (
+
+%0javax.swing.ButtonGroup|
+z
+9 9(;+
+gui.MainGUIErregistratua"
+buttonGroup"__id*;
+
+__unknown_file (
+
+%0javax.swing.ButtonGroup"
+ ó(
+implicit returnB
+gui.MainGUIErregistratua
