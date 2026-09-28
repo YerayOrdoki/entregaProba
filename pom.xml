@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>Market26</groupId>
-  <artifactId>yerayordoki_si2p1</artifactId>
+  <artifactId>probak_proiektuaproba</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
 		<plugins>
@@ -47,9 +47,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 
-		<sonar.organization>yerayordoki</sonar.organization>
+		<sonar.organization>probak</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>yerayordoki_si2p1</sonar.projectKey>
+		<sonar.projectKey>probak_proiektuaproba</sonar.projectKey>
 		
 	</properties>
 
