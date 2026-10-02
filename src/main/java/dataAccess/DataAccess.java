@@ -34,6 +34,7 @@ import domain.Review;
 
 /**
  * It implements the data access to the objectDb database
+ *aldaketa
  */
 public class DataAccess  {
 	private  EntityManager  db;
