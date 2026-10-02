@@ -50,14 +50,20 @@ public class DataAccess  {
 		if (c.isDatabaseInitialized()) {
 			String fileName=c.getDbFilename();
 
-			File fileToDelete= new File(fileName);
-			if(fileToDelete.delete()){
-				File fileToDeleteTemp= new File(fileName+"$");
-				fileToDeleteTemp.delete();
-				System.out.println("File deleted");
-			 } else {
-				 System.out.println("Operation failed");
-				}
+			File fileToDelete = new File(fileName);
+
+			if (fileToDelete.delete()) {
+			    File fileToDeleteTemp = new File(fileName + "$");
+
+			    if (fileToDeleteTemp.exists() && !fileToDeleteTemp.delete()) {
+			        System.out.println("Warning: temporary database file could not be deleted: "
+			                + fileToDeleteTemp.getPath());
+			    }
+
+			    System.out.println("Database file deleted");
+			} else {
+			    System.out.println("Database file could not be deleted: " + fileToDelete.getPath());
+			}
 		}
 		open();
 		if  (c.isDatabaseInitialized()) 
