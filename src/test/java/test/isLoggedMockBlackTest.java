@@ -33,7 +33,7 @@ public class isLoggedMockBlackTest {
         String log = "seller1";
         String pass = "123";
 
-        Seller seller = new Seller(log, pass, "seller1@shop.com");
+        Seller seller = new Seller("seller1@shop.com",log, pass);
         List<Seller> list = new ArrayList<>();
         list.add(seller);
 
