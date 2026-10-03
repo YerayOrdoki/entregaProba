@@ -290,22 +290,23 @@ public class CreateSaleGUI extends JFrame {
 	}
 	
 	
-public  String encodeFileToBase64Binary(File file){
-        try {
-            @SuppressWarnings("resource")
-			FileInputStream fileInputStreamReader = new FileInputStream(file);
-            byte[] bytes = new byte[(int)file.length()];
-            fileInputStreamReader.read(bytes);
-            encodedfile=new String(Base64.getEncoder().encode(bytes));
+	public String encodeFileToBase64Binary(File file) {
+	    try (FileInputStream fileInputStreamReader = new FileInputStream(file)) {
+	        byte[] bytes = new byte[(int) file.length()];
+	        int read = fileInputStreamReader.read(bytes);
 
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+	        if (read != bytes.length) {
+	            byte[] actual = new byte[read];
+	            System.arraycopy(bytes, 0, actual, 0, read);
+	            bytes = actual;
+	        }
 
-        return encodedfile;
-    }
+	        encodedfile = Base64.getEncoder().encodeToString(bytes);
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return encodedfile;
+	}
 }
