@@ -419,13 +419,19 @@ public void open(){
 	}
 	
 	public void updateMoney(String email, float amount) {
-		if(email == null) return;
+	    if (email == null) {
+	        return;
+	    }
+
 	    db.getTransaction().begin();
+
 	    Seller seller = db.find(Seller.class, email);
+
 	    if (seller != null) {
 	        seller.setDirua(amount);
 	        db.merge(seller);
 	    }
+
 	    db.getTransaction().commit();
 	}
 	
