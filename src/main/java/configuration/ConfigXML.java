@@ -104,8 +104,8 @@ public class ConfigXML {
             System.out.println("\t dataBaseInitialized=" + isDatabaseInitialized);
 
         } catch (Exception e) {
-            System.out.println("Error in ConfigXML.java: problems with " + CONFIG_FILE);
-            e.printStackTrace();
+            System.out.println("Error in ConfigXML.java: problems with " + CONFIG_FILE
+                    + " (" + e.getMessage() + ")");
         }
     }
 
