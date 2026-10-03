@@ -558,13 +558,13 @@ public void open(){
 	}
 	
 	public List<Sale> getBasket(String email) {
-		Seller seller = db.find(Seller.class, email);
+	    Seller seller = db.find(Seller.class, email);
+
 	    if (seller != null && seller.getBasket() != null) {
-	      
-	        seller.getBasket().size(); 
-	        return new ArrayList<Sale>(seller.getBasket());
+	        return new ArrayList<>(seller.getBasket());
 	    }
-	    return new ArrayList<Sale>();
+
+	    return new ArrayList<>();
 	}
 	
 	
