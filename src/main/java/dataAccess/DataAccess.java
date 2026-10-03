@@ -44,7 +44,7 @@ public class DataAccess {
     private static final String BASE_PATH = "src/main/resources/images/";
 
     private ConfigXML c = ConfigXML.getInstance();
-
+    private static final String ETIQUETAS = "Etiquetas";
     public DataAccess() {
     	if (c.isDatabaseInitialized()) {
             String fileName = c.getDbFilename();
@@ -146,13 +146,13 @@ public class DataAccess {
         try {
             if (pubDate.before(UtilDate.trim(new Date()))) {
                 throw new MustBeLaterThanTodayException(
-                        ResourceBundle.getBundle("Etiquetas")
+                        ResourceBundle.getBundle(ETIQUETAS)
                                 .getString("DataAccess.ErrorSaleMustBeLaterThanToday"));
             }
 
             if (file == null) {
                 throw new FileNotUploadedException(
-                        ResourceBundle.getBundle("Etiquetas")
+                        ResourceBundle.getBundle(ETIQUETAS)
                                 .getString("DataAccess.ErrorFileNotUploadedException"));
             }
 
@@ -164,7 +164,7 @@ public class DataAccess {
                 db.getTransaction().commit();
 
                 throw new SaleAlreadyExistException(
-                        ResourceBundle.getBundle("Etiquetas")
+                        ResourceBundle.getBundle(ETIQUETAS)
                                 .getString("DataAccess.SaleAlreadyExist"));
             }
 
