@@ -118,8 +118,13 @@ public class CreateSaleGUI extends JFrame {
 		jLabelError.setBounds(new Rectangle(16, 275, 384, 20));
 		jLabelError.setForeground(Color.red);
 		
-	    status=Utils.getStatus();
-		for(String s:status) statusOptions.addElement(s);
+		ArrayList<String> status = Utils.getStatus();
+
+		if (status != null ) {
+		    for (String s : status) {
+		        statusOptions.addElement(s);
+		    }
+		}
 
 		this.getContentPane().add(jLabelMsg, null);
 		this.getContentPane().add(jLabelError, null);
