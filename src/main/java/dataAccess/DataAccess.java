@@ -458,9 +458,9 @@ public class DataAccess {
 
             seller.setDirua(price);
 
-            db.merge(foundS);
-            db.merge(foundCurrent);
-            db.merge(seller);
+            foundS=db.merge(foundS);
+            foundCurrent=db.merge(foundCurrent);
+            seller=db.merge(seller);
 
             db.getTransaction().commit();
 
