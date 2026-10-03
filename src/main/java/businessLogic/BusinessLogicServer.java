@@ -34,7 +34,7 @@ public class BusinessLogicServer extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	JTextArea textArea;
-	BLFacade server;
+	private transient BLFacade server;
 	String service;
 
 	public static void main(String[] args) {
