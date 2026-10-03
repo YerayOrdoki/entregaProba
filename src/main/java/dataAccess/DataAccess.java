@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,22 +46,20 @@ public class DataAccess {
     private ConfigXML c = ConfigXML.getInstance();
 
     public DataAccess() {
-        if (c.isDatabaseInitialized()) {
+    	if (c.isDatabaseInitialized()) {
             String fileName = c.getDbFilename();
             File fileToDelete = new File(fileName);
+            try {
+                Files.delete(fileToDelete.toPath());
 
-            if (fileToDelete.delete()) {
                 File fileToDeleteTemp = new File(fileName + "$");
-
-                if (fileToDeleteTemp.exists() && !fileToDeleteTemp.delete()) {
-                    System.out.println("Warning: temporary database file could not be deleted: "
-                            + fileToDeleteTemp.getPath());
+                if (fileToDeleteTemp.exists()) {
+                    Files.delete(fileToDeleteTemp.toPath());
                 }
-
                 System.out.println("Database file deleted");
-            } else {
+            } catch (IOException e) {
                 System.out.println("Database file could not be deleted: "
-                        + fileToDelete.getPath());
+                        + fileToDelete.getPath() + " (" + e.getMessage() + ")");
             }
         }
 
