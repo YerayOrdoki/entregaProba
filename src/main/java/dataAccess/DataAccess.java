@@ -34,6 +34,7 @@ import exceptions.SaleAlreadyExistException;
  * It implements the data access to the objectDb database.
  */
 public class DataAccess {
+	//komentario bat
 
     private EntityManager db;
     private EntityManagerFactory emf;
