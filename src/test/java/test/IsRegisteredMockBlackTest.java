@@ -74,7 +74,7 @@ public class IsRegisteredMockBlackTest {
     /*
      * CE1: Email nulo.
      * Resultado esperado: no se registra.
-     
+     */
     @Test
     public void testCE1_nullMail() {
         Emaitza result = sut.isRegistered(null, "ane", "1234");
@@ -90,8 +90,6 @@ public class IsRegisteredMockBlackTest {
      * CE2: Usuario nulo.
      * Resultado esperado: no se registra.
      */
-    
-    /*
     @Test
     public void testCE2_nullUser() {
         Emaitza result = sut.isRegistered(
@@ -125,7 +123,6 @@ public class IsRegisteredMockBlackTest {
 
         Mockito.verifyNoInteractions(db);
     }
-
 
     /*
      * CE4: El email ya está registrado.
