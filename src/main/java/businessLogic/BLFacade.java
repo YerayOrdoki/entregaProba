@@ -16,13 +16,13 @@ import exceptions.SaleAlreadyExistException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import java.awt.image.BufferedImage;
+
 import java.awt.Image;
-import dataAccess.*;
+
 import dataAccess.Emaitza;
 import domain.Seller;
 
-import gui.*;
+
 /**
  * Interface that specifies the business logic.
  * aksdjhfhasdlfalñsjdf

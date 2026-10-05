@@ -302,10 +302,8 @@ public class CreateSaleGUI extends JFrame {
 	        }
 
 	        encodedfile = Base64.getEncoder().encodeToString(bytes);
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        e.printStackTrace();
+	    }catch (IOException e) {
+	        throw new RuntimeException("Errorea fitxategia irakurtzean edo kodetzean", e);
 	    }
 	    return encodedfile;
 	}
