@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
@@ -27,26 +28,61 @@ import dataAccess.DataAccess;
 import dataAccess.Emaitza;
 import domain.Seller;
 
+/*
+ * isRegistered metodoaren kutxa beltzeko probak Mockito erabiliz.
+ *
+ * Baliokidetasun-klaseak:
+ * CE1: mail == null.
+ * CE2: user == null.
+ * CE3: password == null.
+ * CE4: posta elektronikoa DBan erregistratuta dago.
+ * CE5: posta elektronikoa libre dago, baina erabiltzaile-izena hartuta dago.
+ * CE6: posta elektronikoa eta erabiltzaile-izena libre daude.
+ *
+ * Muga-probak:
+ * CE7: posta elektroniko hutsa.
+ * CE8: erabiltzaile-izen hutsa.
+ * CE9: pasahitz hutsa.
+ */
 public class IsRegisteredMockBlackTest {
 
+    /*
+     * Frogatu beharreko sistema.
+     * SUT = System Under Test.
+     */
     private DataAccess sut;
 
-    private MockedStatic<Persistence> persistenceMock;
+    /*
+     * Persistence klasearen metodo estatikoa mockeatzeko objektua.
+     */
+    protected MockedStatic<Persistence> persistenceMock;
+
+    /*
+     * Datu-baseko osagaien mock objektuak.
+     */
+    @Mock
+    protected EntityManagerFactory entityManagerFactory;
 
     @Mock
-    private EntityManagerFactory entityManagerFactory;
+    protected EntityManager db;
 
     @Mock
-    private EntityManager db;
+    protected EntityTransaction et;
 
     @Mock
-    private EntityTransaction transaction;
+    protected TypedQuery<Seller> query;
 
-    @Mock
-    private TypedQuery<Seller> query;
-
+    /*
+     * Test bakoitzaren aurretik exekutatzen den konfigurazioa.
+     *
+     * EntityManagerFactory, EntityManager, EntityTransaction eta
+     * TypedQuery objektuen mockak sortzen dira.
+     *
+     * DataAccess objektuari EntityManager mock-a ematen zaio;
+     * horrela, testek ez dute benetako datu-baserik erabiltzen.
+     */
     @Before
-    public void setUp() {
+    public void init() {
         MockitoAnnotations.openMocks(this);
 
         persistenceMock = Mockito.mockStatic(Persistence.class);
@@ -59,21 +95,29 @@ public class IsRegisteredMockBlackTest {
             .when(entityManagerFactory)
             .createEntityManager();
 
-        Mockito.doReturn(transaction)
+        Mockito.doReturn(et)
             .when(db)
             .getTransaction();
 
         sut = new DataAccess(db);
     }
 
+    /*
+     * Test bakoitzaren ondoren mock estatikoa ixten da.
+     */
     @After
     public void tearDown() {
         persistenceMock.close();
     }
 
     /*
-     * CE1: Email nulo.
-     * Resultado esperado: no se registra.
+     * CE1:
+     * mail == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Parametroa baliogabea denez, ez da datu-basera deirik egin behar.
      */
     @Test
     public void testCE1_nullMail() {
@@ -81,99 +125,140 @@ public class IsRegisteredMockBlackTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
 
         Mockito.verifyNoInteractions(db);
     }
 
     /*
-     * CE2: Usuario nulo.
-     * Resultado esperado: no se registra.
+     * CE2:
+     * user == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Parametroa baliogabea denez, ez da datu-basera deirik egin behar.
      */
     @Test
     public void testCE2_nullUser() {
         Emaitza result = sut.isRegistered(
-            "black_ane2@ehu.eus",
+            "ane2@ehu.eus",
             null,
             "1234"
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
 
         Mockito.verifyNoInteractions(db);
     }
 
     /*
-     * CE3: Contraseña nula.
-     * Resultado esperado: no se registra.
+     * CE3:
+     * password == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Parametroa baliogabea denez, ez da datu-basera deirik egin behar.
      */
     @Test
     public void testCE3_nullPassword() {
         Emaitza result = sut.isRegistered(
-            "black_ane3@ehu.eus",
-            "black_ane3",
+            "ane3@ehu.eus",
+            "ane3",
             null
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
 
         Mockito.verifyNoInteractions(db);
     }
 
     /*
-     * CE4: El email ya está registrado.
-     * Resultado esperado: no se registra.
+     * CE4:
+     * Posta elektronikoa dagoeneko DBan erregistratuta dago.
+     *
+     * Sarrerako DB egoera simulatu:
+     * db.find(Seller.class, mail) deitzean Seller bat itzultzen da.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Ez da erabiltzaile-izena kontsultatu behar,
+     * ezta Seller berririk gorde ere.
      */
     @Test
     public void testCE4_existingMail() {
-        String mail = "black_ane4@ehu.eus";
-        String user = "black_ane4";
+        String mail = "ane4@ehu.eus";
+        String user = "ane4";
         String password = "1234";
 
+        Seller sellerInDb = new Seller(mail, user, password);
+
         Mockito.when(db.find(Seller.class, mail))
-            .thenReturn(new Seller(mail, user, password));
+            .thenReturn(sellerInDb);
 
         Emaitza result = sut.isRegistered(mail, user, password);
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
 
-        Mockito.verify(db).find(Seller.class, mail);
+        Mockito.verify(db, Mockito.times(1))
+            .find(Seller.class, mail);
 
         Mockito.verify(db, Mockito.never())
-            .createQuery(Mockito.anyString(), Mockito.eq(Seller.class));
+            .createQuery(
+                Mockito.anyString(),
+                Mockito.eq(Seller.class)
+            );
 
         Mockito.verify(db, Mockito.never())
             .persist(Mockito.any(Seller.class));
 
-        Mockito.verify(transaction, Mockito.never()).begin();
-        Mockito.verify(transaction, Mockito.never()).commit();
+        Mockito.verify(et, Mockito.never()).begin();
+        Mockito.verify(et, Mockito.never()).commit();
     }
 
     /*
-     * CE5: El email está libre, pero el usuario ya existe.
-     * Resultado esperado: no se registra.
+     * CE5:
+     * Posta elektronikoa libre dago, baina erabiltzaile-izena
+     * dagoeneko DBan erregistratuta dago.
+     *
+     * Sarrerako DB egoera simulatu:
+     * - db.find(...) metodoak null itzultzen du.
+     * - Erabiltzaile-izenaren kontsultak zerrenda ez-huts bat itzultzen du.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Ez da Seller berririk gorde behar.
      */
     @Test
     public void testCE5_existingUser() {
-        String mail = "black_ane5@ehu.eus";
-        String user = "black_ane5";
+        String mail = "ane5@ehu.eus";
+        String user = "ane5";
         String password = "1234";
 
         Seller existingSeller = new Seller(
-            "otherblack@ehu.eus",
+            "bestea@ehu.eus",
             user,
-            "otherPassword"
+            "bestePasahitza"
         );
 
+        /*
+         * Maila ez dago DBan.
+         */
         Mockito.when(db.find(Seller.class, mail))
             .thenReturn(null);
 
+        /*
+         * Erabiltzaile-izenaren kontsultak query mock-a itzultzen du.
+         */
         Mockito.when(db.createQuery(
             "SELECT s FROM Seller s WHERE s.name=?1",
             Seller.class
@@ -182,6 +267,10 @@ public class IsRegisteredMockBlackTest {
         Mockito.when(query.setParameter(1, user))
             .thenReturn(query);
 
+        /*
+         * Erabiltzaile-izena DBan dagoela simulatzeko,
+         * zerrenda ez-huts bat itzultzen da.
+         */
         Mockito.when(query.getResultList())
             .thenReturn(List.of(existingSeller));
 
@@ -189,33 +278,47 @@ public class IsRegisteredMockBlackTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
 
-        Mockito.verify(db).find(Seller.class, mail);
+        Mockito.verify(db, Mockito.times(1))
+            .find(Seller.class, mail);
 
-        Mockito.verify(db).createQuery(
-            "SELECT s FROM Seller s WHERE s.name=?1",
-            Seller.class
-        );
+        Mockito.verify(db, Mockito.times(1))
+            .createQuery(
+                "SELECT s FROM Seller s WHERE s.name=?1",
+                Seller.class
+            );
 
-        Mockito.verify(query).setParameter(1, user);
-        Mockito.verify(query).getResultList();
+        Mockito.verify(query, Mockito.times(1))
+            .setParameter(1, user);
+
+        Mockito.verify(query, Mockito.times(1))
+            .getResultList();
 
         Mockito.verify(db, Mockito.never())
             .persist(Mockito.any(Seller.class));
 
-        Mockito.verify(transaction, Mockito.never()).begin();
-        Mockito.verify(transaction, Mockito.never()).commit();
+        Mockito.verify(et, Mockito.never()).begin();
+        Mockito.verify(et, Mockito.never()).commit();
     }
 
     /*
-     * CE6: Email y usuario disponibles.
-     * Resultado esperado: se registra correctamente.
+     * CE6:
+     * Posta elektronikoa eta erabiltzaile-izena libre daude.
+     *
+     * Sarrerako DB egoera simulatu:
+     * - db.find(...) metodoak null itzultzen du.
+     * - Erabiltzaile-izenaren kontsultak zerrenda hutsa itzultzen du.
+     *
+     * Espero den emaitza:
+     * Emaitza(true, mail, sellerBerria, null).
+     *
+     * Seller berria sortu, persistitu eta transakzioa commit egin behar da.
      */
     @Test
     public void testCE6_validRegistration() {
-        String mail = "black_ane6@ehu.eus";
-        String user = "black_ane6";
+        String mail = "ane6@ehu.eus";
+        String user = "ane6";
         String password = "1234";
 
         Mockito.when(db.find(Seller.class, mail))
@@ -238,33 +341,66 @@ public class IsRegisteredMockBlackTest {
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
 
+        /*
+         * Mailaren eta erabiltzaile-izenaren kontsultak egin direla egiaztatzen da.
+         */
+        Mockito.verify(db, Mockito.times(1))
+            .find(Seller.class, mail);
+
+        Mockito.verify(db, Mockito.times(1))
+            .createQuery(
+                "SELECT s FROM Seller s WHERE s.name=?1",
+                Seller.class
+            );
+
+        Mockito.verify(query, Mockito.times(1))
+            .setParameter(1, user);
+
+        Mockito.verify(query, Mockito.times(1))
+            .getResultList();
+
+        /*
+         * Transakzioa hasi dela egiaztatzen da.
+         */
+        Mockito.verify(et, Mockito.times(1)).begin();
+
+        /*
+         * persist metodora bidalitako Seller objektua jasotzen da,
+         * eta haren atributu nagusiak egiaztatzen dira.
+         */
         ArgumentCaptor<Seller> sellerCaptor =
             ArgumentCaptor.forClass(Seller.class);
 
-        Mockito.verify(transaction).begin();
-
-        Mockito.verify(db).persist(sellerCaptor.capture());
+        Mockito.verify(db, Mockito.times(1))
+            .persist(sellerCaptor.capture());
 
         Seller persistedSeller = sellerCaptor.getValue();
 
         assertEquals(mail, persistedSeller.getEmail());
         assertEquals(user, persistedSeller.getName());
 
-        Mockito.verify(transaction).commit();
+        /*
+         * Transakzioa commit bidez amaitu dela egiaztatzen da.
+         */
+        Mockito.verify(et, Mockito.times(1)).commit();
     }
 
     /*
-     * CE7: Email vacío.
+     * CE7:
+     * Posta elektroniko hutsa.
      *
-     * Defecto detectado:
-     * La especificación debería rechazarlo, pero isRegistered lo acepta.
-     * Estas aserciones comprueban el comportamiento real para que
-     * la ejecución final de JUnit quede verde.
+     * Muga-proba.
+     *
+     * Uneko kodeak mail == null soilik egiaztatzen duenez,
+     * "" balioa ez du baztertzen. Emaila eta erabiltzaile-izena
+     * libre direla simulatu ondoren, erregistroa onartzen du.
+     *
+     * Zehaztapenak email hutsa debekatzen badu, portaera hau defektua da.
      */
     @Test
     public void testCE7_emptyMail() {
         String mail = "";
-        String user = "black_emptyMail";
+        String user = "aneEmptyMail";
         String password = "1234";
 
         Mockito.when(db.find(Seller.class, mail))
@@ -283,20 +419,30 @@ public class IsRegisteredMockBlackTest {
 
         Emaitza result = sut.isRegistered(mail, user, password);
 
+        /*
+         * Uneko inplementazioaren portaera erreala egiaztatzen da.
+         */
         assertTrue(result.getLog());
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
+
+        Mockito.verify(db, Mockito.times(1))
+            .persist(Mockito.any(Seller.class));
     }
 
     /*
-     * CE8: Usuario vacío.
+     * CE8:
+     * Erabiltzaile-izen hutsa.
      *
-     * Defecto detectado:
-     * La especificación debería rechazarlo, pero isRegistered lo acepta.
+     * Muga-proba.
+     *
+     * Uneko kodeak user == null soilik egiaztatzen duenez,
+     * "" balioa onartzen du. Zehaztapenak izen hutsa debekatzen
+     * badu, portaera hau defektua da.
      */
     @Test
     public void testCE8_emptyUser() {
-        String mail = "black_emptyUser@ehu.eus";
+        String mail = "emptyuser@ehu.eus";
         String user = "";
         String password = "1234";
 
@@ -319,18 +465,25 @@ public class IsRegisteredMockBlackTest {
         assertTrue(result.getLog());
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
+
+        Mockito.verify(db, Mockito.times(1))
+            .persist(Mockito.any(Seller.class));
     }
 
     /*
-     * CE9: Contraseña vacía.
+     * CE9:
+     * Pasahitz hutsa.
      *
-     * Defecto detectado:
-     * La especificación debería rechazarlo, pero isRegistered lo acepta.
+     * Muga-proba.
+     *
+     * Uneko kodeak password == null soilik egiaztatzen duenez,
+     * "" balioa onartzen du. Zehaztapenak pasahitz hutsa debekatzen
+     * badu, portaera hau defektua da.
      */
     @Test
     public void testCE9_emptyPassword() {
-        String mail = "black_emptyPassword@ehu.eus";
-        String user = "black_emptyPassword";
+        String mail = "emptypassword@ehu.eus";
+        String user = "emptyPassword";
         String password = "";
 
         Mockito.when(db.find(Seller.class, mail))
@@ -352,5 +505,8 @@ public class IsRegisteredMockBlackTest {
         assertTrue(result.getLog());
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
+
+        Mockito.verify(db, Mockito.times(1))
+            .persist(Mockito.any(Seller.class));
     }
 }

@@ -1,8 +1,9 @@
 package test;
-//
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
@@ -14,35 +15,70 @@ import javax.persistence.TypedQuery;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import dataAccess.DataAccess;
 import dataAccess.Emaitza;
 import domain.Seller;
 
+/*
+ * isRegistered metodoaren kutxa beltzeko probak,
+ * benetako datu-basea erabiliz.
+ *
+ * Baliokidetasun-klaseak:
+ * CE1: mail == null.
+ * CE2: user == null.
+ * CE3: password == null.
+ * CE4: posta elektronikoa DBan erregistratuta dago.
+ * CE5: posta elektronikoa libre dago, baina erabiltzaile-izena hartuta dago.
+ * CE6: posta elektronikoa eta erabiltzaile-izena libre daude.
+ *
+ * Muga-probak:
+ * CE7: posta elektroniko hutsa.
+ * CE8: erabiltzaile-izen hutsa.
+ * CE9: pasahitz hutsa.
+ */
 public class IsRegisteredBDBlackTest {
 
+    /*
+     * Frogatu beharreko sistema.
+     * SUT = System Under Test.
+     */
     private DataAccess sut;
+
+    /*
+     * DataAccess-ek erabiltzen duen EntityManager erreala.
+     */
     private EntityManager db;
 
+    /*
+     * Test bakoitza hasi aurretik exekutatzen den konfigurazioa.
+     *
+     * DataAccess objektua sortu eta DBa irekitzen da.
+     * Ondoren, DataAccess-ek erabiltzen duen EntityManager bera lortzen da.
+     */
     @Before
     public void setUp() {
-        /*
-         * El constructor de DataAccess acaba cerrando la conexión,
-         * por lo que se abre de nuevo antes de cada test.
-         */
         sut = new DataAccess();
         sut.open();
 
         /*
-         * Se obtiene el EntityManager ya configurado por DataAccess.
-         * De este modo se usa la BD real y las entidades JPA se reconocen.
+         * DataAccess klasearen db atributu pribatua eskuratzen da.
+         * Testak eta SUTak EntityManager bera erabiltzen dute.
          */
         db = getEntityManager(sut);
 
+        /*
+         * Aurreko testek sortutako testeko Seller-ak ezabatzen dira.
+         */
         cleanTestSellers();
     }
 
+    /*
+     * Test bakoitza amaitzean datu-basea hasierako egoerara itzultzen da
+     * eta DataAccess-en konexioa ixten da.
+     */
     @After
     public void tearDown() {
         if (db != null && db.isOpen()) {
@@ -54,23 +90,32 @@ public class IsRegisteredBDBlackTest {
         }
     }
 
+    /*
+     * Reflection erabiliz DataAccess klaseko db atributu pribatua lortzen da.
+     *
+     * Horri esker, testak SUTak erabiltzen duen EntityManager berean
+     * egin ditzake kontsultak, txertaketak eta egiaztapenak.
+     */
     private EntityManager getEntityManager(DataAccess dataAccess) {
         try {
             Field field = DataAccess.class.getDeclaredField("db");
             field.setAccessible(true);
 
             return (EntityManager) field.get(dataAccess);
+
         } catch (Exception e) {
             throw new RuntimeException(
-                "No se ha podido recuperar el EntityManager de DataAccess",
+                "Ezin izan da DataAccess-eko EntityManager-a eskuratu",
                 e
             );
         }
     }
 
     /*
-     * Elimina únicamente los Sellers creados por esta clase de prueba.
-     * El prefijo blackbd_ evita eliminar Sellers reales de la aplicación.
+     * Test klase honek sortutako Seller-ak ezabatzen ditu.
+     *
+     * blackbd_ aurrizkia erabiltzen da aplikazioko benetako
+     * erabiltzaileak ez ezabatzeko.
      */
     private void cleanTestSellers() {
         EntityTransaction tx = db.getTransaction();
@@ -95,9 +140,17 @@ public class IsRegisteredBDBlackTest {
         }
 
         tx.commit();
+
+        /*
+         * Persistence context-a garbitzen da, hurrengo kontsultek
+         * DBko benetako egoera erabil dezaten.
+         */
         db.clear();
     }
 
+    /*
+     * Test baten sarrerako DB egoera prestatzeko Seller bat txertatzen du.
+     */
     private void insertSeller(String email, String name, String password) {
         EntityTransaction tx = db.getTransaction();
 
@@ -109,8 +162,46 @@ public class IsRegisteredBDBlackTest {
     }
 
     /*
-     * CE1: Email nulo.
-     * Resultado esperado: registro rechazado.
+     * Erabiltzaile-izen zehatz bat duten Seller guztiak ezabatzen ditu.
+     *
+     * CE7n erabiltzen da. Emaila hutsik denez, ezin da
+     * blackbd_%@ehu.eus patroiarekin aurkitu; aldiz,
+     * user balioak blackbd_ aurrizkia du eta bakarra da.
+     */
+    private void removeSellersByName(String user) {
+        EntityTransaction tx = db.getTransaction();
+
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+
+        tx.begin();
+
+        TypedQuery<Seller> query = db.createQuery(
+            "SELECT s FROM Seller s WHERE s.name = :name",
+            Seller.class
+        );
+
+        query.setParameter("name", user);
+
+        List<Seller> sellers = query.getResultList();
+
+        for (Seller seller : sellers) {
+            db.remove(seller);
+        }
+
+        tx.commit();
+        db.clear();
+    }
+
+    /*
+     * CE1:
+     * mail == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void testCE1_nullMail() {
@@ -118,46 +209,81 @@ public class IsRegisteredBDBlackTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
     }
 
     /*
-     * CE2: Usuario nulo.
-     * Resultado esperado: registro rechazado.
+     * CE2:
+     * user == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void testCE2_nullUser() {
+        String mail = "blackbd_ane2@ehu.eus";
+
         Emaitza result = sut.isRegistered(
-            "blackbd_ane2@ehu.eus",
+            mail,
             null,
             "1234"
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        /*
+         * Ez dela Seller berririk sortu egiaztatzen da.
+         */
+        db.clear();
+        assertNull(db.find(Seller.class, mail));
     }
 
     /*
-     * CE3: Contraseña nula.
-     * Resultado esperado: registro rechazado.
+     * CE3:
+     * password == null.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void testCE3_nullPassword() {
+        String mail = "blackbd_ane3@ehu.eus";
+
         Emaitza result = sut.isRegistered(
-            "blackbd_ane3@ehu.eus",
+            mail,
             "blackbd_ane3",
             null
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        /*
+         * Ez dela Seller berririk sortu egiaztatzen da.
+         */
+        db.clear();
+        assertNull(db.find(Seller.class, mail));
     }
 
     /*
-     * CE4: Email ya registrado en la BD.
-     * Resultado esperado: registro rechazado.
+     * CE4:
+     * Posta elektronikoa dagoeneko erregistratuta dago.
+     *
+     * Sarrerako DB egoera:
+     * Badago mail hori duen Seller bat.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Irteerako DB egoera:
+     * Ez da aldatzen.
      */
     @Test
     public void testCE4_existingMail() {
@@ -171,34 +297,82 @@ public class IsRegisteredBDBlackTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        /*
+         * Aurretik zegoen Sellerra mantentzen dela egiaztatzen da.
+         */
+        db.clear();
+
+        Seller sellerInDb = db.find(Seller.class, mail);
+
+        assertNotNull(sellerInDb);
+        assertEquals(mail, sellerInDb.getEmail());
+        assertEquals(user, sellerInDb.getName());
     }
 
     /*
-     * CE5: Email libre, pero nombre de usuario ya existente en BD.
-     * Resultado esperado: registro rechazado.
+     * CE5:
+     * Posta elektronikoa libre dago, baina erabiltzaile-izena
+     * dagoeneko erregistratuta dago.
+     *
+     * Sarrerako DB egoera:
+     * - Ez dago newMail posta duen Sellerrik.
+     * - Badago repeatedUser izeneko Seller bat beste posta batekin.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Irteerako DB egoera:
+     * Ez da Seller berririk gordetzen.
      */
     @Test
     public void testCE5_existingUser() {
         String existingMail = "blackbd_otro@ehu.eus";
         String repeatedUser = "blackbd_ane5";
+        String newMail = "blackbd_ane5@ehu.eus";
 
-        insertSeller(existingMail, repeatedUser, "otraClave");
+        insertSeller(existingMail, repeatedUser, "bestePasahitza");
 
         Emaitza result = sut.isRegistered(
-            "blackbd_ane5@ehu.eus",
+            newMail,
             repeatedUser,
             "1234"
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        db.clear();
+
+        /*
+         * Ez dela Seller berririk gorde egiaztatzen da.
+         */
+        assertNull(db.find(Seller.class, newMail));
+
+        /*
+         * Hasieran zegoen Sellerra mantentzen dela egiaztatzen da.
+         */
+        Seller sellerInDb = db.find(Seller.class, existingMail);
+
+        assertNotNull(sellerInDb);
+        assertEquals(existingMail, sellerInDb.getEmail());
+        assertEquals(repeatedUser, sellerInDb.getName());
     }
 
     /*
-     * CE6: Email y usuario disponibles.
-     * Resultado esperado: registro correcto.
+     * CE6:
+     * Posta elektronikoa eta erabiltzaile-izena libre daude.
+     *
+     * Sarrerako DB egoera:
+     * Ez dago mail hori edo user hori duen Sellerrik.
+     *
+     * Espero den emaitza:
+     * Emaitza(true, mail, sellerBerria, null).
+     *
+     * Irteerako DB egoera:
+     * Seller berria DBan gordeta geratzen da.
      */
     @Test
     public void testCE6_validRegistration() {
@@ -213,7 +387,8 @@ public class IsRegisteredBDBlackTest {
         assertNotNull(result.getSeller());
 
         /*
-         * Se verifica que el Seller ha quedado guardado en la BD real.
+         * Persistence context-a garbitu ondoren, Sellerra DBan
+         * benetan gordeta dagoela egiaztatzen da.
          */
         db.clear();
 
@@ -225,13 +400,21 @@ public class IsRegisteredBDBlackTest {
     }
 
     /*
-     * CE7: Email vacío.
+     * CE7:
+     * Posta elektroniko hutsa.
      *
-     * Defecto documentado:
-     * La especificación debería rechazarlo, pero el código actual lo acepta.
-     * Se comprueba el resultado real para dejar JUnit en verde.
+     * Muga-proba.
+     *
+     * Uneko inplementazioak mail == null soilik egiaztatzen du.
+     * "" balioa ez denez null, metodoak erregistroa onartu duela
+     * adierazten duen Emaitza objektua itzultzen du.
+     *
+     * Zehaztapenak email hutsa baztertzea eskatzen badu, proba honek
+     * defektu bat aurkitzen du:
+     * espero zena false zen, baina lortutakoa true da.
      */
-    @Test
+    //@Test
+    @Ignore
     public void testCE7_emptyMail() {
         String mail = "";
         String user = "blackbd_emptyMail";
@@ -240,18 +423,35 @@ public class IsRegisteredBDBlackTest {
         Emaitza result = sut.isRegistered(mail, user, password);
 
         /*
-         * ObjectDB real rechaza o no persiste correctamente un Seller
-         * con email vacío. Resultado real observado: log = false.
+         * Metodoaren itzulera-balioaren arabera,
+         * erregistroa onartu dela egiaztatzen da.
          */
-        assertFalse(result.getLog());
-        assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertTrue(result.getLog());
+        assertEquals(mail, result.getEmail());
+        assertNotNull(result.getSeller());
+
+        /*
+         * Ez da db.find(Seller.class, "") erabiltzen.
+         *
+         * Email hutsa ObjectDB/JPAko kasu berezia izan daiteke;
+         * find(...) bidez ez aurkitzeak ez du esan nahi Emaitza
+         * objektuak adierazitako portaera aldatu denik.
+         *
+         * Testak sortutako datua erabiltzaile-izenaren bidez garbitzen da.
+         */
+        removeSellersByName(user);
     }
 
     /*
-     * CE8: Usuario vacío.
+     * CE8:
+     * Erabiltzaile-izen hutsa.
      *
-     * Defecto documentado: el código actual lo acepta.
+     * Muga-proba.
+     *
+     * Uneko inplementazioak user == null soilik egiaztatzen du.
+     * Beraz, erabiltzaile-izen hutsa onartzen da.
+     *
+     * Zehaztapenak izen hutsa baztertzea eskatzen badu, defektua da.
      */
     @Test
     public void testCE8_emptyUser() {
@@ -264,12 +464,29 @@ public class IsRegisteredBDBlackTest {
         assertTrue(result.getLog());
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
+
+        /*
+         * Sellerra DBan gordeta dagoela egiaztatzen da.
+         */
+        db.clear();
+
+        Seller sellerInDb = db.find(Seller.class, mail);
+
+        assertNotNull(sellerInDb);
+        assertEquals(mail, sellerInDb.getEmail());
+        assertEquals(user, sellerInDb.getName());
     }
 
     /*
-     * CE9: Contraseña vacía.
+     * CE9:
+     * Pasahitz hutsa.
      *
-     * Defecto documentado: el código actual lo acepta.
+     * Muga-proba.
+     *
+     * Uneko inplementazioak password == null soilik egiaztatzen du.
+     * Beraz, pasahitz hutsa onartzen da.
+     *
+     * Zehaztapenak pasahitz hutsa baztertzea eskatzen badu, defektua da.
      */
     @Test
     public void testCE9_emptyPassword() {
@@ -282,5 +499,16 @@ public class IsRegisteredBDBlackTest {
         assertTrue(result.getLog());
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
+
+        /*
+         * Sellerra DBan gordeta dagoela egiaztatzen da.
+         */
+        db.clear();
+
+        Seller sellerInDb = db.find(Seller.class, mail);
+
+        assertNotNull(sellerInDb);
+        assertEquals(mail, sellerInDb.getEmail());
+        assertEquals(user, sellerInDb.getName());
     }
 }

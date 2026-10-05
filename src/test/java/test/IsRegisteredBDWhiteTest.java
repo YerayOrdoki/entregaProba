@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
@@ -28,23 +29,31 @@ public class IsRegisteredBDWhiteTest {
     @Before
     public void setUp() {
         /*
-         * El constructor abre la BD, la inicializa si está configurada y la cierra.
-         * Por eso volvemos a abrirla para ejecutar el test.
+         * DataAccess-en konstruktoreak DBa ireki, hasieratu eta itxi dezake.
+         * Horregatik, test bakoitza exekutatzeko DBa berriro irekitzen dugu.
          */
         sut = new DataAccess();
         sut.open();
 
         /*
-         * Recuperamos la misma conexión EntityManager que DataAccess usa.
-         * No se modifica el código de producción.
+         * DataAccess-ek erabiltzen duen EntityManager bera lortzen dugu.
+         * Ez da ekoizpeneko kodea aldatzen.
          */
         db = getEntityManager(sut);
 
+        /*
+         * Test honen aurrizkia duten Seller guztiak ezabatzen dira,
+         * test bakoitza egoera ezagun eta isolatu batetik hasteko.
+         */
         cleanTestSellers();
     }
 
     @After
     public void tearDown() {
+        /*
+         * Testak sortutako datuak kentzen dira, hurrengo exekuzioetan
+         * edo beste testetan eraginik izan ez dezaten.
+         */
         if (db != null && db.isOpen()) {
             cleanTestSellers();
         }
@@ -54,6 +63,10 @@ public class IsRegisteredBDWhiteTest {
         }
     }
 
+    /*
+     * DataAccess klasearen db atributu pribatua lortzen du.
+     * Horrela, testak SUTak erabiltzen duen EntityManager bera erabiltzen du.
+     */
     private EntityManager getEntityManager(DataAccess dataAccess) {
         try {
             Field field = DataAccess.class.getDeclaredField("db");
@@ -61,14 +74,15 @@ public class IsRegisteredBDWhiteTest {
             return (EntityManager) field.get(dataAccess);
         } catch (Exception e) {
             throw new RuntimeException(
-                "No se ha podido acceder al EntityManager de DataAccess",
+                "Ezin izan da DataAccess-eko EntityManager-a eskuratu",
                 e
             );
         }
     }
 
     /*
-     * Borra solo usuarios de prueba creados por esta clase.
+     * whitebd_ aurrizkia duten testeko Seller guztiak ezabatzen ditu.
+     * Ez dira aplikazioaren gainerako datuak ukitzen.
      */
     private void cleanTestSellers() {
         EntityTransaction tx = db.getTransaction();
@@ -96,6 +110,10 @@ public class IsRegisteredBDWhiteTest {
         db.clear();
     }
 
+    /*
+     * Test baterako Seller bat benetako DBan txertatzen du.
+     * Horrela, testaren hasierako DB egoera zehazki prestatzen da.
+     */
     private void insertSeller(String email, String name, String password) {
         EntityTransaction tx = db.getTransaction();
 
@@ -108,7 +126,10 @@ public class IsRegisteredBDWhiteTest {
 
     /*
      * P1:
-     * B1.1(T): mail == null.
+     * B1.1(T)
+     *
+     * mail == null denean, ez da erregistrorik egiten.
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void test1_mailNull() {
@@ -116,47 +137,71 @@ public class IsRegisteredBDWhiteTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
     }
 
     /*
      * P2:
-     * B1.1(F) -> B1.2(T): user == null.
+     * B1.1(F) -> B1.2(T)
+     *
+     * user == null denean, ez da erregistrorik egiten.
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void test2_userNull() {
+        String mail = "whitebd_ane2@ehu.eus";
+
         Emaitza result = sut.isRegistered(
-            "whitebd_ane2@ehu.eus",
+            mail,
             null,
             "1234"
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        db.clear();
+        assertNull(db.find(Seller.class, mail));
     }
 
     /*
      * P3:
-     * B1.1(F) -> B1.2(F) -> B1.3(T): password == null.
+     * B1.1(F) -> B1.2(F) -> B1.3(T)
+     *
+     * password == null denean, ez da erregistrorik egiten.
+     * DBaren egoera ez da aldatzen.
      */
     @Test
     public void test3_passwordNull() {
+        String mail = "whitebd_ane3@ehu.eus";
+
         Emaitza result = sut.isRegistered(
-            "whitebd_ane3@ehu.eus",
+            mail,
             "whitebd_ane3",
             null
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        db.clear();
+        assertNull(db.find(Seller.class, mail));
     }
 
     /*
      * P4:
-     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B2(T).
-     * Ya existe un Seller con ese correo.
+     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B5(T)
+     *
+     * Sarrerako DB egoera:
+     * Posta elektroniko hori duen Seller bat dago.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Irteerako DB egoera:
+     * Ez da aldatzen.
      */
     @Test
     public void test4_mailAlreadyExists() {
@@ -170,36 +215,82 @@ public class IsRegisteredBDWhiteTest {
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        /*
+         * DBan lehendik zegoen Sellerra mantentzen dela egiaztatzen da.
+         */
+        db.clear();
+
+        Seller sellerInDb = db.find(Seller.class, mail);
+
+        assertNotNull(sellerInDb);
+        assertEquals(mail, sellerInDb.getEmail());
+        assertEquals(user, sellerInDb.getName());
     }
 
     /*
      * P5:
-     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B2(F) -> B3(T).
-     * El correo está libre, pero el nombre ya existe.
+     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B5(F) -> B9(T)
+     *
+     * Sarrerako DB egoera:
+     * - Posta elektronikoa libre dago.
+     * - Erabiltzaile-izena dagoeneko erregistratuta dago,
+     *   baina beste posta elektroniko batekin.
+     *
+     * Espero den emaitza:
+     * Emaitza(false, "", null, null).
+     *
+     * Irteerako DB egoera:
+     * Ez da aldatzen.
      */
     @Test
     public void test5_userAlreadyExists() {
         String existingMail = "whitebd_otro@ehu.eus";
         String repeatedUser = "whitebd_ane5";
+        String newMail = "whitebd_ane5@ehu.eus";
 
-        insertSeller(existingMail, repeatedUser, "otraClave");
+        insertSeller(existingMail, repeatedUser, "bestePasahitza");
 
         Emaitza result = sut.isRegistered(
-            "whitebd_ane5@ehu.eus",
+            newMail,
             repeatedUser,
             "1234"
         );
 
         assertFalse(result.getLog());
         assertEquals("", result.getEmail());
-        assertEquals(null, result.getSeller());
+        assertNull(result.getSeller());
+
+        db.clear();
+
+        /*
+         * Ez dela Seller berririk sortu egiaztatzen da.
+         */
+        assertNull(db.find(Seller.class, newMail));
+
+        /*
+         * Hasierako Sellerra mantentzen dela egiaztatzen da.
+         */
+        Seller existingSeller = db.find(Seller.class, existingMail);
+
+        assertNotNull(existingSeller);
+        assertEquals(existingMail, existingSeller.getEmail());
+        assertEquals(repeatedUser, existingSeller.getName());
     }
 
     /*
      * P6:
-     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B2(F) -> B3(F).
-     * Correo y nombre libres: se registra el Seller.
+     * B1.1(F) -> B1.2(F) -> B1.3(F) -> B5(F) -> B9(F)
+     *
+     * Sarrerako DB egoera:
+     * Posta elektronikoa eta erabiltzaile-izena libre daude.
+     *
+     * Espero den emaitza:
+     * Emaitza(true, mail, s1, null).
+     *
+     * Irteerako DB egoera:
+     * Seller(mail, user, password) DBan gordeta dago.
      */
     @Test
     public void test6_registersSeller() {
@@ -213,8 +304,13 @@ public class IsRegisteredBDWhiteTest {
         assertEquals(mail, result.getEmail());
         assertNotNull(result.getSeller());
 
+        /*
+         * Persistence context-a garbitzen da.
+         * Horrela, hurrengo find-a DBaren benetako egoerara doa,
+         * eta ez memorian dagoen objektura soilik.
+         */
         db.clear();
- 
+
         Seller sellerInDb = db.find(Seller.class, mail);
 
         assertNotNull(sellerInDb);
