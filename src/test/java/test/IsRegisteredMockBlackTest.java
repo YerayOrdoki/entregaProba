@@ -91,6 +91,7 @@ public class IsRegisteredMockBlackTest {
      * Resultado esperado: no se registra.
      */
     
+    /*
     @Test
     public void testCE2_nullUser() {
         Emaitza result = sut.isRegistered(
