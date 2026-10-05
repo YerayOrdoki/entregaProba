@@ -274,7 +274,7 @@ public class DataAccess {
         return targetImg;
     }
 
-    public List<Seller> getUser(String log, String pass) {
+    public List<Seller> getUser() {
         TypedQuery<Seller> query = db.createQuery(
                 "SELECT s FROM Seller s",
                 Seller.class);
