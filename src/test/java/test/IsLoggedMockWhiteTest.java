@@ -29,7 +29,7 @@ public class IsLoggedMockWhiteTest {
     }
 
     // 1. Kasua: log == null -> (null, "123456789") -> Emaitza(false, "", null, null)
-    /*
+
     @Test
     public void testIsLogged_WhiteBox_1_LogNull() {
         String log = null;
@@ -42,7 +42,6 @@ public class IsLoggedMockWhiteTest {
         assertEquals("", res.getEmail());
         assertNull(res.getSeller());
     }
-    */
 
     // 2. Kasua: log != null, pass == null -> ("admin", null) -> Emaitza(false, "", null, null)
     @Test
