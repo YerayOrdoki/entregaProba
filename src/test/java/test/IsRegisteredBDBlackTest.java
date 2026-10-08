@@ -413,8 +413,8 @@ public class IsRegisteredBDBlackTest {
      * defektu bat aurkitzen du:
      * espero zena false zen, baina lortutakoa true da.
      */
-    //@Test
-    @Ignore
+    @Test
+   
     public void testCE7_emptyMail() {
         String mail = "";
         String user = "blackbd_emptyMail";
