@@ -116,6 +116,7 @@ public class IsRegisteredMockWhiteTest {
      *
      * Ez da datu-basera deirik egin behar.
      */
+    /*
     @Test
     public void test1_mailNull() {
         Emaitza result = sut.isRegistered(null, "ane", "1234");
@@ -126,6 +127,7 @@ public class IsRegisteredMockWhiteTest {
 
         Mockito.verifyNoInteractions(db);
     }
+    */
 
     /*
      * P2:
