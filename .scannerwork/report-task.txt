@@ -1,0 +1,7 @@
+organization=elyery
+projectKey=elyery_market2611
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.108089
+dashboardUrl=https://sonarcloud.io/dashboard?id=elyery_market2611
+ceTaskId=AaDTZTwp3vunQq5rVH4u
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AaDTZTwp3vunQq5rVH4u

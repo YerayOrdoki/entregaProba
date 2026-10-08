@@ -1,0 +1,95 @@
+
+YbusinessLogic.BLFacadeImplementation#getOffersByEskaera(Ldomain/Eskaera;)Ljava/util/List;C
+7src\main\java\businessLogic\BLFacadeImplementation.javaé é(1"startingBlock*˛
+startingBlock
+é1 é(>Ä
+~
+
+ç ç(
+%6"
+__annotate*)
+
+__unknown_file (
+	WebMethod*3
+
+__unknown_file (
+
+eskdomain.EskaeraW
+U
+
+é: é(=
+eskdomain.Eskaera"__annotation*"
+
+__unknown_file (
+
+%6*
+1*¡
+1
+è è(á
+Ñ
+
+è è(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+
+è è(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()á
+Ñ
+
+ê! ê(*
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManageráÑ
+
+ê! ê(B
+%3java.util.List"JdataAccess.DataAccess#getOffersByEskaera(Ldomain/Eskaera;)Ljava/util/List;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*3
+
+__unknown_file (
+
+eskdomain.Eskaera2$getOffersByEskaera(Ldomain/Eskaera;)a
+_
+
+ê ê(C
+listajava.util.List"__id*2
+
+__unknown_file (
+
+%3java.util.Listá
+Ñ
+
+ë ë(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager~|
+
+ë ë(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"'
+
+í í(
+
+listajava.util.List:#
+
+é2 é(=
+eskdomain.EskaeraB(&
+$businessLogic.BLFacadeImplementationH

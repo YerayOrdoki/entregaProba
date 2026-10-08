@@ -1,0 +1,15 @@
+
+;gui.AdminMainGUI#getBusinessLogic()LbusinessLogic/BLFacade;-
+#src\main\java\gui\AdminMainGUI.java# #(("1*µ
+1$	 $(z
+x
+$	 $(
+%0businessLogic.BLFacade"__id*H
+
+__unknown_file (,**
+gui.AdminMainGUI"
+appFacadeInterface"*
+$ $(
+
+%0businessLogic.BLFacadeB"
+gui.AdminMainGUIH

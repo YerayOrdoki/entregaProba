@@ -1,0 +1,26 @@
+
+)gui.AdminComplaintsGUI#%field_initializer3
+)src\main\java\gui\AdminComplaintsGUI.java ("1*Ý
+1
+__unknown_file (<:
+- (A
+%0java.util.ArrayList"java.util.ArrayListj
+h
+) (C
+%1"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%0java.util.ArrayListu
+s
+ (D(
+gui.AdminComplaintsGUI"
+
+complaints"__id*7
+
+__unknown_file (
+
+%0java.util.ArrayList"
+ v(
+implicit returnB
+gui.AdminComplaintsGUI

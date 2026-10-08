@@ -1,0 +1,28 @@
+
+JdataAccess.DataAccess#getOffersByEskaera(Ldomain/Eskaera;)Ljava/util/List;4
+(src\main\java\dataAccess\DataAccess.java‡ ‡(."1*Ï
+1
+ˆ$ ˆ(&Y
+W
+
+ˆ$ ˆ(&
+%0"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+dbM
+K
+
+ˆ ˆ(
+query
+TypedQuery"__id*"
+
+__unknown_file (
+"""
+
+Š Š(
+"":#
+
+‡/ ‡(:
+eskdomain.EskaeraB
+dataAccess.DataAccessH

@@ -1,0 +1,70 @@
+
+LdataAccess.DataAccess#getBoughtsBySeller(Ljava/lang/String;)Ljava/util/List;4
+(src\main\java\dataAccess\DataAccess.javaÂ Â(%"3*è
+2
+Å Å(%><
+
+Å Å(#
+%2java.util.ArrayList"java.util.ArrayListl
+j
+
+Å Å(%
+%3"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%2java.util.ArrayList")
+
+Å	 Å(&
+
+%2java.util.ArrayList*Ì
+3
+Ã Ã(Y
+W
+
+Ã Ã(
+%0"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+dbQ
+O
+
+Ã Ã(2
+sellerdomain.Seller"__id*"
+
+__unknown_file (
+""}
+{
+
+Ä	 Ä(
+%1boolean"	__compare*
+
+Ä Ä(
+==*'
+
+Ä	 Ä(
+
+sellerdomain.Seller*
+
+Ä Ä(
+""*
+1
+2*Î
+1
+Ç Ç(–“
+
+Ç Ç(
+%4java.util.List"*domain.Seller#getBoughts()Ljava/util/List;*5
+
+__unknown_file (
+
+sellerdomain.Seller2getBoughts()"$
+
+Ç Ç( 
+
+%4java.util.List:'
+
+Â& Â(2
+emailjava.lang.StringB
+dataAccess.DataAccessH

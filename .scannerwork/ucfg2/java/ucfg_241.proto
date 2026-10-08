@@ -1,0 +1,95 @@
+
+[businessLogic.BLFacadeImplementation#getBoughtsBySeller(Ljava/lang/String;)Ljava/util/List;C
+7src\main\java\businessLogic\BLFacadeImplementation.java§ §(("startingBlock*á
+startingBlock
+§( §(6Ö
+Ç
+
+£ £(
+%6"
+__annotate*)
+
+__unknown_file (
+	WebMethod*7
+
+__unknown_file (
+
+emailjava.lang.String[
+Y
+
+§0 §(5
+emailjava.lang.String"__annotation*"
+
+__unknown_file (
+
+%6*
+1*¡
+1
+• •(á
+Ñ
+
+• •(
+%0dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager|z
+
+• •(
+
+%1void"dataAccess.DataAccess#open()V*9
+
+__unknown_file (
+
+%0dataAccess.DataAccess2open()á
+Ñ
+
+¶ ¶(
+%2dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManagerèå
+
+¶ ¶(9
+%3java.util.List"LdataAccess.DataAccess#getBoughtsBySeller(Ljava/lang/String;)Ljava/util/List;*9
+
+__unknown_file (
+
+%2dataAccess.DataAccess*7
+
+__unknown_file (
+
+emailjava.lang.String2&getBoughtsBySeller(Ljava/lang/String;)]
+[
+
+¶ ¶(:
+ajava.util.List"__id*2
+
+__unknown_file (
+
+%3java.util.Listá
+Ñ
+
+ß ß(
+%4dataAccess.DataAccess"__id*S
+
+__unknown_file (7*5&
+$businessLogic.BLFacadeImplementation"
+	dbManager~|
+
+ß ß(
+
+%5void"dataAccess.DataAccess#close()V*9
+
+__unknown_file (
+
+%4dataAccess.DataAccess2close()"#
+
+® ®(
+
+ajava.util.List:'
+
+§) §(5
+emailjava.lang.StringB(&
+$businessLogic.BLFacadeImplementationH

@@ -1,0 +1,44 @@
+
+IdataAccess.DataAccess#getEskaeraByID(Ljava/lang/Integer;)Ldomain/Eskaera;4
+(src\main\java\dataAccess\DataAccess.javaÜ Ü("3*%
+2
+Ý Ý("
+
+Ý Ý(
+""*ž
+3
+Ý Ý(}
+{
+
+Ý Ý(
+%0boolean"	__compare*
+
+Ý Ý(
+
+==*'
+
+Ý Ý(
+
+idjava.lang.Integer*
+
+Ý Ý(
+""*
+1
+2*€
+1
+Þ	 Þ(Y
+W
+
+Þ	 Þ(
+%1"__id*=
+
+__unknown_file (!*
+dataAccess.DataAccess"
+db"
+
+Þ Þ($
+"":%
+
+Ü Ü()
+idjava.lang.IntegerB
+dataAccess.DataAccessH
