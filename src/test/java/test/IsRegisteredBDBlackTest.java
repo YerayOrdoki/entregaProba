@@ -211,7 +211,7 @@ public class IsRegisteredBDBlackTest {
         assertEquals("", result.getEmail());
         assertNull(result.getSeller());
     }
-
+    
     /*
      * CE2:
      * user == null.
