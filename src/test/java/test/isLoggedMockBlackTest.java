@@ -71,7 +71,7 @@ public class isLoggedMockBlackTest {
         assertNull(res.getSeller());
     }
     
-    /*
+
     // PK3 (BK 5): (null, "1234") -> Emaitza(false, "", null, null)
     @Test
     public void testPK3_NullLog() {
@@ -82,7 +82,7 @@ public class isLoggedMockBlackTest {
         assertEquals("", res.getEmail());
         assertNull(res.getSeller());
     }
-   */
+
 
     // PK4 (BK 6): ("seller1", null) -> Emaitza(false, "", null, null)
     @Test

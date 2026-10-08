@@ -38,13 +38,13 @@ public class isLoggedBDBlackTest {
         assertFalse(res.getLog());
     }
     
-    /*
+  
     @Test
     public void testPK3_NullLog() {
         Emaitza res = sut.isLogged(null, "1234");
         assertFalse(res.getLog());
     }
-	*/
+
 
     @Test
     public void testPK4_NullPass() {
