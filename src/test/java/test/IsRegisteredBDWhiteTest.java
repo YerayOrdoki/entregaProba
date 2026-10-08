@@ -131,6 +131,7 @@ public class IsRegisteredBDWhiteTest {
      * mail == null denean, ez da erregistrorik egiten.
      * DBaren egoera ez da aldatzen.
      */
+    
     @Test
     public void test1_mailNull() {
         Emaitza result = sut.isRegistered(null, "ane", "1234");
