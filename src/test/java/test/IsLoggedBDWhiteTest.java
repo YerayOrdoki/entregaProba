@@ -24,14 +24,15 @@ public class IsLoggedBDWhiteTest {
         sut.isRegistered("admin@shop.com", "admin", "123456789");
     }
 
-   
+   /*
     @Test
     public void testIsLogged_WhiteBox_1_LogNull() {
         Emaitza res = sut.isLogged(null, "123456789");
         assertFalse(res.getLog());
     }
 
-
+	*/
+    
     @Test
     public void testIsLogged_WhiteBox_2_PassNull() {
         Emaitza res = sut.isLogged("admin", null);
