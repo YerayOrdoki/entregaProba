@@ -119,7 +119,6 @@ public class IsRegisteredMockBlackTest {
      *
      * Parametroa baliogabea denez, ez da datu-basera deirik egin behar.
      */
-    /*
     @Test
     public void testCE1_nullMail() {
         Emaitza result = sut.isRegistered(null, "ane", "1234");
@@ -130,7 +129,6 @@ public class IsRegisteredMockBlackTest {
 
         Mockito.verifyNoInteractions(db);
     }
-    */
 
     /*
      * CE2:

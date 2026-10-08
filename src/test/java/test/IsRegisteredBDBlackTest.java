@@ -203,7 +203,6 @@ public class IsRegisteredBDBlackTest {
      *
      * DBaren egoera ez da aldatzen.
      */
-    /*
     @Test
     public void testCE1_nullMail() {
         Emaitza result = sut.isRegistered(null, "ane", "1234");
@@ -212,7 +211,7 @@ public class IsRegisteredBDBlackTest {
         assertEquals("", result.getEmail());
         assertNull(result.getSeller());
     }
-    */
+    
     /*
      * CE2:
      * user == null.
