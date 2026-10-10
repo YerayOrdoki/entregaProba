@@ -131,7 +131,6 @@ public class IsRegisteredMockBlackTest {
      * Erregistroa baztertu behar da.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testCE5_existingUser() {
         // Test honetarako mock-ak sortu.
         EntityManager db = Mockito.mock(EntityManager.class);
@@ -166,7 +165,6 @@ public class IsRegisteredMockBlackTest {
      * Erregistroa onartu eta Seller berria gordetzera bidali behar da.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testCE6_validRegistration() {
         // Test honetarako mock-ak sortu.
         EntityManager db = Mockito.mock(EntityManager.class);
@@ -206,7 +204,6 @@ public class IsRegisteredMockBlackTest {
      * Zehaztapenak debekatzen badu, espero den emaitza aldatu behar da.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testCE7_emptyMail() {
         // Test honetarako mock-ak sortu.
         EntityManager db = Mockito.mock(EntityManager.class);
@@ -240,7 +237,6 @@ public class IsRegisteredMockBlackTest {
      * erabiltzaile-izen hutsa onartzea.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testCE8_emptyUser() {
         // Test honetarako mock-ak sortu.
         EntityManager db = Mockito.mock(EntityManager.class);
@@ -274,7 +270,6 @@ public class IsRegisteredMockBlackTest {
      * pasahitz hutsa onartzea.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testCE9_emptyPassword() {
         // Test honetarako mock-ak sortu.
         EntityManager db = Mockito.mock(EntityManager.class);
