@@ -36,6 +36,9 @@ public class isLoggedBDBlackTest {
     public void testPK2_ValidSellerWrongPass() {
         Emaitza res = sut.isLogged("seller1", "wrongpass");
         assertFalse(res.getLog());
+        assertNull(res.getSeller());
+        assertNull(res.getAdmin());
+        assertEquals("",res.getEmail());
     }
     
   
@@ -43,6 +46,9 @@ public class isLoggedBDBlackTest {
     public void testPK3_NullLog() {
         Emaitza res = sut.isLogged(null, "1234");
         assertFalse(res.getLog());
+        assertNull(res.getAdmin());
+        assertNull(res.getSeller());
+        assertEquals("", res.getEmail());
     }
 
 
@@ -50,5 +56,8 @@ public class isLoggedBDBlackTest {
     public void testPK4_NullPass() {
         Emaitza res = sut.isLogged("seller1", null);
         assertFalse(res.getLog());
+        assertNull(res.getSeller());
+        assertNull(res.getAdmin());
+        assertEquals("",res.getEmail());
     }
 }

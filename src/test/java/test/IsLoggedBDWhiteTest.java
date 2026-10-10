@@ -20,34 +20,52 @@ public class IsLoggedBDWhiteTest {
         sut.open(); // BD ireki
         
         // Sartu probako Seller bat DBan
-        testSeller = new Seller("admin", "123456789", "admin@shop.com");
-        sut.isRegistered("admin@shop.com", "admin", "123456789");
+        testSeller = new Seller("seller1", "123", "seller1@shop.com");
+        sut.isRegistered("seller1@shop.com", "seller1", "123");
     }
 
 
     @Test
     public void testIsLogged_WhiteBox_1_LogNull() {
-        Emaitza res = sut.isLogged(null, "123456789");
+        Emaitza res = sut.isLogged(null, "123");
+        
         assertFalse(res.getLog());
+        assertNull(res.getSeller());
+        assertNull(res.getAdmin());
+        assertEquals("",res.getEmail());
     }
 
     
     @Test
     public void testIsLogged_WhiteBox_2_PassNull() {
-        Emaitza res = sut.isLogged("admin", null);
+        Emaitza res = sut.isLogged("seller1", null);
+        
         assertFalse(res.getLog());
+        assertNull(res.getSeller());
+        assertNull(res.getAdmin());
+        assertEquals("",res.getEmail());
     }
 
     @Test
     public void testIsLogged_WhiteBox_3_SellerExists() {
-        Emaitza res = sut.isLogged("admin", "123456789");
+        Emaitza res = sut.isLogged("seller1", "123");
+        
         assertTrue(res.getLog());
-        assertEquals("admin@shop.com", res.getEmail());
+        assertEquals("seller1@shop.com", res.getEmail());
+        assertNotNull(res.getSeller());
+        
+        
+        assertEquals("seller1", res.getSeller().getName());
+        assertEquals("seller1@shop.com", res.getSeller().getEmail());
     }
 
     @Test
     public void testIsLogged_WhiteBox_4_SellerDoesNotExist() {
-        Emaitza res = sut.isLogged("admin", "wrong");
+        Emaitza res = sut.isLogged("seller1", "wrong");
+        
         assertFalse(res.getLog());
+        assertNull(res.getAdmin());
+        assertNull(res.getSeller());
+        assertEquals("",res.getEmail());
     }
 }

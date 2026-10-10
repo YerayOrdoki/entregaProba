@@ -28,15 +28,11 @@ public class IsLoggedMockWhiteTest {
         sut = new DataAccess(db); // Eraikitzaileak EntityManager jasotzen badu
     }
 
-    // 1. Kasua: log == null -> (null, "123456789") -> Emaitza(false, "", null, null)
     
-   
+    // 1. Kasua: log == null -> (null, "123") -> Emaitza(false, "", null, null)
     @Test
     public void testIsLogged_WhiteBox_1_LogNull() {
-        String log = null;
-        String pass = "123456789";
-
-        Emaitza res = sut.isLogged(log, pass);
+        Emaitza res = sut.isLogged(null, "123");
 
         assertNotNull(res);
         assertFalse(res.getLog());
@@ -48,10 +44,7 @@ public class IsLoggedMockWhiteTest {
     // 2. Kasua: log != null, pass == null -> ("admin", null) -> Emaitza(false, "", null, null)
     @Test
     public void testIsLogged_WhiteBox_2_PassNull() {
-        String log = "admin";
-        String pass = null;
-
-        Emaitza res = sut.isLogged(log, pass);
+        Emaitza res = sut.isLogged("admin", null);
 
         assertNotNull(res);
         assertFalse(res.getLog());
@@ -59,11 +52,11 @@ public class IsLoggedMockWhiteTest {
         assertNull(res.getSeller());
     }
 
-    // 3. Kasua: log != null, pass != null, Seller existitu -> ("admin", "123456789") -> True + Seller
+    // 3. Kasua: log != null, pass != null, Seller existitu -> ("admin", "123") -> True + Seller
     @Test
     public void testIsLogged_WhiteBox_3_SellerExists() {
         String log = "admin";
-        String pass = "123456789";
+        String pass = "123";
 
         Seller seller = new Seller("admin@shop.com",log, pass);
         List<Seller> list = new ArrayList<>();
